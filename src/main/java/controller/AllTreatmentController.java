@@ -53,8 +53,8 @@ public class AllTreatmentController {
         comboBox.setItems(myComboBoxData);
         comboBox.getSelectionModel().select(0);
 
-        this.colID.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("tid"));
-        this.colPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("pid"));
+        this.colID.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("id"));
+        this.colPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("patientId"));
         this.colDate.setCellValueFactory(new PropertyValueFactory<Treatment, String>("date"));
         this.colBegin.setCellValueFactory(new PropertyValueFactory<Treatment, String>("begin"));
         this.colEnd.setCellValueFactory(new PropertyValueFactory<Treatment, String>("end"));
