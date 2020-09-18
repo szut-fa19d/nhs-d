@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Patient;
-import utils.DateConverter;
 import datastorage.DAOFactory;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -46,7 +45,7 @@ public class AllPatientController {
     @FXML
     TextField txtFirstname;
     @FXML
-    TextField txtBirthday;
+    DatePicker Birthday;
     @FXML
     TextField txtCarelevel;
     @FXML
@@ -192,7 +191,6 @@ public class AllPatientController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        this.handleAdd();
     }
 
     /**
@@ -202,13 +200,12 @@ public class AllPatientController {
     public void handleAdd() {
         String surname = this.txtSurname.getText();
         String firstname = this.txtFirstname.getText();
-        String birthday = this.txtBirthday.getText();
-        LocalDate date = DateConverter.convertStringToLocalDate(birthday);
+        LocalDate birthday = this.Birthday.getValue();
         String carelevel = this.txtCarelevel.getText();
         String room = this.txtRoom.getText();
         String assets = this.txtAssets.getText();
         try {
-            Patient p = new Patient(firstname, surname, date, carelevel, room, assets);
+            Patient p = new Patient(firstname, surname, birthday, carelevel, room, assets);
             dao.create(p);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -223,7 +220,7 @@ public class AllPatientController {
     private void clearTextfields() {
         this.txtFirstname.clear();
         this.txtSurname.clear();
-        this.txtBirthday.clear();
+        this.Birthday.setValue(null);
         this.txtCarelevel.clear();
         this.txtRoom.clear();
         this.txtAssets.clear();
