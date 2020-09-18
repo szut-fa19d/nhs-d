@@ -22,7 +22,7 @@
                <Image url="@img/LogoMakr_8JsJIF.png" />
            </image>
        </ImageView>
-      <TableView fx:id="tableView" editable="true" layoutX="31.0" layoutY="35.0" onMouseClicked="#handleMouseClick" prefHeight="364.0" prefWidth="825.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="80.0">
+      <TableView fx:id="tableView" editable="true" layoutX="31.0" layoutY="35.0" prefHeight="364.0" prefWidth="825.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="80.0">
         <columns>
             <TableColumn fx:id="colID" maxWidth="-1.0" minWidth="40.0" prefWidth="50.0" text="ID" />
             <TableColumn fx:id="colPid" maxWidth="-1.0" minWidth="100.0" prefWidth="120.0" text="PatientID" />
