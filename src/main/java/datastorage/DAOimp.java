@@ -34,7 +34,6 @@ public abstract class DAOimp<T> implements DAO<T>{
     @Override
     public List<T> readAll() throws SQLException {
         ArrayList<T> list = new ArrayList<T>();
-        T object = null;
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery(getReadAllStatementString());
         list = getListFromResultSet(result);
