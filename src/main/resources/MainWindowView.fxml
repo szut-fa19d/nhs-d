@@ -1,53 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindowController">
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER" prefHeight="384.0" prefWidth="926.0">
-               <children>
-                  <ImageView fitHeight="275.0" fitWidth="290.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -18;">
-                     <image>
-                        <Image url="@img/LogoMakr_8JsJIF.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER">
-               <children>
 
-                  <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleShowAllPatient" prefWidth="105.0" style="-fx-translate-x: -50;" text="Patienten/innen">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 50%; -fx-scale-y: 50%;">
-                           <image>
-                              <Image url="@img/patient.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleShowAllTreatments" prefWidth="105.0" style="-fx-translate-x: 50;" text="Behandlungen">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 50%; -fx-scale-y: 50%;">
-                           <image>
-                              <Image url="@img/sharing.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </center>
-</BorderPane>
+<TabPane fx:id="mainTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+         prefHeight="688.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+         xmlns:fx="http://javafx.com/fxml/1"
+         tabClosingPolicy="UNAVAILABLE">
+    <tabs>
+        <Tab text="Patient/innen">
+           <fx:include fx:id="allPatientView" source="AllPatientView.fxml"/>
+        </Tab>
+        <Tab text="Behandlungen">
+           <fx:include fx:id="allTreatmentView" source="AllTreatmentView.fxml"/>
+        </Tab>
+    </tabs>
+</TabPane>
