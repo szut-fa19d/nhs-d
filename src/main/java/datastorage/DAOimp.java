@@ -3,7 +3,6 @@ package datastorage;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,53 +15,48 @@ public abstract class DAOimp<T> implements DAO<T>{
 
     @Override
     public void create(T t) throws SQLException {
-        Statement st = conn.createStatement();
-        st.executeUpdate(getCreateStatementString(t));
+        conn.createStatement().executeUpdate(getCreateStatement(t));
     }
 
     @Override
-    public T read(int key) throws SQLException {
+    public T read(int id) throws SQLException {
         T object = null;
-        Statement st = conn.createStatement();
-        ResultSet result = st.executeQuery(getReadByIDStatementString(key));
+        ResultSet result = conn.createStatement().executeQuery(getReadByIDStatement(id));
+
         if (result.next()) {
             object = getInstanceFromResultSet(result);
         }
+
         return object;
     }
 
     @Override
     public List<T> readAll() throws SQLException {
-        ArrayList<T> list = new ArrayList<T>();
-        Statement st = conn.createStatement();
-        ResultSet result = st.executeQuery(getReadAllStatementString());
-        list = getListFromResultSet(result);
-        return list;
+        ResultSet result = conn.createStatement().executeQuery(getReadAllStatement());
+        return getListFromResultSet(result);
     }
 
     @Override
     public void update(T t) throws SQLException {
-        Statement st = conn.createStatement();
-        st.executeUpdate(getUpdateStatementString(t));
+        conn.createStatement().executeUpdate(getUpdateStatement(t));
     }
 
     @Override
-    public void deleteById(int key) throws SQLException {
-        Statement st = conn.createStatement();
-        st.executeUpdate(getDeleteStatementString(key));
+    public void deleteById(int id) throws SQLException {
+        conn.createStatement().executeUpdate(getDeleteStatement(id));
     }
 
-    protected abstract String getCreateStatementString(T t);
+    protected abstract String getCreateStatement(T t);
 
-    protected abstract String getReadByIDStatementString(int key);
+    protected abstract String getReadByIDStatement(int id);
 
     protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
 
-    protected abstract String getReadAllStatementString();
+    protected abstract String getReadAllStatement();
 
     protected abstract ArrayList<T> getListFromResultSet(ResultSet set) throws SQLException;
 
-    protected abstract String getUpdateStatementString(T t);
+    protected abstract String getUpdateStatement(T t);
 
-    protected abstract String getDeleteStatementString(int key);
+    protected abstract String getDeleteStatement(int key);
 }

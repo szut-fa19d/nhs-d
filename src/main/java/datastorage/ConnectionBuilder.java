@@ -13,12 +13,12 @@ public class ConnectionBuilder {
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
             conn = DriverManager.getConnection("jdbc:hsqldb:db/nursingHomeDB;user=SA;password=SA");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException cnfException) {
+            cnfException.printStackTrace();
             System.out.println("Treiberklasse konnte nicht gefunden werden!");
-        } catch (SQLException e) {
+        } catch (SQLException sqlException) {
             System.out.println("Verbindung zur Datenbank konnte nicht aufgebaut werden!");
-            e.printStackTrace();
+            sqlException.printStackTrace();
         }
     }
 

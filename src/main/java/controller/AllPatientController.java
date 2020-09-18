@@ -63,7 +63,7 @@ public class AllPatientController {
     public void initialize() {
         readAllAndShowInTableView();
 
-        this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("pid"));
+        this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("id"));
 
         //CellValuefactory zum Anzeigen der Daten in der TableView
         this.colFirstName.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
@@ -166,7 +166,7 @@ public class AllPatientController {
      */
     private void readAllAndShowInTableView() {
         this.tableviewContent.clear();
-        this.dao = DAOFactory.getDAOFactory().createPatientDAO();
+        this.dao = DAOFactory.getInstance().createPatientDAO();
         List<Patient> allPatients;
         try {
             allPatients = dao.readAll();
@@ -183,12 +183,12 @@ public class AllPatientController {
      */
     @FXML
     public void handleDeleteRow() {
-        TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        TreatmentDAO tDao = DAOFactory.getInstance().createTreatmentDAO();
         Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         this.tableView.getItems().remove(selectedItem);
         try {
-            dao.deleteById((int) selectedItem.getPid());
-            tDao.deleteByPid((int) selectedItem.getPid());
+            dao.deleteById((int) selectedItem.getId());
+            tDao.deleteByPatientId((int) selectedItem.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }

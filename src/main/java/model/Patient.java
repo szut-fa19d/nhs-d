@@ -10,61 +10,35 @@ import java.util.List;
  * Patients live in a NURSING home and are treated by nurses.
  */
 public class Patient extends Person {
-    private long pid;
+    private long id;
     private LocalDate dateOfBirth;
     private String careLevel;
     private String roomnumber;
     private String assets;
     private List<Treatment> allTreatments = new ArrayList<Treatment>();
 
-    /**
-     * constructs a patient from the given params.
-     * @param firstName
-     * @param surname
-     * @param dateOfBirth
-     * @param careLevel
-     * @param roomnumber
-     * @param assets
-     */
     public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
         super(firstName, surname);
-        this.dateOfBirth = dateOfBirth;
-        this.careLevel = careLevel;
-        this.roomnumber = roomnumber;
-        this.assets = assets;
+        this.init(dateOfBirth, careLevel, roomnumber, assets);
     }
 
-    /**
-     * constructs a patient from the given params.
-     * @param pid
-     * @param firstName
-     * @param surname
-     * @param dateOfBirth
-     * @param careLevel
-     * @param roomnumber
-     * @param assets
-     */
-    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
+    public Patient(long id, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
         super(firstName, surname);
-        this.pid = pid;
+        this.id = id;
+        this.init(dateOfBirth, careLevel, roomnumber, assets);
+    }
+
+    private void init(LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
         this.assets = assets;
     }
 
-    /**
-     *
-     * @return patient id
-     */
-    public long getPid() {
-        return pid;
+    public long getId() {
+        return id;
     }
 
-    /**
-     *
-     * @return date of birth as a string
-     */
     public String getDateOfBirth() {
         return dateOfBirth.toString();
     }
@@ -78,57 +52,32 @@ public class Patient extends Person {
         this.dateOfBirth = birthday;
     }
 
-    /**
-     *
-     * @return careLevel
-     */
     public String getCareLevel() {
         return careLevel;
     }
 
-    /**
-     *
-     * @param careLevel new care level
-     */
-    public void setCareLevel(String careLevel) {
-        this.careLevel = careLevel;
+    public void setCareLevel(String newCareLevel) {
+        this.careLevel = newCareLevel;
     }
 
-    /**
-     *
-     * @return roomNumber as string
-     */
     public String getRoomnumber() {
         return roomnumber;
     }
 
-    /**
-     *
-     * @param roomnumber
-     */
     public void setRoomnumber(String roomnumber) {
         this.roomnumber = roomnumber;
     }
 
-    /**
-     *
-     * @return assets as string
-     */
     public String getAssets() {
         return assets;
     }
 
-    /**
-     *
-     * @param assets
-     */
     public void setAssets(String assets) {
         this.assets = assets;
     }
 
     /**
      * adds a treatment to the treatment-list, if it does not already contain it.
-     * @param m Treatment
      * @return true if the treatment was not already part of the list. otherwise false
      */
     public boolean add(Treatment m) {
@@ -136,15 +85,12 @@ public class Patient extends Person {
             this.allTreatments.add(m);
             return true;
         }
+
         return false;
     }
 
-    /**
-     *
-     * @return string-representation of the patient
-     */
     public String toString() {
-        return "Patient" + "\nMNID: " + this.pid +
+        return "Patient" + "\nMNID: " + this.id +
                 "\nFirstname: " + this.getFirstName() +
                 "\nSurname: " + this.getSurname() +
                 "\nBirthday: " + this.dateOfBirth +

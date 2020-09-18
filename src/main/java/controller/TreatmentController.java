@@ -41,9 +41,9 @@ public class TreatmentController {
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         this.stage = stage;
         this.controller= controller;
-        PatientDAO pDao = DAOFactory.getDAOFactory().createPatientDAO();
+        PatientDAO pDao = DAOFactory.getInstance().createPatientDAO();
         try {
-            this.patient = pDao.read((int) treatment.getPid());
+            this.patient = pDao.read((int) treatment.getPatientId());
             this.treatment = treatment;
             showData();
         } catch (SQLException e) {
@@ -75,7 +75,7 @@ public class TreatmentController {
     }
 
     private void doUpdate(){
-        TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        TreatmentDAO dao = DAOFactory.getInstance().createTreatmentDAO();
         try {
             dao.update(treatment);
         } catch (SQLException e) {

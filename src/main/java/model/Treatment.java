@@ -5,17 +5,25 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Treatment {
-    private long tid;
-    private long pid;
+    private long id;
+    private long patientId;
     private LocalDate date;
     private LocalTime begin;
     private LocalTime end;
     private String description;
     private String remarks;
 
-    public Treatment(long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
-        this.pid = pid;
+    public Treatment(long patientId, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+        this.init(patientId, date, begin, end, description, remarks);
+    }
+
+    public Treatment(long id, long patientId, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+        this.id = id;
+        this.init(patientId, date, begin, end, description, remarks);
+    }
+
+    private void init(long patientId, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+        this.patientId = patientId;
         this.date = date;
         this.begin = begin;
         this.end = end;
@@ -23,24 +31,12 @@ public class Treatment {
         this.remarks = remarks;
     }
 
-    public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
-        this.tid = tid;
-        this.pid = pid;
-        this.date = date;
-        this.date = date;
-        this.begin = begin;
-        this.end = end;
-        this.description = description;
-        this.remarks = remarks;
+    public long getId() {
+        return id;
     }
 
-    public long getTid() {
-        return tid;
-    }
-
-    public long getPid() {
-        return this.pid;
+    public long getPatientId() {
+        return patientId;
     }
 
     public String getDate() {
@@ -56,18 +52,15 @@ public class Treatment {
     }
 
     public void setDate(String s_date) {
-        LocalDate date = DateConverter.convertStringToLocalDate(s_date);
-        this.date = date;
+        this.date = DateConverter.convertStringToLocalDate(s_date);
     }
 
     public void setBegin(String begin) {
-        LocalTime time = DateConverter.convertStringToLocalTime(begin);
-        this.begin = time;
+        this.begin = DateConverter.convertStringToLocalTime(begin);
     }
 
     public void setEnd(String end) {
-        LocalTime time = DateConverter.convertStringToLocalTime(end);
-        this.end = time;
+        this.end = DateConverter.convertStringToLocalTime(end);
     }
 
     public String getDescription() {
@@ -86,13 +79,16 @@ public class Treatment {
         this.remarks = remarks;
     }
 
+    /**
+     * @deprecated Habe noch keine Stelle gefunden, wo diese Klasse stringified wird
+     */
     public String toString() {
-        return "\nBehandlung" + "\nTID: " + this.tid +
-                "\nPID: " + this.pid +
-                "\nDate: " + this.date +
-                "\nBegin: " + this.begin +
-                "\nEnd: " + this.end +
-                "\nDescription: " + this.description +
-                "\nRemarks: " + this.remarks + "\n";
+        return "\nBehandlung" + "\nTID: " + id +
+                "\nPID: " + patientId +
+                "\nDate: " + date +
+                "\nBegin: " + begin +
+                "\nEnd: " + end +
+                "\nDescription: " + description +
+                "\nRemarks: " + remarks + "\n";
     }
 }

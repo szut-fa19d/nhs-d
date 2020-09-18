@@ -4,11 +4,9 @@ public class DAOFactory {
 
     private static DAOFactory instance;
 
-    private DAOFactory() {
+    private DAOFactory() {}
 
-    }
-
-    public static DAOFactory getDAOFactory() {
+    public static DAOFactory getInstance() {
         if (instance == null) {
             instance = new DAOFactory();
         }

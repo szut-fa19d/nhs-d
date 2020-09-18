@@ -65,7 +65,7 @@ public class AllTreatmentController {
 
     public void readAllAndShowInTableView() {
         this.tableviewContent.clear();
-        this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        this.dao = DAOFactory.getInstance().createTreatmentDAO();
         List<Treatment> allTreatments;
         try {
             allTreatments = dao.readAll();
@@ -78,7 +78,7 @@ public class AllTreatmentController {
     }
 
     private void createComboBoxData(){
-        PatientDAO dao = DAOFactory.getDAOFactory().createPatientDAO();
+        PatientDAO dao = DAOFactory.getInstance().createPatientDAO();
         try {
             patientList = (ArrayList<Patient>) dao.readAll();
             this.myComboBoxData.add("alle");
@@ -94,7 +94,7 @@ public class AllTreatmentController {
     public void handleComboBox(){
         String p = this.comboBox.getSelectionModel().getSelectedItem();
         this.tableviewContent.clear();
-        this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        this.dao = DAOFactory.getInstance().createTreatmentDAO();
         List<Treatment> allTreatments;
         if(p.equals("alle")){
             try {
@@ -109,7 +109,7 @@ public class AllTreatmentController {
         Patient patient = searchInList(p);
         if(patient !=null){
             try {
-                allTreatments = dao.readTreatmentsByPid(patient.getPid());
+                allTreatments = dao.readTreatmentsByPatientId(patient.getId());
                 for (Treatment treatment : allTreatments) {
                     this.tableviewContent.add(treatment);
                 }
@@ -132,9 +132,9 @@ public class AllTreatmentController {
     public void handleDelete(){
         int index = this.tableView.getSelectionModel().getSelectedIndex();
         Treatment t = this.tableviewContent.remove(index);
-        TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        TreatmentDAO dao = DAOFactory.getInstance().createTreatmentDAO();
         try {
-            dao.deleteById((int) t.getTid());
+            dao.deleteById((int) t.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }

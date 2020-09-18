@@ -54,7 +54,7 @@ public class NewTreatmentController {
         LocalTime end = DateConverter.convertStringToLocalTime(txtEnd.getText());
         String description = txtDescription.getText();
         String remarks = taRemarks.getText();
-        Treatment treatment = new Treatment(patient.getPid(), date,
+        Treatment treatment = new Treatment(patient.getId(), date,
                 begin, end, description, remarks);
         createTreatment(treatment);
         controller.readAllAndShowInTableView();
@@ -62,7 +62,7 @@ public class NewTreatmentController {
     }
 
     private void createTreatment(Treatment treatment) {
-        TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        TreatmentDAO dao = DAOFactory.getInstance().createTreatmentDAO();
         try {
             dao.create(treatment);
         } catch (SQLException e) {
