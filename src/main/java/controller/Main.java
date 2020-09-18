@@ -39,7 +39,9 @@ public class Main extends Application {
             this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent e) {
-                    ConnectionBuilder.closeConnection();
+                    if(ConnectionBuilder.hasConnection()){
+                        ConnectionBuilder.closeConnection();
+                    }
                     Platform.exit();
                     System.exit(0);
                 }

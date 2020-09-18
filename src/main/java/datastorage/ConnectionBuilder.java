@@ -36,4 +36,8 @@ public class ConnectionBuilder {
             e.printStackTrace();
         }
     }
+
+    public static boolean hasConnection() {
+        return conn != null;
+    }
 }
