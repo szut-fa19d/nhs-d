@@ -2,24 +2,52 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindowController">
-   <left>
-      <VBox id="vBox" alignment="CENTER" spacing="50.0" styleClass="vBox" stylesheets="@Application.css" BorderPane.alignment="CENTER">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleShowAllPatient" prefWidth="105.0" text="Patienten/innen">
-               <VBox.margin>
-                  <Insets bottom="50.0" left="10.0" right="10.0" top="50.0" />
-               </VBox.margin>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets></Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleShowAllTreatments" prefWidth="105.0" text="Behandlungen">
-               <VBox.margin>
-                  <Insets bottom="50.0" left="10.0" right="10.0" top="50.0" />
-               </VBox.margin></Button>
+            <HBox alignment="CENTER" prefHeight="384.0" prefWidth="926.0">
+               <children>
+                  <ImageView fitHeight="275.0" fitWidth="290.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -18;">
+                     <image>
+                        <Image url="@img/LogoMakr_8JsJIF.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+
+                  <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleShowAllPatient" prefWidth="105.0" style="-fx-translate-x: -50;" text="Patienten/innen">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <graphic>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 50%; -fx-scale-y: 50%;">
+                           <image>
+                              <Image url="@img/patient.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#handleShowAllTreatments" prefWidth="105.0" style="-fx-translate-x: 50;" text="Behandlungen">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <graphic>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-scale-x: 50%; -fx-scale-y: 50%;">
+                           <image>
+                              <Image url="@img/sharing.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
-   </left>
+   </center>
 </BorderPane>
