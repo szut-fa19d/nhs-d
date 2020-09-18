@@ -76,7 +76,6 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     public List<Treatment> readTreatmentsByPid(long pid) throws SQLException {
         ArrayList<Treatment> list = new ArrayList<Treatment>();
-        Treatment object = null;
         Statement st = conn.createStatement();
         ResultSet result = st.executeQuery(getReadAllTreatmentsOfOnePatientByPid(pid));
         list = getListFromResultSet(result);

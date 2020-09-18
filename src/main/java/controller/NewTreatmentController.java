@@ -50,7 +50,6 @@ public class NewTreatmentController {
     @FXML
     public void handleAdd(){
         LocalDate date = this.datepicker.getValue();
-        String s_begin = txtBegin.getText();
         LocalTime begin = DateConverter.convertStringToLocalTime(txtBegin.getText());
         LocalTime end = DateConverter.convertStringToLocalTime(txtEnd.getText());
         String description = txtDescription.getText();

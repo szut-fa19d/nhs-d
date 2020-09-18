@@ -47,13 +47,11 @@ public class AllTreatmentController {
     private ObservableList<String> myComboBoxData =
             FXCollections.observableArrayList();
     private ArrayList<Patient> patientList;
-    private Main main;
 
     public void initialize() {
         readAllAndShowInTableView();
         comboBox.setItems(myComboBoxData);
         comboBox.getSelectionModel().select(0);
-        this.main = main;
 
         this.colID.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("tid"));
         this.colPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("pid"));

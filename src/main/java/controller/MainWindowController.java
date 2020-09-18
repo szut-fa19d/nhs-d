@@ -19,7 +19,6 @@ public class MainWindowController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        AllPatientController controller = loader.getController();
     }
 
     @FXML
@@ -30,6 +29,5 @@ public class MainWindowController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        AllTreatmentController controller = loader.getController();
     }
 }
