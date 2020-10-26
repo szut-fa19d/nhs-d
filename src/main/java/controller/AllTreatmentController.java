@@ -68,6 +68,19 @@ public class AllTreatmentController {
         this.colBegin.setCellValueFactory(new PropertyValueFactory<Treatment, String>("begin"));
         this.colEnd.setCellValueFactory(new PropertyValueFactory<Treatment, String>("end"));
         this.colDescription.setCellValueFactory(new PropertyValueFactory<Treatment, String>("description"));
+
+        this.tableView.setRowFactory( tv -> {
+            TableRow<Treatment> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    int index = this.tableView.getSelectionModel().getSelectedIndex();
+                    Treatment treatment = this.tableviewContent.get(index);
+                    treatmentWindow(treatment);
+                }
+            });
+            return row ;
+        });
+
         this.tableView.setItems(this.tableviewContent);
         createComboBoxData();
     }
@@ -163,13 +176,6 @@ public class AllTreatmentController {
             alert.setContentText("Wählen Sie über die Combobox einen Patienten aus!");
             alert.showAndWait();
         }
-    }
-
-    @FXML
-    public void handleMouseClick(){
-        int index = this.tableView.getSelectionModel().getSelectedIndex();
-        Treatment treatment = this.tableviewContent.get(index);
-        treatmentWindow(treatment);
     }
 
     public void newTreatmentWindow(Patient patient){
