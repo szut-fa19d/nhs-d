@@ -6,24 +6,24 @@ import java.time.LocalTime;
 
 public class Treatment {
     private long id;
-    private long patientId;
+    private Patient patient;
     private LocalDate date;
     private LocalTime begin;
     private LocalTime end;
     private String description;
     private String remarks;
 
-    public Treatment(long patientId, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
-        this.init(patientId, date, begin, end, description, remarks);
+    public Treatment(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+        this.init(patient, date, begin, end, description, remarks);
     }
 
-    public Treatment(long id, long patientId, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+    public Treatment(long id, Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
         this.id = id;
-        this.init(patientId, date, begin, end, description, remarks);
+        this.init(patient, date, begin, end, description, remarks);
     }
 
-    private void init(long patientId, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
-        this.patientId = patientId;
+    private void init(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+        this.patient = patient;
         this.date = date;
         this.begin = begin;
         this.end = end;
@@ -35,8 +35,8 @@ public class Treatment {
         return id;
     }
 
-    public long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
     public String getDate() {
@@ -84,7 +84,7 @@ public class Treatment {
      */
     public String toString() {
         return "\nBehandlung" + "\nTID: " + id +
-                "\nPID: " + patientId +
+                "\nPID: " + patient.getId() +
                 "\nDate: " + date +
                 "\nBegin: " + begin +
                 "\nEnd: " + end +

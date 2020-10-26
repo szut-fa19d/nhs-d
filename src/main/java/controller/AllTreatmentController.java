@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,7 +26,7 @@ public class AllTreatmentController {
     @FXML
     private TableColumn<Treatment, Integer> colID;
     @FXML
-    private TableColumn<Treatment, Integer> colPid;
+    private TableColumn<Treatment, String> colPatientName;
     @FXML
     private TableColumn<Treatment, String> colDate;
     @FXML
@@ -54,7 +55,15 @@ public class AllTreatmentController {
         comboBox.getSelectionModel().select(0);
 
         this.colID.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("id"));
-        this.colPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("patientId"));
+        // this.colPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("patientName"));
+        // this.colPid.setCellValueFactory(new PropertyValueFactory<>(property);
+
+        this.colPatientName.setCellValueFactory(cellData -> {
+            Patient patient = cellData.getValue().getPatient();
+            String name = patient.getFirstName() + " " + patient.getSurname();
+            return new SimpleStringProperty(name);
+        });
+
         this.colDate.setCellValueFactory(new PropertyValueFactory<Treatment, String>("date"));
         this.colBegin.setCellValueFactory(new PropertyValueFactory<Treatment, String>("begin"));
         this.colEnd.setCellValueFactory(new PropertyValueFactory<Treatment, String>("end"));
