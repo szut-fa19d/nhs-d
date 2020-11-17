@@ -30,8 +30,11 @@ target/
 /.vscode/
 /.idea/
 
-# Wir wollen die DB nicht versionieren
-/db/
+# Ignoriere DB-Krams, den wir nicht versionieren brauchen (alles außer der .script)
+/db/*.tmp
+/db/*.lck
+/db/*.log
+/db/*.properties
 
 # Generierte Dateien von VSCode-Java..?
 /.project

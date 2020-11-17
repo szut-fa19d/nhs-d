@@ -42,7 +42,7 @@
                <children>
                   <TextField fx:id="txtFirstname" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Vorname" />
                   <TextField fx:id="txtSurname" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Nachname" GridPane.columnIndex="1" />
-                  <DatePicker fx:id="Birthday" minWidth="160.0" prefWidth="160.0" promptText="Geburtstag" GridPane.columnIndex="2"/>
+                  <DatePicker fx:id="birthday" minWidth="160.0" prefWidth="160.0" promptText="Geburtstag" GridPane.columnIndex="2"/>
                   <TextField fx:id="txtCarelevel" prefHeight="26.0" prefWidth="200.0" promptText="Pflegegrad" GridPane.rowIndex="1" />
                   <TextField fx:id="txtRoom" prefHeight="26.0" prefWidth="200.0" promptText="Raum" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="txtAssets" minWidth="160.0" prefWidth="160.0" promptText="Vermögensstand" GridPane.columnIndex="2" GridPane.rowIndex="1" />

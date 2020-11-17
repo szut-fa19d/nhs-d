@@ -2,17 +2,19 @@
 
 <?import javafx.scene.control.*?>
 
-
 <TabPane fx:id="mainTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
          prefHeight="688.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
          xmlns:fx="http://javafx.com/fxml/1"
          tabClosingPolicy="UNAVAILABLE">
-    <tabs>
-        <Tab text="Patient/innen">
-           <fx:include fx:id="allPatientView" source="AllPatientView.fxml"/>
-        </Tab>
-        <Tab text="Behandlungen">
-           <fx:include fx:id="allTreatmentView" source="AllTreatmentView.fxml"/>
-        </Tab>
-    </tabs>
+   <tabs>
+         <Tab text="Patient/innen">
+            <fx:include fx:id="allPatientView" source="AllPatientView.fxml"/>
+         </Tab>
+         <Tab text="Behandlungen">
+            <fx:include fx:id="allTreatmentView" source="AllTreatmentView.fxml"/>
+         </Tab>
+         <Tab text="Pflegekräfte">
+            <fx:include fx:id="allCaregiverView" source="AllCaregiverView.fxml"/>
+         </Tab>
+   </tabs>
 </TabPane>

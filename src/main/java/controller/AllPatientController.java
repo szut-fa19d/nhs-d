@@ -41,11 +41,11 @@ public class AllPatientController {
     @FXML
     Button btnAdd;
     @FXML
-    TextField txtSurname;
-    @FXML
     TextField txtFirstname;
     @FXML
-    DatePicker Birthday;
+    TextField txtSurname;
+    @FXML
+    DatePicker birthday;
     @FXML
     TextField txtCarelevel;
     @FXML
@@ -62,26 +62,26 @@ public class AllPatientController {
     public void initialize() {
         readAllAndShowInTableView();
 
-        this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("id"));
+        this.colID.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         //CellValuefactory zum Anzeigen der Daten in der TableView
-        this.colFirstName.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
+        this.colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         //CellFactory zum Schreiben innerhalb der Tabelle
         this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colSurname.setCellValueFactory(new PropertyValueFactory<Patient, String>("surname"));
+        this.colSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
         this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colDateOfBirth.setCellValueFactory(new PropertyValueFactory<Patient, String>("dateOfBirth"));
+        this.colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
         this.colDateOfBirth.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colCareLevel.setCellValueFactory(new PropertyValueFactory<Patient, String>("careLevel"));
+        this.colCareLevel.setCellValueFactory(new PropertyValueFactory<>("careLevel"));
         this.colCareLevel.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colRoom.setCellValueFactory(new PropertyValueFactory<Patient, String>("roomnumber"));
+        this.colRoom.setCellValueFactory(new PropertyValueFactory<>("roomnumber"));
         this.colRoom.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colAssets.setCellValueFactory(new PropertyValueFactory<Patient, String>("assets"));
+        this.colAssets.setCellValueFactory(new PropertyValueFactory<>("assets"));
         this.colAssets.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //Anzeigen der Daten
@@ -200,12 +200,13 @@ public class AllPatientController {
     public void handleAdd() {
         String surname = this.txtSurname.getText();
         String firstname = this.txtFirstname.getText();
-        LocalDate birthday = this.Birthday.getValue();
+        LocalDate patientBirthday = this.birthday.getValue();
         String carelevel = this.txtCarelevel.getText();
         String room = this.txtRoom.getText();
         String assets = this.txtAssets.getText();
+
         try {
-            Patient p = new Patient(firstname, surname, birthday, carelevel, room, assets);
+            Patient p = new Patient(firstname, surname, patientBirthday, carelevel, room, assets);
             dao.create(p);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -220,7 +221,7 @@ public class AllPatientController {
     private void clearTextfields() {
         this.txtFirstname.clear();
         this.txtSurname.clear();
-        this.Birthday.setValue(null);
+        this.birthday.setValue(null);
         this.txtCarelevel.clear();
         this.txtRoom.clear();
         this.txtAssets.clear();
