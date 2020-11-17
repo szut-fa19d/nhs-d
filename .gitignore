@@ -28,7 +28,7 @@ target/
 
 /.settings/
 /.vscode/
-/.idea
+/.idea/
 
 # Wir wollen die DB nicht versionieren
 /db/
