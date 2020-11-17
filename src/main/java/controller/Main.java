@@ -18,7 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/MainWindowView.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));
             TabPane pane = loader.load();
 
             Scene scene = new Scene(pane);
