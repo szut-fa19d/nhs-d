@@ -98,9 +98,8 @@ public class AllCaregiverController {
     try {
       allCaregivers = dao.readAll();
 
-      for (Caregiver c: allCaregivers) {
-        this.tableviewContent.add(c);
-      }
+      this.tableviewContent.addAll(allCaregivers);
+
     } catch (SQLException e) {
       e.printStackTrace();
     }
