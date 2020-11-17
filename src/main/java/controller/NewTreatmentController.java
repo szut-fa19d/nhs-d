@@ -17,9 +17,9 @@ import java.time.LocalTime;
 
 public class NewTreatmentController {
     @FXML
-    private Label lblSurname;
+    private Label lblLastName;
     @FXML
-    private Label lblFirstname;
+    private Label lblFirstName;
     @FXML
     private TextField txtBegin;
     @FXML
@@ -43,8 +43,8 @@ public class NewTreatmentController {
     }
 
     private void showPatientData(){
-        this.lblFirstname.setText(patient.getFirstName());
-        this.lblSurname.setText(patient.getSurname());
+        this.lblFirstName.setText(patient.getFirstName());
+        this.lblLastName.setText(patient.getLastName());
     }
 
     @FXML

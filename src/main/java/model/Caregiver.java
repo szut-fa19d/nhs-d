@@ -4,13 +4,13 @@ public class Caregiver extends Person{
   private long id;
   private String phoneNumber;
 
-  public Caregiver(String firstName, String surname, String phoneNumber) {
-    super(firstName, surname);
+  public Caregiver(String firstName, String lastName, String phoneNumber) {
+    super(firstName, lastName);
     this.phoneNumber = phoneNumber;
   }
 
-  public Caregiver(long id, String firstName, String surname, String phoneNumber) {
-    super(firstName, surname);
+  public Caregiver(long id, String firstName, String lastName, String phoneNumber) {
+    super(firstName, lastName);
     this.id = id;
     this.phoneNumber = phoneNumber;
   }

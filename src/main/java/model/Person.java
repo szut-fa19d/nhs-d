@@ -2,11 +2,11 @@ package model;
 
 public abstract class Person {
     private String firstName;
-    private String surname;
+    private String lastName;
 
-    public Person(String firstName, String surname) {
+    protected Person(String firstName, String lastName) {
         this.firstName = firstName;
-        this.surname = surname;
+        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -17,11 +17,11 @@ public abstract class Person {
         this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

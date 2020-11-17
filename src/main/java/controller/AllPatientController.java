@@ -26,7 +26,7 @@ public class AllPatientController {
     @FXML
     private TableColumn<Patient, String> colFirstName;
     @FXML
-    private TableColumn<Patient, String> colSurname;
+    private TableColumn<Patient, String> colLastName;
     @FXML
     private TableColumn<Patient, String> colDateOfBirth;
     @FXML
@@ -41,9 +41,9 @@ public class AllPatientController {
     @FXML
     Button btnAdd;
     @FXML
-    TextField txtFirstname;
+    TextField txtFirstName;
     @FXML
-    TextField txtSurname;
+    TextField txtLastName;
     @FXML
     DatePicker birthday;
     @FXML
@@ -69,8 +69,8 @@ public class AllPatientController {
         //CellFactory zum Schreiben innerhalb der Tabelle
         this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
-        this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        this.colLastName.setCellFactory(TextFieldTableCell.forTableColumn());
 
         this.colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
         this.colDateOfBirth.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -93,18 +93,18 @@ public class AllPatientController {
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditFirstname(TableColumn.CellEditEvent<Patient, String> event){
+    public void handleOnEditFirstName(TableColumn.CellEditEvent<Patient, String> event){
         event.getRowValue().setFirstName(event.getNewValue());
         doUpdate(event);
     }
 
     /**
-     * handles new surname value
+     * handles new lastName value
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditSurname(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setSurname(event.getNewValue());
+    public void handleOnEditLastName(TableColumn.CellEditEvent<Patient, String> event){
+        event.getRowValue().setLastName(event.getNewValue());
         doUpdate(event);
     }
 
@@ -198,15 +198,15 @@ public class AllPatientController {
      */
     @FXML
     public void handleAdd() {
-        String surname = this.txtSurname.getText();
-        String firstname = this.txtFirstname.getText();
+        String lastName = this.txtLastName.getText();
+        String firstName = this.txtFirstName.getText();
         LocalDate patientBirthday = this.birthday.getValue();
         String carelevel = this.txtCarelevel.getText();
         String room = this.txtRoom.getText();
         String assets = this.txtAssets.getText();
 
         try {
-            Patient p = new Patient(firstname, surname, patientBirthday, carelevel, room, assets);
+            Patient p = new Patient(firstName, lastName, patientBirthday, carelevel, room, assets);
             dao.create(p);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -219,8 +219,8 @@ public class AllPatientController {
      * removes content from all textfields
      */
     private void clearTextfields() {
-        this.txtFirstname.clear();
-        this.txtSurname.clear();
+        this.txtFirstName.clear();
+        this.txtLastName.clear();
         this.birthday.setValue(null);
         this.txtCarelevel.clear();
         this.txtRoom.clear();

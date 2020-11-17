@@ -30,9 +30,9 @@ public class AllCaregiverController {
   @FXML
   Button btnAdd;
   @FXML
-  TextField txtFirstname;
+  TextField txtFirstName;
   @FXML
-  TextField txtSurname;
+  TextField txtLastName;
   @FXML
   TextField txtPhoneNumber;
 
@@ -65,14 +65,14 @@ public class AllCaregiverController {
   }
 
   @FXML
-  public void handleOnEditFirstname(TableColumn.CellEditEvent<Caregiver, String> event) {
+  public void handleOnEditFirstName(TableColumn.CellEditEvent<Caregiver, String> event) {
     event.getRowValue().setFirstName(event.getNewValue());
     this.doUpdate(event);
   }
 
   @FXML
-  public void handleOnEditSurname(TableColumn.CellEditEvent<Caregiver, String> event) {
-    event.getRowValue().setSurname(event.getNewValue());
+  public void handleOnEditLastName(TableColumn.CellEditEvent<Caregiver, String> event) {
+    event.getRowValue().setLastName(event.getNewValue());
     this.doUpdate(event);
   }
 
@@ -121,12 +121,12 @@ public class AllCaregiverController {
 
   @FXML
   public void handleAdd() {
-    String surname = this.txtSurname.getText();
-    String firstname = this.txtFirstname.getText();
+    String lastName = this.txtLastName.getText();
+    String firstName = this.txtFirstName.getText();
     String phoneNumber = this.txtPhoneNumber.getText();
 
     try {
-      Caregiver c = new Caregiver(firstname, surname, phoneNumber);
+      Caregiver c = new Caregiver(firstName, lastName, phoneNumber);
       dao.create(c);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -137,8 +137,8 @@ public class AllCaregiverController {
   }
 
   private void clearTextfields() {
-    this.txtFirstname.clear();
-    this.txtSurname.clear();
+    this.txtFirstName.clear();
+    this.txtLastName.clear();
     this.txtPhoneNumber.clear();
   }
 }

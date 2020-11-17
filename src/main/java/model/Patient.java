@@ -15,15 +15,15 @@ public class Patient extends Person {
     private String careLevel;
     private String roomnumber;
     private String assets;
-    private List<Treatment> allTreatments = new ArrayList<Treatment>();
+    private List<Treatment> allTreatments = new ArrayList<>();
 
-    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
-        super(firstName, surname);
+    public Patient(String firstName, String lastName, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
+        super(firstName, lastName);
         this.init(dateOfBirth, careLevel, roomnumber, assets);
     }
 
-    public Patient(long id, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
-        super(firstName, surname);
+    public Patient(long id, String firstName, String lastName, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
+        super(firstName, lastName);
         this.id = id;
         this.init(dateOfBirth, careLevel, roomnumber, assets);
     }
@@ -92,7 +92,7 @@ public class Patient extends Person {
     public String toString() {
         return "Patient" + "\nMNID: " + this.id +
                 "\nFirstname: " + this.getFirstName() +
-                "\nSurname: " + this.getSurname() +
+                "\nLastname: " + this.getLastName() +
                 "\nBirthday: " + this.dateOfBirth +
                 "\nCarelevel: " + this.careLevel +
                 "\nRoomnumber: " + this.roomnumber +
