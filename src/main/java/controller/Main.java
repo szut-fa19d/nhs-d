@@ -17,9 +17,11 @@ public class Main extends Application {
     private Stage primaryStage;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws InterruptedException {
         this.primaryStage = primaryStage;
         mainWindow();
+        Platform.exit();
+        System.exit(0);
     }
 
     public void mainWindow() {
