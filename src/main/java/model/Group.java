@@ -1,19 +1,30 @@
 package model;
 
 public class Group {
+    private long id;
+    private String groupName;
 
-    private String groupname;
-
-    public Group (String groupname){
-
-        this.groupname = groupname;
+    public Group (String groupName){
+        this.groupName = groupName;
     }
 
-    public String getGroupname() {
-        return groupname;
+    public Group (long id, String groupName){
+        this.groupName = groupName;
     }
 
-    public void setGroupname(String groupname) {
-        this.groupname = groupname;
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -1,18 +1,30 @@
 package model;
 
+import datastorage.DAOimp;
+
 public class User {
+
+    private long id;
     private Group group;
     private String username;
     private String password;
 
-    public User(String username, String password, Group group){
+
+    public User(String username, String password, long group){
         this.username = username ;
-        this.group = group;
+        // this.group = group; //TODO
         this.password = password;
     }
 
-    public Group getGroup(){
-        return this.group;
+    public User(long id, String username, String password, long group){
+        this.username = username ;
+        // this.group = group; //TODO
+        this.password = password;
+        this.id = id;
+    }
+
+    public long getGroup(){
+        return this.group.getId();
     }
 
     public void setGroup (Group group){
@@ -26,6 +38,23 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
 }
 
 

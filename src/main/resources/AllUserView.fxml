@@ -34,8 +34,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="btnNewTreament" mnemonicParsing="false" onAction="#handleNewTreatment" prefWidth="200.0" text="neuen Benutzer anlegen" />
-                        <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDelete" prefWidth="200.0" text="Löschen" GridPane.columnIndex="1" />
+                        <Button fx:id="btnNewTreament" mnemonicParsing="false"  prefWidth="200.0" text="neuen Benutzer anlegen" />
+                        <Button fx:id="btnDelete" mnemonicParsing="false"  prefWidth="200.0" text="Löschen" GridPane.columnIndex="1" />
                     </children>
                     <padding>
                         <Insets right="10.0" />
