@@ -30,9 +30,9 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and 
         uses: GabrielBB/xvfb-action@v1
-        working-directory: ./
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
+          working-directory: ./
           run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
