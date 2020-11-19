@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Main extends Application {
 
@@ -20,8 +21,15 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws InterruptedException {
         this.primaryStage = primaryStage;
         mainWindow();
-        Platform.exit();
-        System.exit(0);
+
+        String execArgs = System.getenv("MAVEN_CMD_LINE_ARGS");
+
+        // Für GitHub Actions / SonarCloud
+        if (execArgs != null && execArgs.contains("close_immediately")) {
+            System.out.println("Schließe, weil CLI close_immediately enthält.");
+            Platform.exit();
+            System.exit(0);
+        }
     }
 
     public void mainWindow() {
