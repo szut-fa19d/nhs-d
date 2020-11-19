@@ -14,5 +14,8 @@
         <Tab text="Behandlungen">
            <fx:include fx:id="allTreatmentView" source="AllTreatmentView.fxml"/>
         </Tab>
+        <Tab text="Benutzer">
+            <fx:include fx:id="allUserView" source="AllUserView.fxml"/>
+        </Tab>
     </tabs>
 </TabPane>
