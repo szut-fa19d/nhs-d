@@ -1,5 +1,6 @@
 package datastorage;
 
+import model.Group;
 import model.Patient;
 import model.User;
 import utils.DateConverter;
@@ -30,7 +31,9 @@ public class UserDAO extends DAOimp<User> {
 
     @Override
     protected User getInstanceFromResultSet(ResultSet result) throws SQLException {
-        return new User(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4));
+        GroupDAO groupDAO = new GroupDAO(conn);
+        Group group = groupDAO.getInstanceById(result.getInt(2));
+        return new User(result.getInt(1), result.getString(3), result.getString(4), group);
     }
 
     @Override
@@ -61,10 +64,13 @@ public class UserDAO extends DAOimp<User> {
 
     public User getUserByUsername(String username) {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Users WHERE username = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE username = ?");
             ps.setString(1, username);
             ResultSet result = ps.executeQuery();
-            return getInstanceFromResultSet(result);
+            if (result.next()) {
+                return getInstanceFromResultSet(result);
+            }
+            return null;
         }catch (SQLException e) {
             e.printStackTrace();
         }

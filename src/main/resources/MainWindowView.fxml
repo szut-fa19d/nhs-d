@@ -2,20 +2,16 @@
 
 <?import javafx.scene.control.*?>
 
-
-<TabPane fx:id="mainTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-         prefHeight="688.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-         xmlns:fx="http://javafx.com/fxml/1"
-         tabClosingPolicy="UNAVAILABLE">
+<TabPane fx:id="mainTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="926.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <tabs>
-        <Tab text="Patient/innen">
-           <fx:include fx:id="allPatientView" source="AllPatientView.fxml"/>
+        <Tab closable="false" text="Patient/innen">
+           <fx:include fx:id="allPatientView" source="AllPatientView.fxml" />
         </Tab>
-        <Tab text="Behandlungen">
-           <fx:include fx:id="allTreatmentView" source="AllTreatmentView.fxml"/>
+        <Tab closable="false" text="Behandlungen">
+           <fx:include fx:id="allTreatmentView" source="AllTreatmentView.fxml" />
         </Tab>
-        <Tab text="Benutzer">
-            <fx:include fx:id="allUserView" source="AllUserView.fxml"/>
+        <Tab closable="false" text="Benutzer">
+            <fx:include fx:id="allUserView" source="AllUserView.fxml" />
         </Tab>
     </tabs>
 </TabPane>

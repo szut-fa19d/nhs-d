@@ -14,8 +14,7 @@ public class PasswordHash {
 
     public PasswordHash() {
         SecureRandom random = new SecureRandom();
-        salt = new byte[16];
-        random.nextBytes(salt);
+        salt = "szut".getBytes();
 
         try {
             factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
