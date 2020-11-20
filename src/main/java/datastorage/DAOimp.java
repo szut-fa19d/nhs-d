@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class DAOimp<T> implements DAO<T>{
     protected Connection conn;
 
-    public DAOimp(Connection conn) {
+    protected DAOimp(Connection conn) {
         this.conn = conn;
     }
 

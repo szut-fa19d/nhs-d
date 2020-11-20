@@ -4,7 +4,7 @@ public abstract class Person {
     private String firstName;
     private String surname;
 
-    public Person(String firstName, String surname) {
+    protected Person(String firstName, String surname) {
         this.firstName = firstName;
         this.surname = surname;
     }

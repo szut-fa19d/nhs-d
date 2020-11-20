@@ -54,9 +54,7 @@ public class AllTreatmentController {
         comboBox.setItems(myComboBoxData);
         comboBox.getSelectionModel().select(0);
 
-        this.colID.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("id"));
-        // this.colPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("patientName"));
-        // this.colPid.setCellValueFactory(new PropertyValueFactory<>(property);
+        this.colID.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         this.colPatientName.setCellValueFactory(cellData -> {
             Patient patient = cellData.getValue().getPatient();
@@ -64,10 +62,10 @@ public class AllTreatmentController {
             return new SimpleStringProperty(name);
         });
 
-        this.colDate.setCellValueFactory(new PropertyValueFactory<Treatment, String>("date"));
-        this.colBegin.setCellValueFactory(new PropertyValueFactory<Treatment, String>("begin"));
-        this.colEnd.setCellValueFactory(new PropertyValueFactory<Treatment, String>("end"));
-        this.colDescription.setCellValueFactory(new PropertyValueFactory<Treatment, String>("description"));
+        this.colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        this.colBegin.setCellValueFactory(new PropertyValueFactory<>("begin"));
+        this.colEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+        this.colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         this.tableView.setRowFactory( tv -> {
             TableRow<Treatment> row = new TableRow<>();
@@ -100,9 +98,9 @@ public class AllTreatmentController {
     }
 
     private void createComboBoxData(){
-        PatientDAO dao = DAOFactory.getInstance().createPatientDAO();
+        PatientDAO patientDAO = DAOFactory.getInstance().createPatientDAO();
         try {
-            patientList = (ArrayList<Patient>) dao.readAll();
+            patientList = (ArrayList<Patient>) patientDAO.readAll();
             this.myComboBoxData.add("alle");
             for (Patient patient: patientList) {
                 this.myComboBoxData.add(patient.getSurname());
@@ -154,9 +152,9 @@ public class AllTreatmentController {
     public void handleDelete(){
         int index = this.tableView.getSelectionModel().getSelectedIndex();
         Treatment t = this.tableviewContent.remove(index);
-        TreatmentDAO dao = DAOFactory.getInstance().createTreatmentDAO();
+        TreatmentDAO treatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
         try {
-            dao.deleteById((int) t.getId());
+            treatmentDAO.deleteById((int) t.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }

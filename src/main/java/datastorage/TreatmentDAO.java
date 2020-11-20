@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TreatmentDAO extends DAOimp<Treatment> {
     private List<Patient> patients;
@@ -43,22 +44,24 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected Treatment getInstanceFromResultSet(ResultSet result) throws SQLException {
-        Patient patient = getAllPatients().stream()
+        Optional<Patient> optionalPatient = getAllPatients().stream()
             .filter(p -> {
                 try {
                     return p.getId() == result.getLong(2);
                 } catch (SQLException sqlException) {
                     return false;
                 }
-            })
-            .findAny().get(); // TODO .get() ist schlechte Praxis, vorher ist es ein Optional<Patient>, was man besser handeln sollte
+            }).findFirst();
+
+        if (!optionalPatient.isPresent()) {
+            throw new SQLException("Patient für die Behandlung wurde nicht gefunden!"); // TODO bessere Exception
+        }
 
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
 
-        Treatment treatment = new Treatment(result.getLong(1), patient, date, begin, end, result.getString(6), result.getString(7));
-        return treatment;
+        return new Treatment(result.getLong(1), optionalPatient.get(), date, begin, end, result.getString(6), result.getString(7));
     }
 
     @Override
@@ -68,7 +71,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected ArrayList<Treatment> getListFromResultSet(ResultSet result) throws SQLException {
-        ArrayList<Treatment> list = new ArrayList<Treatment>();
+        ArrayList<Treatment> list = new ArrayList<>();
 
         while (result.next()) {
             list.add(getInstanceFromResultSet(result));
