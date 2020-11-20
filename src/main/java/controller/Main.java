@@ -20,8 +20,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         this.primaryStage = primaryStage;
-        mainWindow();
-
         String execArgs = System.getenv("MAVEN_CMD_LINE_ARGS");
 
         // Für GitHub Actions / SonarCloud
@@ -30,6 +28,8 @@ public class Main extends Application {
             Platform.exit();
             System.exit(0);
         }
+
+        mainWindow();
     }
 
     public void mainWindow() {
