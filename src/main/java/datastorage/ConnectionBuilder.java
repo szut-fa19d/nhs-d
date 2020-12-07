@@ -7,11 +7,12 @@ import java.sql.SQLException;
 public class ConnectionBuilder {
     private static Connection conn;
 
-    private ConnectionBuilder() {
+    private ConnectionBuilder() {}
+
+    private static void setConnection() {
         try {
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
-
-            DriverManager.getConnection("jdbc:hsqldb:db/nursingHomeDB;user=SA;password=SA");
+            ConnectionBuilder.conn = DriverManager.getConnection("jdbc:hsqldb:db/nursingHomeDB;user=SA;password=SA");
         } catch (SQLException sqlException) {
             System.out.println("Verbindung zur Datenbank konnte nicht aufgebaut werden!");
             sqlException.printStackTrace();
@@ -19,21 +20,21 @@ public class ConnectionBuilder {
     }
 
     public static Connection getConnection() {
-        if (conn == null) {
-            new ConnectionBuilder();
+        if (ConnectionBuilder.conn == null) {
+            ConnectionBuilder.setConnection();
         }
-        return conn;
+        return ConnectionBuilder.conn;
     }
 
     public static void closeConnection() {
         try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ConnectionBuilder.conn.close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
     public static boolean hasConnection() {
-        return conn != null;
+        return ConnectionBuilder.conn != null;
     }
 }
