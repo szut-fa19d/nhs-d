@@ -20,11 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllTreatmentController {
-    @FXML
-    private TableView<Treatment> tableView;
-    @FXML
-    private TableColumn<Treatment, Integer> colID;
+public class AllTreatmentController extends CommmonListController<Treatment, TreatmentDAO> {
     @FXML
     private TableColumn<Treatment, String> colPatientName;
     @FXML
@@ -42,13 +38,10 @@ public class AllTreatmentController {
     @FXML
     private Button btnDelete;
 
-    private ObservableList<Treatment> tableviewContent =
-            FXCollections.observableArrayList();
-    private TreatmentDAO dao;
-    private ObservableList<String> myComboBoxData =
-            FXCollections.observableArrayList();
+    private ObservableList<String> myComboBoxData = FXCollections.observableArrayList();
     private ArrayList<Patient> patientList;
 
+    @Override
     public void initialize() {
         readAllAndShowInTableView();
         comboBox.setItems(myComboBoxData);
@@ -83,20 +76,6 @@ public class AllTreatmentController {
         createComboBoxData();
     }
 
-    public void readAllAndShowInTableView() {
-        this.tableviewContent.clear();
-        this.dao = DAOFactory.getInstance().createTreatmentDAO();
-        List<Treatment> allTreatments;
-        try {
-            allTreatments = dao.readAll();
-            for (Treatment treatment : allTreatments) {
-                this.tableviewContent.add(treatment);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void createComboBoxData(){
         PatientDAO patientDAO = DAOFactory.getInstance().createPatientDAO();
         try {
@@ -110,6 +89,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Handles the dropdown select menu to filter by a patient
+     */
     @FXML
     public void handleComboBox(){
         String p = this.comboBox.getSelectionModel().getSelectedItem();
@@ -149,18 +131,6 @@ public class AllTreatmentController {
     }
 
     @FXML
-    public void handleDelete(){
-        int index = this.tableView.getSelectionModel().getSelectedIndex();
-        Treatment t = this.tableviewContent.remove(index);
-        TreatmentDAO treatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
-        try {
-            treatmentDAO.deleteById((int) t.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
     public void handleNewTreatment() {
         try{
             String p = this.comboBox.getSelectionModel().getSelectedItem();
@@ -176,7 +146,7 @@ public class AllTreatmentController {
         }
     }
 
-    public void newTreatmentWindow(Patient patient){
+    private void newTreatmentWindow(Patient patient){
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/NewTreatmentView.fxml"));
             AnchorPane pane = loader.load();
@@ -214,5 +184,9 @@ public class AllTreatmentController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    protected void refreshDAO() {
+        this.dao = DAOFactory.getInstance().createTreatmentDAO();
     }
 }
