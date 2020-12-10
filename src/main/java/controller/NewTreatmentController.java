@@ -18,8 +18,10 @@ public class NewTreatmentController extends TreatmentControllerCommon {
     @FXML
     private Label lblFirstname;
 
-    @Override
-    public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
+    /**
+     * @see TreatmentControllerCommon#initialize
+     */
+    public void initializeController(AllTreatmentController controller, Stage stage, Patient patient) {
         super.initialize(controller, stage, patient);
     }
 

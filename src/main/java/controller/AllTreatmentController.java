@@ -185,7 +185,7 @@ public class AllTreatmentController {
             Stage stage = new Stage();
 
             NewTreatmentController controller = loader.getController();
-            controller.initialize(this, stage, patient);
+            controller.initializeController(this, stage, patient);
 
             stage.setScene(scene);
             stage.setResizable(false);
