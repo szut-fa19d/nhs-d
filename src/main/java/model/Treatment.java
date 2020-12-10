@@ -51,8 +51,8 @@ public class Treatment {
         return end.toString();
     }
 
-    public void setDate(String s_date) {
-        this.date = DateConverter.convertStringToLocalDate(s_date);
+    public void setDate(String newDate) {
+        this.date = DateConverter.convertStringToLocalDate(newDate);
     }
 
     public void setBegin(String begin) {
@@ -82,6 +82,7 @@ public class Treatment {
     /**
      * @deprecated Habe noch keine Stelle gefunden, wo diese Klasse stringified wird
      */
+    @Deprecated(forRemoval=true)
     public String toString() {
         return "\nBehandlung" + "\nTID: " + id +
                 "\nPID: " + patient.getId() +

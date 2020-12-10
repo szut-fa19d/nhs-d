@@ -3,15 +3,12 @@ package controller;
 import datastorage.ConnectionBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class Main extends Application {
 
@@ -43,15 +40,12 @@ public class Main extends Application {
             this.primaryStage.setResizable(false);
             this.primaryStage.show();
 
-            this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent e) {
-                    if(ConnectionBuilder.hasConnection()){
-                        ConnectionBuilder.closeConnection();
-                    }
-                    Platform.exit();
-                    System.exit(0);
+            this.primaryStage.setOnCloseRequest(event -> {
+                if(ConnectionBuilder.hasConnection()){
+                    ConnectionBuilder.closeConnection();
                 }
+                Platform.exit();
+                System.exit(0);
             });
         } catch (IOException e) {
             // TODO Auto-generated catch block

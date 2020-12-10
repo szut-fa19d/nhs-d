@@ -15,7 +15,7 @@ public class Patient extends Person {
     private String careLevel;
     private String roomnumber;
     private String assets;
-    private List<Treatment> allTreatments = new ArrayList<Treatment>();
+    private List<Treatment> allTreatments = new ArrayList<>();
 
     public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
         super(firstName, surname);

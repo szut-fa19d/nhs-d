@@ -3,10 +3,7 @@ package controller;
 import datastorage.DAOFactory;
 import datastorage.TreatmentDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
@@ -15,34 +12,20 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class NewTreatmentController {
+public class NewTreatmentController extends TreatmentControllerCommon {
     @FXML
     private Label lblSurname;
     @FXML
     private Label lblFirstname;
-    @FXML
-    private TextField txtBegin;
-    @FXML
-    private TextField txtEnd;
-    @FXML
-    private TextField txtDescription;
-    @FXML
-    private TextArea taRemarks;
-    @FXML
-    private DatePicker datepicker;
 
-    private AllTreatmentController controller;
-    private Patient patient;
-    private Stage stage;
-
-    public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
-        this.controller= controller;
-        this.patient = patient;
-        this.stage = stage;
-        showPatientData();
+    /**
+     * @see TreatmentControllerCommon#initialize
+     */
+    public void initializeController(AllTreatmentController controller, Stage stage, Patient patient) {
+        super.initialize(controller, stage, patient);
     }
 
-    private void showPatientData(){
+    protected void showData(){
         this.lblFirstname.setText(patient.getFirstName());
         this.lblSurname.setText(patient.getSurname());
     }
@@ -67,10 +50,5 @@ public class NewTreatmentController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    public void handleCancel(){
-        stage.close();
     }
 }

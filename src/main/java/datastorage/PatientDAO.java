@@ -44,7 +44,7 @@ public class PatientDAO extends DAOimp<Patient> {
 
     @Override
     protected ArrayList<Patient> getListFromResultSet(ResultSet result) throws SQLException {
-        ArrayList<Patient> list = new ArrayList<Patient>();
+        ArrayList<Patient> list = new ArrayList<>();
 
         while (result.next()) {
             list.add(getInstanceFromResultSet(result));
