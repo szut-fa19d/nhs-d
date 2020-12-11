@@ -11,7 +11,6 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import model.Patient;
 import datastorage.DAOFactory;
 import model.Treatment;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
