@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 import model.Group;
 import model.User;
@@ -23,6 +24,16 @@ public class AddUserController {
     private TextField txtUsername;
     @FXML
     private TextField txtPassword;
+    @FXML
+    private TextField txtPasswordConfirm;
+    @FXML
+    private SVGPath usernameError;
+    @FXML
+    private SVGPath passwordError;
+    @FXML
+    private SVGPath passwordConfirmError;
+    @FXML
+    private SVGPath groupError;
     @FXML
     AnchorPane anchorPane;
 
@@ -44,9 +55,26 @@ public class AddUserController {
     public void handleAdd(){
         String username = txtUsername.getText();
         String password = txtPassword.getText();
+        String passwordConfirm = txtPasswordConfirm.getText();
         Group group = comboGroup.getValue();
-        User user = new User(username, password, group);
-        createUser(user);
+
+        usernameError.setVisible(username.trim().isEmpty());
+        passwordError.setVisible(password.trim().isEmpty());
+        passwordConfirmError.setVisible(passwordConfirm.trim().isEmpty());
+        groupError.setVisible(comboGroup.getValue() == null);
+
+        if (!username.trim().isEmpty() && !password.trim().isEmpty() && !passwordConfirm.trim().isEmpty() && comboGroup.getValue() != null) {
+            if (password.replace(" ", "").equals(passwordConfirm)) {
+                User user = new User(username, password, group);
+                createUser(user);
+                handleCancel();
+            } else {
+                usernameError.setVisible(false);
+                passwordError.setVisible(false);
+                passwordConfirmError.setVisible(true);
+                groupError.setVisible(false);
+            }
+        }
     }
 
     private void createUser(User user) {

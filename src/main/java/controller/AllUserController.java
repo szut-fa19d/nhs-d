@@ -6,6 +6,7 @@ import datastorage.UserDAO;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,7 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model.Group;
+import javafx.stage.WindowEvent;
 import model.User;
 
 import java.io.IOException;
@@ -64,6 +65,14 @@ public class AllUserController {
         List<User> allUsers;
         try {
             allUsers = userDAO.readAll();
+            UserController userController = UserController.getInstance();
+            float currentUserId =userController.getUser().getId();
+            for (User user : allUsers) {
+                if (user.getId() == currentUserId) {
+                    allUsers.remove(user);
+                    break;
+                }
+            }
             this.tableviewContent.addAll(allUsers);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,9 +89,21 @@ public class AllUserController {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.setOnHidden((EventHandler<WindowEvent>) arg0 -> readAllAndShowInTableView());
             stage.showAndWait();
         } catch (IOException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleDelete() {
+        int index = this.tableView.getSelectionModel().getSelectedIndex();
+        User user = this.tableviewContent.remove(index);
+        try {
+            userDAO.deleteById((int) user.getId());
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

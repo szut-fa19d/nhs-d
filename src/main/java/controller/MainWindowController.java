@@ -17,8 +17,6 @@ public class MainWindowController {
     StackPane stackPane;
     @FXML
     Tab userView;
-    @FXML
-    Tab groupView;
 
     UserController userController;
 
@@ -28,8 +26,6 @@ public class MainWindowController {
         if (userController.isAdmin()) {
             userView.setDisable(false);
             userView.setStyle("");
-            groupView.setDisable(false);
-            groupView.setStyle("");
         }
     }
 

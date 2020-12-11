@@ -16,9 +16,6 @@
             <Tab fx:id="userView" closable="false" disable="true" style="visibility: hidden;" text="Benutzer">
                 <fx:include fx:id="allUserView" source="AllUserView.fxml" />
             </Tab>
-            <Tab fx:id="groupView" closable="false" disable="true" style="visibility: hidden;" text="Benutzergruppen">
-                <fx:include fx:id="allUserGroupView" source="AllUserGroupView.fxml" />
-            </Tab>
         </tabs>
     </TabPane>
    <Text fx:id="currentLogin" fill="#6b6b6b" strokeType="OUTSIDE" strokeWidth="0.0" translateX="-80.0" translateY="8.0" StackPane.alignment="TOP_RIGHT" />

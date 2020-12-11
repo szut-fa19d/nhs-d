@@ -35,7 +35,7 @@
                     </rowConstraints>
                     <children>
                         <Button fx:id="btnNewUser" onAction="#openAddUser" mnemonicParsing="false" prefWidth="200.0" text="Neuen Benutzer anlegen" />
-                        <Button fx:id="btnDelete" mnemonicParsing="false" prefWidth="200.0" text="Benutzer löschen" GridPane.columnIndex="1" />
+                        <Button fx:id="btnDelete" onAction="#handleDelete" mnemonicParsing="false" prefWidth="200.0" text="Benutzer löschen" GridPane.columnIndex="1" />
                     </children>
                     <padding>
                         <Insets right="10.0" />
