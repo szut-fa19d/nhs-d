@@ -4,6 +4,8 @@ import datastorage.DAOFactory;
 import datastorage.TreatmentDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
 import java.sql.SQLException;
@@ -16,7 +18,13 @@ public class NewTreatmentController extends TreatmentControllerCommon {
     @FXML
     private Label lblFirstname;
 
-    @Override
+    /**
+     * @see TreatmentControllerCommon#initialize
+     */
+    public void initializeController(AllTreatmentController controller, Stage stage, Patient patient) {
+        super.initialize(controller, stage, patient);
+    }
+
     protected void showData(){
         this.lblFirstname.setText(patient.getFirstName());
         this.lblSurname.setText(patient.getSurname());

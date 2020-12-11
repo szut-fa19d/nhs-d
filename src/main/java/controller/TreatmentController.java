@@ -26,7 +26,7 @@ public class TreatmentController extends TreatmentControllerCommon {
     /**
      * @see TreatmentControllerCommon#initialize
      */
-    public void initialize(AllTreatmentController controller, Stage stage, Treatment treatment) {
+    public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         PatientDAO pDao = DAOFactory.getInstance().createPatientDAO();
     
         try {

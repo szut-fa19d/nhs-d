@@ -155,7 +155,7 @@ public class AllTreatmentController extends CommmonListController<Treatment, Tre
             Stage stage = new Stage();
 
             NewTreatmentController controller = loader.getController();
-            controller.initialize(this, stage, patient);
+            controller.initializeController(this, stage, patient);
 
             stage.setScene(scene);
             stage.setResizable(false);

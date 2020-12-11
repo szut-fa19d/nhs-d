@@ -55,12 +55,12 @@ public class Treatment extends DatabaseEntry {
         this.date = DateConverter.convertStringToLocalDate(newDate);
     }
 
-    public void setBegin(String begin) {
-        this.begin = DateConverter.convertStringToLocalTime(begin);
+    public void setBegin(String newBegin) {
+        this.begin = DateConverter.convertStringToLocalTime(newBegin);
     }
 
-    public void setEnd(String end) {
-        this.end = DateConverter.convertStringToLocalTime(end);
+    public void setEnd(String newEnd) {
+        this.end = DateConverter.convertStringToLocalTime(newEnd);
     }
 
     public String getDescription() {
