@@ -1,6 +1,7 @@
 package datastorage;
 
 import model.*;
+import utils.DatabaseUtils;
 import utils.DateConverter;
 import java.sql.*;
 import java.time.LocalDate;
@@ -92,5 +93,32 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     public void deleteByPatientId(int patientId) throws SQLException {
         this.conn.createStatement().executeQuery("DELETE FROM treatment WHERE pid = " + patientId);
+    }
+
+    @Override
+    protected void updateInstanceByResultSet(Treatment treatment, ResultSet set) throws SQLException {
+        if (DatabaseUtils.hasColumn(set, "tid")) {
+            treatment.setId(set.getLong("tid"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "treatment_date")) {
+            treatment.setDate(set.getString("treatment_date"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "begin")) {
+            treatment.setBegin(set.getString("begin"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "end")) {
+            treatment.setEnd(set.getString("end"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "description")) {
+            treatment.setDescription(set.getString("description"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "remarks")) {
+            treatment.setRemarks(set.getString("remarks"));
+        }
     }
 }

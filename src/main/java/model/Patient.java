@@ -43,6 +43,10 @@ public class Patient extends Person {
         return dateOfBirth.toString();
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     /**
      * convert given param to a localDate and store as new <code>birthOfDate</code>
      * @param dateOfBirth as string in the following format: YYYY-MM-DD

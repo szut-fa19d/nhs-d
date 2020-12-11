@@ -17,7 +17,10 @@ public abstract class DAOimp<T> implements DAO<T>{
     @Override
     public void create(T t) throws SQLException {
         try (Statement statement = conn.createStatement()) {
-            statement.executeUpdate(getCreateStatement(t));
+            statement.executeUpdate(getCreateStatement(t), Statement.RETURN_GENERATED_KEYS);
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            generatedKeys.next();
+            this.updateInstanceByResultSet(t, generatedKeys);
         } catch (SQLException e) {
             throw new RuntimeException("Error executing sql:\n", e);
         }
@@ -80,4 +83,6 @@ public abstract class DAOimp<T> implements DAO<T>{
     protected abstract String getUpdateStatement(T t);
 
     protected abstract String getDeleteStatement(int key);
+
+    protected abstract void updateInstanceByResultSet(T t, ResultSet set) throws SQLException;
 }
