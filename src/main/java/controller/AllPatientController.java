@@ -200,8 +200,13 @@ public class AllPatientController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * handels the locking of the current focused user and his treatments.
+     */
+
     @FXML
-    public void handleLockPatientInRow() {
+    public void handleLockFocusedPatient() {
         Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
         selectedPatient.setLocked(true);
         try {
@@ -212,7 +217,9 @@ public class AllPatientController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * handels the unlocking of the current focused user and his treatments.
+     */
     @FXML
     public void handleUnLockFocusedPatient() {
         Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
@@ -227,6 +234,9 @@ public class AllPatientController {
         }
         return;
     }
+    /**
+     * handels the unlocking of all treatments for a user.
+     */
     private void ChangeLockForAllTreatmentsfor(Patient patient,Boolean lockValue)
     {
         this.TreatmentDAO = DAOFactory.getInstance().createTreatmentDAO();

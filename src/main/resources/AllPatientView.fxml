@@ -66,7 +66,7 @@
               </rowConstraints>
                <children>
                   <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeleteRow" prefWidth="90.0" text="Löschen" />
-                   <Button fx:id="btnSperren" mnemonicParsing="false" onAction="#handleLockPatientInRow" prefWidth="90.0" text="Sperren" GridPane.rowIndex="1" />
+                   <Button fx:id="btnSperren" mnemonicParsing="false" onAction="#handleLockFocusedPatient" prefWidth="90.0" text="Sperren" GridPane.rowIndex="1" />
                   <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="90.0" text="Hinzufügen" GridPane.columnIndex="1" />
                   <Button fx:id="btnEntsperren" layoutX="10.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleUnLockFocusedPatient" prefWidth="90.0" text="Entsperren" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
