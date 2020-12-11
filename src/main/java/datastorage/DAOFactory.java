@@ -20,4 +20,8 @@ public class DAOFactory {
     public PatientDAO createPatientDAO() {
         return new PatientDAO(ConnectionBuilder.getConnection());
     }
+
+    public LogEntryDAO createLogEntryDAO() {
+        return new LogEntryDAO(ConnectionBuilder.getConnection());
+    }
 }
