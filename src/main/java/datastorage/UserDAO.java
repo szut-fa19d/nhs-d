@@ -20,8 +20,8 @@ public class UserDAO extends DAOimp<User> {
 
     @Override
     protected String getCreateStatement(User user) {
-        return String.format("INSERT INTO user (username, password, group) VALUES ('%s', '%s', '%d')",
-               user.getUsername(), user.getPassword(), user.getGroup()
+        return String.format("INSERT INTO user (gid, username, password) VALUES ('%d', '%s', '%s')",
+                user.getGroup(), user.getUsername(), user.getPassword()
         );    }
 
     @Override
@@ -54,7 +54,7 @@ public class UserDAO extends DAOimp<User> {
 
     @Override
     protected String getUpdateStatement(User u) {
-        return String.format("UPDATE user SET username = '%s', password = '%s',group = '%d' WHERE uid = %d", u.getUsername(), u.getPassword(), u.getGroup(), u.getId());
+        return String.format("UPDATE user SET username = '%s', password = '%s',gid = '%d' WHERE uid = %d", u.getUsername(), u.getPassword(), u.getGroup(), u.getId());
     }
 
     @Override

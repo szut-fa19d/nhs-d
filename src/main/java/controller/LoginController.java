@@ -2,6 +2,7 @@ package controller;
 
 import datastorage.DAOFactory;
 import datastorage.UserDAO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -52,11 +53,14 @@ public class LoginController {
             return;
         }
 
-        PasswordHash passwordHash = new PasswordHash();
+        PasswordHash passwordHash = new PasswordHash(user.getId());
         String hashedPassword = passwordHash.hashPassword(password);
-        System.out.println(hashedPassword);
+
         if(hashedPassword != null && hashedPassword.equals(user.getPassword())) {
+            UserController.getInstance().setUser(user);
             onSuccessfulLogin();
+        }else {
+            error.setVisible(true);
         }
     }
 

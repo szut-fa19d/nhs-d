@@ -31,7 +31,7 @@
                   <Label alignment="CENTER_RIGHT" prefHeight="144.0" prefWidth="185.0" style="-fx-translate-x: -10px;" text="Username" GridPane.rowIndex="2" />
                   <Label alignment="CENTER_RIGHT" prefHeight="69.0" prefWidth="187.0" style="-fx-translate-x: -10px;" text="Passwort" GridPane.rowIndex="3" />
                    <TextField fx:id="usernameField" prefHeight="25.0" prefWidth="193.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="179.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <PasswordField fx:id="passwordField" onAction="#login" prefHeight="25.0" prefWidth="179.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Button fx:id="submit" alignment="CENTER" mnemonicParsing="false" onAction="#login" prefHeight="27.0" prefWidth="233.0" text="Login" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                    <Label fx:id="error" alignment="CENTER" prefHeight="144.0" prefWidth="233.0" text="Ungültiger Benutzername oder Passwort" textFill="#b50404" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>

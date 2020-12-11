@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupDAO extends DAOimp<Group>{
 
@@ -18,8 +19,8 @@ public class GroupDAO extends DAOimp<Group>{
     @Override
     protected String getCreateStatement(Group group) {
         return String.format("INSERT INTO group (groupName) VALUES ('%s')",
-                group.getGroupName()
-        );    }
+                group.getGroupName());
+    }
 
     @Override
     protected String getReadByIDStatement(int id) {
