@@ -54,7 +54,8 @@ public class NewTreatmentController {
         LocalTime end = DateConverter.convertStringToLocalTime(txtEnd.getText());
         String description = txtDescription.getText();
         String remarks = taRemarks.getText();
-        Treatment treatment = new Treatment(patient, date, begin, end, description, remarks);
+        Boolean templocked = false;
+        Treatment treatment = new Treatment(patient, date, begin, end, description, remarks, templocked);
         createTreatment(treatment);
         controller.readAllAndShowInTableView();
         stage.close();

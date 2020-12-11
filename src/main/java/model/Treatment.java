@@ -12,23 +12,25 @@ public class Treatment {
     private LocalTime end;
     private String description;
     private String remarks;
+    private Boolean locked;
 
-    public Treatment(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
-        this.init(patient, date, begin, end, description, remarks);
+    public Treatment(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks,Boolean locked) {
+        this.init(patient, date, begin, end, description, remarks, locked);
     }
 
-    public Treatment(long id, Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+    public Treatment(long id, Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks,Boolean locked) {
         this.id = id;
-        this.init(patient, date, begin, end, description, remarks);
+        this.init(patient, date, begin, end, description, remarks, locked);
     }
 
-    private void init(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+    private void init(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks,Boolean locked) {
         this.patient = patient;
         this.date = date;
         this.begin = begin;
         this.end = end;
         this.description = description;
         this.remarks = remarks;
+        this.locked = locked;
     }
 
     public long getId() {
@@ -79,6 +81,10 @@ public class Treatment {
         this.remarks = remarks;
     }
 
+    public void setLocked(Boolean locked) { this.locked = locked; }
+
+    public Boolean getLocked() { return locked; }
+
     /**
      * @deprecated Habe noch keine Stelle gefunden, wo diese Klasse stringified wird
      */
@@ -89,6 +95,8 @@ public class Treatment {
                 "\nBegin: " + begin +
                 "\nEnd: " + end +
                 "\nDescription: " + description +
-                "\nRemarks: " + remarks + "\n";
+                "\nRemarks: " + remarks +
+                "\nLocked: " + locked +
+                "\n";
     }
 }

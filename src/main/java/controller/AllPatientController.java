@@ -10,6 +10,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Patient;
 import datastorage.DAOFactory;
+import model.Treatment;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +37,8 @@ public class AllPatientController {
     private TableColumn<Patient, String> colRoom;
     @FXML
     private TableColumn<Patient, String> colAssets;
+    @FXML
+    private TableColumn<Patient, Boolean> colLocked;
 
     @FXML
     Button btnDelete;
@@ -53,8 +57,10 @@ public class AllPatientController {
     @FXML
     private TextField txtAssets;
 
+
     private ObservableList<Patient> tableviewContent = FXCollections.observableArrayList();
-    private PatientDAO dao;
+    private PatientDAO PatientDAO;
+    private TreatmentDAO TreatmentDAO;
 
     /**
      * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
@@ -62,26 +68,28 @@ public class AllPatientController {
     public void initialize() {
         readAllAndShowInTableView();
 
-        this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("id"));
+        this.colID.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         //CellValuefactory zum Anzeigen der Daten in der TableView
-        this.colFirstName.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
+        this.colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         //CellFactory zum Schreiben innerhalb der Tabelle
         this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colSurname.setCellValueFactory(new PropertyValueFactory<Patient, String>("surname"));
+        this.colLocked.setCellValueFactory(new PropertyValueFactory<>("locked"));
+
+        this.colSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
         this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colDateOfBirth.setCellValueFactory(new PropertyValueFactory<Patient, String>("dateOfBirth"));
+        this.colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
         this.colDateOfBirth.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colCareLevel.setCellValueFactory(new PropertyValueFactory<Patient, String>("careLevel"));
+        this.colCareLevel.setCellValueFactory(new PropertyValueFactory<>("careLevel"));
         this.colCareLevel.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colRoom.setCellValueFactory(new PropertyValueFactory<Patient, String>("roomnumber"));
+        this.colRoom.setCellValueFactory(new PropertyValueFactory<>("roomnumber"));
         this.colRoom.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        this.colAssets.setCellValueFactory(new PropertyValueFactory<Patient, String>("assets"));
+        this.colAssets.setCellValueFactory(new PropertyValueFactory<>("assets"));
         this.colAssets.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //Anzeigen der Daten
@@ -97,6 +105,7 @@ public class AllPatientController {
         event.getRowValue().setFirstName(event.getNewValue());
         doUpdate(event);
     }
+
 
     /**
      * handles new surname value
@@ -154,7 +163,7 @@ public class AllPatientController {
      */
     private void doUpdate(TableColumn.CellEditEvent<Patient, String> t) {
         try {
-            dao.update(t.getRowValue());
+            PatientDAO.update(t.getRowValue());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -165,12 +174,12 @@ public class AllPatientController {
      */
     private void readAllAndShowInTableView() {
         this.tableviewContent.clear();
-        this.dao = DAOFactory.getInstance().createPatientDAO();
+        this.PatientDAO = DAOFactory.getInstance().createPatientDAO();
         List<Patient> allPatients;
         try {
-            allPatients = dao.readAll();
+            allPatients = PatientDAO.readAll();
             for (Patient p : allPatients) {
-                this.tableviewContent.add(p);
+                    this.tableviewContent.add(p);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -186,9 +195,57 @@ public class AllPatientController {
         Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         this.tableView.getItems().remove(selectedItem);
         try {
-            dao.deleteById((int) selectedItem.getId());
+            PatientDAO.deleteById((int) selectedItem.getId());
             tDao.deleteByPatientId((int) selectedItem.getId());
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    public void handleLockPatientInRow() {
+        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+        selectedPatient.setLocked(true);
+        try {
+            PatientDAO.update(selectedPatient);
+            ChangeLockForAllTreatmentsfor(selectedPatient,true);
+            this.tableView.refresh();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleUnLockFocusedPatient() {
+        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+        selectedPatient.setLocked(false);
+        try {
+            PatientDAO.update(selectedPatient);
+            ChangeLockForAllTreatmentsfor(selectedPatient, false);
+            this.tableView.refresh();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return;
+    }
+    private void ChangeLockForAllTreatmentsfor(Patient patient,Boolean lockValue)
+    {
+        this.TreatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
+        List<Treatment> allTreatments;
+        try {
+            allTreatments = TreatmentDAO.readTreatmentsByPatientId(patient.getId());
+            for(Treatment t : allTreatments)
+            {
+                t.setLocked(lockValue);
+                try{
+                    TreatmentDAO.update(t);
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (SQLException e){
             e.printStackTrace();
         }
     }
@@ -205,8 +262,8 @@ public class AllPatientController {
         String room = this.txtRoom.getText();
         String assets = this.txtAssets.getText();
         try {
-            Patient p = new Patient(firstname, surname, birthday, carelevel, room, assets);
-            dao.create(p);
+            Patient p = new Patient(firstname, surname, birthday, carelevel, room, assets, false);
+            PatientDAO.create(p);
         } catch (SQLException e) {
             e.printStackTrace();
         }

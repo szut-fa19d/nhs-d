@@ -15,24 +15,26 @@ public class Patient extends Person {
     private String careLevel;
     private String roomnumber;
     private String assets;
+    private Boolean locked;
     private List<Treatment> allTreatments = new ArrayList<Treatment>();
 
-    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
+    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets, Boolean locked) {
         super(firstName, surname);
-        this.init(dateOfBirth, careLevel, roomnumber, assets);
+        this.init(dateOfBirth, careLevel, roomnumber, assets, locked);
     }
 
-    public Patient(long id, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
+    public Patient(long id, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets, Boolean locked) {
         super(firstName, surname);
         this.id = id;
-        this.init(dateOfBirth, careLevel, roomnumber, assets);
+        this.init(dateOfBirth, careLevel, roomnumber, assets, locked);
     }
 
-    private void init(LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
+    private void init(LocalDate dateOfBirth, String careLevel, String roomnumber, String assets, boolean locked) {
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
         this.assets = assets;
+        this.locked = locked;
     }
 
     public long getId() {
@@ -76,6 +78,9 @@ public class Patient extends Person {
         this.assets = assets;
     }
 
+    public void setLocked(Boolean locked) { this.locked = locked; }
+
+    public Boolean getLocked() { return locked; }
     /**
      * adds a treatment to the treatment-list, if it does not already contain it.
      * @return true if the treatment was not already part of the list. otherwise false
@@ -97,6 +102,7 @@ public class Patient extends Person {
                 "\nCarelevel: " + this.careLevel +
                 "\nRoomnumber: " + this.roomnumber +
                 "\nAssets: " + this.assets +
+                "\nLocked: " + this.locked +
                 "\n";
     }
 }

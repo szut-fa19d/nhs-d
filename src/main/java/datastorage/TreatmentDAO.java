@@ -22,7 +22,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getCreateStatement(Treatment treatment) {
-        return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks)" +
+        return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks, locked)" +
             "VALUES (" + treatment.getId() + ", '" +
                 String.join("', '", treatment.getDate(), treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks()) +
             "')";
@@ -57,7 +57,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
 
-        Treatment treatment = new Treatment(result.getLong(1), patient, date, begin, end, result.getString(6), result.getString(7));
+        Treatment treatment = new Treatment(result.getLong(1), patient, date, begin, end, result.getString(6), result.getString(7), result.getBoolean(8));
         return treatment;
     }
 
@@ -79,8 +79,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getUpdateStatement(Treatment t) {
-        return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s',description = '%s', remarks = '%s' WHERE tid = %d",
-            t.getPatient().getId(), t.getDate(), t.getBegin(), t.getEnd(), t.getDescription(), t.getRemarks(), t.getId());
+        return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s',description = '%s', remarks = '%s', locked = '%b' WHERE tid = %d",
+            t.getPatient().getId(), t.getDate(), t.getBegin(), t.getEnd(), t.getDescription(), t.getRemarks(),t.getLocked(), t.getId());
     }
 
     @Override
