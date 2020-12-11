@@ -56,12 +56,12 @@ public class LoginController {
         PasswordHash passwordHash = new PasswordHash(user.getId());
         String hashedPassword = passwordHash.hashPassword(password);
 
-        if(hashedPassword != null && hashedPassword.equals(user.getPassword())) {
-            UserController.getInstance().setUser(user);
-            onSuccessfulLogin();
-        }else {
+        if(hashedPassword == null || !hashedPassword.equals(user.getPassword())) {
             error.setVisible(true);
+            return;
         }
+        UserController.getInstance().setUser(user);
+        onSuccessfulLogin();
     }
 
     private void onSuccessfulLogin() {

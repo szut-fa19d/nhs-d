@@ -58,22 +58,23 @@ public class AddUserController {
         String passwordConfirm = txtPasswordConfirm.getText();
         Group group = comboGroup.getValue();
 
-        usernameError.setVisible(username.trim().isEmpty());
-        passwordError.setVisible(password.trim().isEmpty());
-        passwordConfirmError.setVisible(passwordConfirm.trim().isEmpty());
-        groupError.setVisible(comboGroup.getValue() == null);
+        if (username.trim().isEmpty() || password.trim().isEmpty() || passwordConfirm.trim().isEmpty() || comboGroup.getValue() == null) {
+            usernameError.setVisible(username.trim().isEmpty());
+            passwordError.setVisible(password.trim().isEmpty());
+            passwordConfirmError.setVisible(passwordConfirm.trim().isEmpty());
+            groupError.setVisible(comboGroup.getValue() == null);
+            return;
+        }
 
-        if (!username.trim().isEmpty() && !password.trim().isEmpty() && !passwordConfirm.trim().isEmpty() && comboGroup.getValue() != null) {
-            if (password.replace(" ", "").equals(passwordConfirm)) {
-                User user = new User(username, password, group);
-                createUser(user);
-                handleCancel();
-            } else {
-                usernameError.setVisible(false);
-                passwordError.setVisible(false);
-                passwordConfirmError.setVisible(true);
-                groupError.setVisible(false);
-            }
+        if (password.replace(" ", "").equals(passwordConfirm)) {
+            User user = new User(username, password, group);
+            createUser(user);
+            handleCancel();
+        } else {
+            usernameError.setVisible(false);
+            passwordError.setVisible(false);
+            passwordConfirmError.setVisible(true);
+            groupError.setVisible(false);
         }
     }
 

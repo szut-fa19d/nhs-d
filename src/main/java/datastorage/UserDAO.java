@@ -21,8 +21,8 @@ public class UserDAO extends DAOimp<User> {
     @Override
     protected String getCreateStatement(User user) {
         return String.format("INSERT INTO user (gid, username, password) VALUES ('%d', '%s', '%s')",
-                user.getGroup(), user.getUsername(), user.getPassword()
-        );    }
+                user.getGroup(), user.getUsername(), user.getPassword());
+    }
 
     @Override
     protected String getReadByIDStatement(int id) {
