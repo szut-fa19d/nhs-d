@@ -1,6 +1,6 @@
 package model;
 
-public class Group {
+public class Group extends DatabaseEntry {
     private long id;
     private String groupName;
 

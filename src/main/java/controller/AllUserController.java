@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AllUserController {
+public class AllUserController extends CommonListController<User, UserDAO>{
     @FXML
     private TableColumn<User, Integer> colID;
     @FXML
@@ -79,6 +79,11 @@ public class AllUserController {
         }
     }
 
+    @Override
+    protected void refreshDAO() {
+        this.dao = DAOFactory.getInstance().createUserDAO();
+    }
+
     @FXML
     public void openAddUser() {
         try {
@@ -98,7 +103,7 @@ public class AllUserController {
     }
 
     @FXML
-    public void handleDelete() {
+    public User handleDelete() {
         int index = this.tableView.getSelectionModel().getSelectedIndex();
         User user = this.tableviewContent.remove(index);
         try {
@@ -106,6 +111,7 @@ public class AllUserController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return user;
     }
 
 }
