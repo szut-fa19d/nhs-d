@@ -1,8 +1,6 @@
 package controller;
 
-import datastorage.DAOFactory;
-import datastorage.PatientDAO;
-import datastorage.TreatmentDAO;
+import datastorage.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -13,45 +11,35 @@ import utils.DateConverter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class TreatmentController {
+public class TreatmentController extends TreatmentControllerCommon {
     @FXML
     private Label lblPatientName;
     @FXML
     private Label lblCarelevel;
     @FXML
-    private TextField txtBegin;
-    @FXML
-    private TextField txtEnd;
-    @FXML
-    private TextField txtDescription;
-    @FXML
-    private TextArea taRemarks;
-    @FXML
-    private DatePicker datepicker;
-    @FXML
     private Button btnChange;
     @FXML
     private Button btnCancel;
 
-    private AllTreatmentController controller;
-    private Stage stage;
-    private Patient patient;
     private Treatment treatment;
 
+    /**
+     * @see TreatmentControllerCommon#initialize
+     */
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
-        this.stage = stage;
-        this.controller= controller;
         PatientDAO pDao = DAOFactory.getInstance().createPatientDAO();
+    
         try {
-            this.patient = pDao.read((int) treatment.getPatient().getId());
+            Patient patient = pDao.read((int) treatment.getPatient().getId());
             this.treatment = treatment;
-            showData();
+            super.initialize(controller, stage, patient);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void showData(){
+    @Override
+    protected void showData(){
         this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
         this.lblCarelevel.setText(patient.getCareLevel());
         LocalDate date = DateConverter.convertStringToLocalDate(treatment.getDate());
@@ -62,6 +50,9 @@ public class TreatmentController {
         this.taRemarks.setText(this.treatment.getRemarks());
     }
 
+    /**
+     * Handler for treatment edits
+     */
     @FXML
     public void handleChange(){
         this.treatment.setDate(this.datepicker.getValue().toString());
@@ -69,22 +60,17 @@ public class TreatmentController {
         this.treatment.setEnd(txtEnd.getText());
         this.treatment.setDescription(txtDescription.getText());
         this.treatment.setRemarks(taRemarks.getText());
-        doUpdate();
-        controller.readAllAndShowInTableView();
-        stage.close();
+        this.doUpdate();
+        this.controller.readAllAndShowInTableView();
+        this.stage.close();
     }
 
-    private void doUpdate(){
+    private void doUpdate() {
         TreatmentDAO dao = DAOFactory.getInstance().createTreatmentDAO();
         try {
             dao.update(treatment);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    public void handleCancel(){
-        stage.close();
     }
 }

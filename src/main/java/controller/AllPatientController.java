@@ -1,9 +1,6 @@
 package controller;
 
 import datastorage.PatientDAO;
-import datastorage.TreatmentDAO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -13,17 +10,11 @@ import datastorage.DAOFactory;
 import model.Treatment;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
-
 
 /**
  * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
  */
-public class AllPatientController {
-    @FXML
-    private TableView<Patient> tableView;
-    @FXML
-    private TableColumn<Patient, Integer> colID;
+public class AllPatientController extends CommonListController<Patient, PatientDAO> {
     @FXML
     private TableColumn<Patient, String> colFirstName;
     @FXML
@@ -36,8 +27,6 @@ public class AllPatientController {
     private TableColumn<Patient, String> colRoom;
     @FXML
     private TableColumn<Patient, String> colAssets;
-    @FXML
-    private TableColumn<Patient, Boolean> colLocked;
 
     @FXML
     Button btnDelete;
@@ -48,7 +37,7 @@ public class AllPatientController {
     @FXML
     TextField txtFirstname;
     @FXML
-    DatePicker Birthday;
+    DatePicker birthday;
     @FXML
     TextField txtCarelevel;
     @FXML
@@ -56,14 +45,11 @@ public class AllPatientController {
     @FXML
     private TextField txtAssets;
 
+    protected void refreshDAO() {
+        this.dao = DAOFactory.getInstance().createPatientDAO();
+    }
 
-    private ObservableList<Patient> tableviewContent = FXCollections.observableArrayList();
-    private PatientDAO PatientDAO;
-    private TreatmentDAO TreatmentDAO;
-
-    /**
-     * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
-     */
+    @Override
     public void initialize() {
         readAllAndShowInTableView();
 
@@ -104,7 +90,6 @@ public class AllPatientController {
         event.getRowValue().setFirstName(event.getNewValue());
         doUpdate(event);
     }
-
 
     /**
      * handles new surname value
@@ -158,105 +143,30 @@ public class AllPatientController {
 
     /**
      * updates a patient by calling the update-Method in the {@link PatientDAO}
-     * @param t row to be updated by the user (includes the patient)
+     * @param event row to be updated by the user (includes the patient)
      */
-    private void doUpdate(TableColumn.CellEditEvent<Patient, String> t) {
+    private void doUpdate(TableColumn.CellEditEvent<Patient, String> event) {
         try {
-            PatientDAO.update(t.getRowValue());
+            this.dao.update(event.getRowValue());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * calls readAll in {@link PatientDAO} and shows patients in the table
+     * Deletes the selected patient and all related treatments
      */
-    private void readAllAndShowInTableView() {
-        this.tableviewContent.clear();
-        this.PatientDAO = DAOFactory.getInstance().createPatientDAO();
-        List<Patient> allPatients;
-        try {
-            allPatients = PatientDAO.readAll();
-            for (Patient p : allPatients) {
-                    this.tableviewContent.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    @Override
+    public Patient handleDelete() {
+        Patient deletedPatient = super.handleDelete();
 
-    /**
-     * handles a delete-click-event. Calls the delete methods in the {@link PatientDAO} and {@link TreatmentDAO}
-     */
-    @FXML
-    public void handleDeleteRow() {
-        TreatmentDAO tDao = DAOFactory.getInstance().createTreatmentDAO();
-        Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
-        this.tableView.getItems().remove(selectedItem);
         try {
-            PatientDAO.deleteById((int) selectedItem.getId());
-            tDao.deleteByPatientId((int) selectedItem.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+            DAOFactory.getInstance().createTreatmentDAO().deleteByPatientId((int) deletedPatient.getId());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
-    }
 
-    /**
-     * handels the locking of the current focused user and his treatments.
-     */
-
-    @FXML
-    public void handleLockFocusedPatient() {
-        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
-        selectedPatient.setLocked(true);
-        try {
-            PatientDAO.update(selectedPatient);
-            ChangeLockForAllTreatmentsfor(selectedPatient,true);
-            this.tableView.refresh();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    /**
-     * handels the unlocking of the current focused user and his treatments.
-     */
-    @FXML
-    public void handleUnLockFocusedPatient() {
-        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
-        selectedPatient.setLocked(false);
-        try {
-            PatientDAO.update(selectedPatient);
-            ChangeLockForAllTreatmentsfor(selectedPatient, false);
-            this.tableView.refresh();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return;
-    }
-    /**
-     * handels the unlocking of all treatments for a user.
-     */
-    private void ChangeLockForAllTreatmentsfor(Patient patient,Boolean lockValue)
-    {
-        this.TreatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
-        List<Treatment> allTreatments;
-        try {
-            allTreatments = TreatmentDAO.readTreatmentsByPatientId(patient.getId());
-            for(Treatment t : allTreatments)
-            {
-                t.setLocked(lockValue);
-                try{
-                    TreatmentDAO.update(t);
-                }
-                catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
+        return deletedPatient; // Only required for the override, no actuall purpose
     }
 
     /**
@@ -266,13 +176,13 @@ public class AllPatientController {
     public void handleAdd() {
         String surname = this.txtSurname.getText();
         String firstname = this.txtFirstname.getText();
-        LocalDate birthday = this.Birthday.getValue();
+        LocalDate birthdayValue = this.birthday.getValue();
         String carelevel = this.txtCarelevel.getText();
         String room = this.txtRoom.getText();
         String assets = this.txtAssets.getText();
         try {
-            Patient p = new Patient(firstname, surname, birthday, carelevel, room, assets, false);
-            PatientDAO.create(p);
+            Patient p = new Patient(firstname, surname, birthdayValue, carelevel, room, assets);
+            dao.create(p);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -286,7 +196,7 @@ public class AllPatientController {
     private void clearTextfields() {
         this.txtFirstname.clear();
         this.txtSurname.clear();
-        this.Birthday.setValue(null);
+        this.birthday.setValue(null);
         this.txtCarelevel.clear();
         this.txtRoom.clear();
         this.txtAssets.clear();

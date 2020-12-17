@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="855.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AllPatientController">
+<AnchorPane prefHeight="500.0" prefWidth="855.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AllPatientController">
    <children>
       <ImageView fitHeight="86.0" fitWidth="104.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -43,7 +43,7 @@
                <children>
                   <TextField fx:id="txtFirstname" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Vorname" />
                   <TextField fx:id="txtSurname" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Nachname" GridPane.columnIndex="1" />
-                  <DatePicker fx:id="Birthday" minWidth="160.0" prefWidth="160.0" promptText="Geburtstag" GridPane.columnIndex="2" />
+                  <DatePicker fx:id="birthday" minWidth="160.0" prefWidth="160.0" promptText="Geburtstag" GridPane.columnIndex="2"/>
                   <TextField fx:id="txtCarelevel" prefHeight="26.0" prefWidth="200.0" promptText="Pflegegrad" GridPane.rowIndex="1" />
                   <TextField fx:id="txtRoom" prefHeight="26.0" prefWidth="200.0" promptText="Raum" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="txtAssets" minWidth="160.0" prefWidth="160.0" promptText="Vermögensstand" GridPane.columnIndex="2" GridPane.rowIndex="1" />
@@ -65,10 +65,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeleteRow" prefWidth="90.0" text="Löschen" />
+                  <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="90.0" text="Hinzufügen" />
                    <Button fx:id="btnSperren" mnemonicParsing="false" onAction="#handleLockFocusedPatient" prefWidth="90.0" text="Sperren" GridPane.rowIndex="1" />
-                  <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="90.0" text="Hinzufügen" GridPane.columnIndex="1" />
-                  <Button fx:id="btnEntsperren" layoutX="10.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleUnLockFocusedPatient" prefWidth="90.0" text="Entsperren" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                   <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDelete" prefWidth="90.0" text="Löschen" />
+                   <Button fx:id="btnEntsperren" layoutX="10.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleUnLockFocusedPatient" prefWidth="90.0" text="Entsperren" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>

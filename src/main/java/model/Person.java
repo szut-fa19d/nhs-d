@@ -1,10 +1,18 @@
 package model;
 
-public abstract class Person {
+public abstract class Person extends DatabaseEntry {
     private String firstName;
     private String surname;
 
-    public Person(String firstName, String surname) {
+    /** @see DatabaseEntry#DatabaseEntry() */
+    protected Person(String firstName, String surname) {
+        this.firstName = firstName;
+        this.surname = surname;
+    }
+    
+    /** @see DatabaseEntry#DatabaseEntry(long) */
+    protected Person(long id, String firstName, String surname) {
+        super(id);
         this.firstName = firstName;
         this.surname = surname;
     }
