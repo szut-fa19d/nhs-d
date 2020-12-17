@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllTreatmentController extends CommmonListController<Treatment, TreatmentDAO> {
+public class AllTreatmentController extends CommonListController<Treatment, TreatmentDAO> {
     @FXML
     private TableColumn<Treatment, String> colPatientName;
     @FXML

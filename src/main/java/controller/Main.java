@@ -5,7 +5,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,10 +18,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/MainWindowView.fxml"));
-            TabPane pane = loader.load();
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));
+            AnchorPane root = (AnchorPane) loader.load();
 
-            Scene scene = new Scene(pane);
+            Scene scene = new Scene(root);
             primaryStage.setTitle("NHPlus");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);

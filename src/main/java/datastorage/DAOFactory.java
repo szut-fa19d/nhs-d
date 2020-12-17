@@ -35,4 +35,12 @@ public class DAOFactory {
     public LogEntryDAO createLogEntryDAO() {
         return new LogEntryDAO(ConnectionBuilder.getConnection());
     }
+
+    public UserDAO createUserDAO() {
+        return new UserDAO(ConnectionBuilder.getConnection());
+    }
+
+    public GroupDAO createGroupDAO() {
+        return new GroupDAO(ConnectionBuilder.getConnection());
+    }
 }
