@@ -16,7 +16,7 @@ public class NewTreatmentController extends TreatmentControllerCommon {
     @FXML
     private Label lblLastName;
     @FXML
-    private Label lblFirstname;
+    private Label lblFirstName;
 
     /**
      * @see TreatmentControllerCommon#initialize
@@ -26,7 +26,7 @@ public class NewTreatmentController extends TreatmentControllerCommon {
     }
 
     protected void showData(){
-        this.lblFirstname.setText(patient.getFirstName());
+        this.lblFirstName.setText(patient.getFirstName());
         this.lblLastName.setText(patient.getLastName());
     }
 
