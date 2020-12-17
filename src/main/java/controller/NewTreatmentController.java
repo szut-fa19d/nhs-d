@@ -30,6 +30,9 @@ public class NewTreatmentController extends TreatmentControllerCommon {
         this.lblSurname.setText(patient.getSurname());
     }
 
+    /**
+     * Handles the Create button to create a new treatment
+     */
     @FXML
     public void handleAdd(){
         LocalDate date = this.datepicker.getValue();

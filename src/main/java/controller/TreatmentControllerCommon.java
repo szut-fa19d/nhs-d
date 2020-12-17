@@ -21,17 +21,26 @@ public abstract class TreatmentControllerCommon {
   protected Stage stage;
   protected Patient patient;
 
-  protected void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
+  /**
+   * Sets fields for displaying the data and sets the data for the view
+   */
+  public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
     this.controller = controller;
     this.stage = stage;
     this.patient = patient;
     this.showData();
   }
 
+  /**
+   * Handles the cancel button of the window
+   */
   @FXML
   public void handleCancel() {
     this.stage.close();
   }
 
+  /**
+   * Sets the data for the view
+   */
   protected abstract void showData();
 }

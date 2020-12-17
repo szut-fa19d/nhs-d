@@ -4,8 +4,7 @@ import utils.DateConverter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Treatment {
-    private long id;
+public class Treatment extends DatabaseEntry {
     private Patient patient;
     private LocalDate date;
     private LocalTime begin;
@@ -13,15 +12,20 @@ public class Treatment {
     private String description;
     private String remarks;
 
+    /** @see DatabaseEntry#DatabaseEntry() */
     public Treatment(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
         this.init(patient, date, begin, end, description, remarks);
     }
-
+    
+    /** @see DatabaseEntry#DatabaseEntry(long) */
     public Treatment(long id, Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
-        this.id = id;
+        super(id);
         this.init(patient, date, begin, end, description, remarks);
     }
 
+    /**
+     * Assignements that the constructors have in common
+     */
     private void init(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
         this.patient = patient;
         this.date = date;
@@ -29,10 +33,6 @@ public class Treatment {
         this.end = end;
         this.description = description;
         this.remarks = remarks;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public Patient getPatient() {
@@ -72,7 +72,7 @@ public class Treatment {
     }
 
     public String getRemarks() {
-        return remarks;
+        return this.remarks;
     }
 
     public void setRemarks(String remarks) {

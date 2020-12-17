@@ -2,24 +2,39 @@ package datastorage;
 
 import model.*;
 import utils.DateConverter;
+import utils.Memoize;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
 public class TreatmentDAO extends DAOimp<Treatment> {
-    private List<Patient> patients;
+    private Memoize<Patient> patientsMemo;
 
+    /**
+     * Store the connection and setup the memoization for thee patients
+     */
     public TreatmentDAO(Connection conn) {
         super(conn);
+        this.patientsMemo = new Memoize<>(
+            () -> DAOFactory.getInstance().createPatientDAO().readAll()
+        );
     }
 
     @Override
     protected String getCreateStatement(Treatment treatment) {
         return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks)" +
             "VALUES (" + treatment.getId() + ", '" +
-                String.join("', '", treatment.getDate(), treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks()) +
-            "')";
+            String.join(
+                "', '",
+                treatment.getDate(),
+                treatment.getBegin(),
+                treatment.getEnd(),
+                treatment.getDescription(),
+                treatment.getRemarks()
+            ) +
+            "')"; // TODO Das geht safe schöner
     }
 
     @Override
@@ -27,17 +42,9 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return "SELECT * FROM treatment WHERE tid = " + id;
     }
 
-    private List<Patient> getAllPatients() throws SQLException {
-        if (this.patients == null) {
-            this.patients = DAOFactory.getInstance().createPatientDAO().readAll();
-        }
-
-        return this.patients;
-    }
-
     @Override
     protected Treatment getInstanceFromResultSet(ResultSet result) throws SQLException {
-        Optional<Patient> optionalPatient = getAllPatients().stream()
+        Optional<Patient> optionalPatient = this.patientsMemo.get().stream()
             .filter(patient -> {
                 try {
                     return patient.getId() == result.getLong(2);
@@ -84,13 +91,25 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return "DELETE FROM treatment WHERE tid = " + id;
     }
 
+    /**
+     * Read and return all treatments that belong to a certain patient
+     */
     public List<Treatment> readTreatmentsByPatientId(long patientId) throws SQLException {
-        Statement statement = this.conn.createStatement();
-        ResultSet result = statement.executeQuery("SELECT * FROM treatment WHERE pid = " + patientId);
+        ResultSet result;
+
+        try (Statement statement = this.conn.createStatement()) {
+            result = statement.executeQuery("SELECT * FROM treatment WHERE pid = " + patientId);
+        }
+
         return getListFromResultSet(result);
     }
 
+    /**
+     * Delete all Treatments that belong to the Patient with this id
+     */
     public void deleteByPatientId(int patientId) throws SQLException {
-        this.conn.createStatement().executeQuery("DELETE FROM treatment WHERE pid = " + patientId);
+        try (Statement statement = this.conn.createStatement()) {
+            statement.executeQuery("DELETE FROM treatment WHERE pid = " + patientId);
+        }
     }
 }
