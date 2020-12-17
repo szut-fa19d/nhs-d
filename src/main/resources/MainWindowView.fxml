@@ -13,8 +13,11 @@
             <Tab closable="false" text="Behandlungen">
                 <fx:include fx:id="allTreatmentView" source="AllTreatmentView.fxml" />
             </Tab>
-            <Tab fx:id="userView" closable="false" disable="true" style="visibility: hidden;" text="Benutzer">
+            <Tab closable="false" text="Benutzer" fx:id="userView" disable="true" style="visibility: hidden;">
                 <fx:include fx:id="allUserView" source="AllUserView.fxml" />
+            </Tab>
+            <Tab closable="false" text="Pflegekräfte" fx:id="caregiverView" disable="true" style="visibility: hidden;">
+                <fx:include fx:id="allCaregiverView" source="AllCaregiverView.fxml" />
             </Tab>
         </tabs>
     </TabPane>

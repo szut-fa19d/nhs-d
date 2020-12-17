@@ -17,15 +17,21 @@ public class MainWindowController {
     StackPane stackPane;
     @FXML
     Tab userView;
+    @FXML
+    Tab caregiverView;
 
     UserController userController;
 
     public void initialize() {
         userController = UserController.getInstance();
         currentLogin.setText("Eingeloggt als: " + userController.getUser().getUsername());
+
         if (userController.isAdmin()) {
-            userView.setDisable(false);
-            userView.setStyle("");
+            this.userView.setDisable(false);
+            this.userView.setStyle("");
+
+            this.caregiverView.setDisable(false);
+            this.caregiverView.setStyle("");
         }
     }
 
