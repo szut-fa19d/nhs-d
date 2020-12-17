@@ -17,7 +17,7 @@ public class LogEntryDAO extends DAOimp<LogEntry> {
     @Override
     protected String getCreateStatement(LogEntry log) {
         return String.format("INSERT INTO log (type, obj_id, user_id, desc) VALUES ('%s', '%s', '%s', '%s')",
-            log.getType(), log.getObj_id(), log.getUser_id(), log.getDesc());
+            log.getType(), log.getObjId(), log.getUserId(), log.getDesc());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class LogEntryDAO extends DAOimp<LogEntry> {
     @Override
     protected String getUpdateStatement(LogEntry log) {
         return String.format("UPDATE log SET timestamp = '%s', type = '%s', obj_id = '%s', user_id = '%s', desc = '%s' WHERE id = %d",
-            log.getTimestamp(), log.getType(), log.getObj_id(), log.getUser_id(), log.getDesc(), log.getId());
+            log.getTimestamp(), log.getType(), log.getObjId(), log.getUserId(), log.getDesc(), log.getId());
     }
 
     @Override
@@ -79,11 +79,11 @@ public class LogEntryDAO extends DAOimp<LogEntry> {
         }
 
         if (DatabaseUtils.hasColumn(set, "obj_id")) {
-            log.setObj_id(set.getInt("obj_id"));
+            log.setObjId(set.getInt("obj_id"));
         }
 
         if (DatabaseUtils.hasColumn(set, "user_id")) {
-            log.setUser_id(set.getInt("user_id"));
+            log.setUserId(set.getInt("user_id"));
         }
 
         if (DatabaseUtils.hasColumn(set, "desc")) {

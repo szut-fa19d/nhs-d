@@ -23,7 +23,10 @@ public class TreatmentController extends TreatmentControllerCommon {
 
     private Treatment treatment;
 
-    public void initialize(AllTreatmentController controller, Stage stage, Treatment treatment) {
+    /**
+     * @see TreatmentControllerCommon#initialize
+     */
+    public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         PatientDAO pDao = DAOFactory.getInstance().createPatientDAO();
     
         try {
@@ -35,6 +38,7 @@ public class TreatmentController extends TreatmentControllerCommon {
         }
     }
 
+    @Override
     protected void showData(){
         this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
         this.lblCarelevel.setText(patient.getCareLevel());
@@ -46,6 +50,9 @@ public class TreatmentController extends TreatmentControllerCommon {
         this.taRemarks.setText(this.treatment.getRemarks());
     }
 
+    /**
+     * Handler for treatment edits
+     */
     @FXML
     public void handleChange(){
         this.treatment.setDate(this.datepicker.getValue().toString());

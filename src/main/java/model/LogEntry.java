@@ -1,35 +1,26 @@
 package model;
 
-public class LogEntry {
-    private long id;
+public class LogEntry extends DatabaseEntry {
     private long timestamp;
     private String type;
-    private long obj_id;
-    private long user_id;
+    private long objId;
+    private long userId;
     private String desc;
 
-    public LogEntry(String type, long obj_id, int user_id, String desc) {
+    public LogEntry(String type, long objId, int userId, String desc) {
         this.type = type;
-        this.obj_id = obj_id;
-        this.user_id = user_id;
+        this.objId = objId;
+        this.userId = userId;
         this.desc = desc;
     }
 
-    public LogEntry(long id, long timestamp, String type, long obj_id, int user_id, String desc) {
-        this.id = id;
+    public LogEntry(long id, long timestamp, String type, long objId, int userId, String desc) {
+        super(id);
         this.timestamp = timestamp;
         this.type = type;
-        this.obj_id = obj_id;
-        this.user_id = user_id;
+        this.objId = objId;
+        this.userId = userId;
         this.desc = desc;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getTimestamp() {
@@ -48,20 +39,20 @@ public class LogEntry {
         this.type = type;
     }
 
-    public long getObj_id() {
-        return obj_id;
+    public long getObjId() {
+        return objId;
     }
 
-    public void setObj_id(long obj_id) {
-        this.obj_id = obj_id;
+    public void setObjId(long objId) {
+        this.objId = objId;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getDesc() {

@@ -7,7 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DAOimp<T> implements DAO<T>{
+import model.DatabaseEntry;
+
+public abstract class DAOimp<T extends DatabaseEntry> implements DAO<T>{
     protected Connection conn;
 
     protected DAOimp(Connection conn) {
@@ -70,18 +72,25 @@ public abstract class DAOimp<T> implements DAO<T>{
         }
     }
 
+    /** Generate SQL code as string to create item of type {@link T} */
     protected abstract String getCreateStatement(T t);
 
+    /** Generate SQL code as string to read item of type {@link T} */
     protected abstract String getReadByIDStatement(int id);
 
+    /** Create and return single instance from a resultset */
     protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
 
+    /** Generate SQL code as string to read all items of type {@link T} */
     protected abstract String getReadAllStatement();
 
+    /** Create and return instances from a resultset */
     protected abstract ArrayList<T> getListFromResultSet(ResultSet set) throws SQLException;
 
+    /** Generate SQL code as string to update item of type {@link T} */
     protected abstract String getUpdateStatement(T t);
 
+    /** Generate SQL code as string to delete item of type {@link T} */
     protected abstract String getDeleteStatement(int key);
 
     protected abstract void updateInstanceByResultSet(T t, ResultSet set) throws SQLException;

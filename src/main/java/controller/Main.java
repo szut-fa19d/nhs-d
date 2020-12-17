@@ -11,36 +11,23 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
-
-    private Stage primaryStage;
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
-        this.primaryStage = primaryStage;
-        mainWindow();
-
-        String execArgs = System.getenv("MAVEN_CMD_LINE_ARGS");
-
-        // Für GitHub Actions / SonarCloud
-        if (execArgs != null && execArgs.contains("close_immediately")) {
-            System.out.println("Schließe, weil CLI close_immediately enthält.");
-            Platform.exit();
-            System.exit(0);
-        }
-    }
-
-    public void mainWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/MainWindowView.fxml"));
             TabPane pane = loader.load();
 
             Scene scene = new Scene(pane);
-            this.primaryStage.setTitle("NHPlus");
-            this.primaryStage.setScene(scene);
-            this.primaryStage.setResizable(false);
-            this.primaryStage.show();
+            primaryStage.setTitle("NHPlus");
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
+            primaryStage.show();
 
-            this.primaryStage.setOnCloseRequest(event -> {
+            primaryStage.setOnCloseRequest(event -> {
                 if(ConnectionBuilder.hasConnection()){
                     ConnectionBuilder.closeConnection();
                 }
@@ -51,9 +38,5 @@ public class Main extends Application {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
