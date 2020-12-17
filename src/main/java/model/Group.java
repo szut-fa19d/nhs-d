@@ -1,15 +1,16 @@
 package model;
 
 public class Group extends DatabaseEntry {
-    private long id;
     private String groupName;
 
+    /** @see DatabaseEntry#DatabaseEntry() */
     public Group (String groupName){
         this.groupName = groupName;
     }
 
+    /** @see DatabaseEntry#DatabaseEntry(long) */
     public Group (long id, String groupName){
-        this.id = id;
+        super(id);
         this.groupName = groupName;
     }
 
@@ -19,14 +20,6 @@ public class Group extends DatabaseEntry {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     @Override

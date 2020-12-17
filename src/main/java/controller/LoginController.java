@@ -2,7 +2,6 @@ package controller;
 
 import datastorage.DAOFactory;
 import datastorage.UserDAO;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,31 +10,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.User;
 import utils.PasswordHash;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import java.io.IOException;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
-import java.util.Base64;
 
 public class LoginController {
-
     @FXML
-    TextField usernameField;
+    private TextField usernameField;
     @FXML
-    PasswordField passwordField;
+    private PasswordField passwordField;
     @FXML
-    Button submit;
+    private Button submit;
     @FXML
-    Label error;
+    private Label error;
     @FXML
-    AnchorPane anchorPane;
-
+    private AnchorPane anchorPane;
     @FXML
     public void login() {
         String username = usernameField.getText();
@@ -48,7 +38,7 @@ public class LoginController {
         UserDAO userDAO = DAOFactory.getInstance().createUserDAO();
         User user = userDAO.getUserByUsername(username);
 
-        if(user == null) {
+        if (user == null) {
             error.setVisible(true);
             return;
         }
@@ -60,6 +50,7 @@ public class LoginController {
             error.setVisible(true);
             return;
         }
+
         UserController.getInstance().setUser(user);
         onSuccessfulLogin();
     }

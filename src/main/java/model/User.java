@@ -1,24 +1,24 @@
 package model;
 
 public class User extends DatabaseEntry {
-
-    private long id;
     private Group group;
     private String username;
     private String password;
 
-    public User() {};
+    public User() {}
 
-    public User(String username, String password, Group group){
-        this.username = username ;
-        this.group = group;
-        this.password = password;
+    public User(String username, String password, Group group) {
+        this.init(username, password, group);
     }
 
-    public User(long id, String username, String password, Group group){
-        this.username = username ;
+    public User(long id, String username, String password, Group group) {
+        super(id);
+        this.init(username, password, group);
+    }
+
+    private void init(String username, String password, Group group) {
+        this.username = username;
         this.password = password;
-        this.id = id;
         this.group = group;
     }
 
@@ -45,15 +45,4 @@ public class User extends DatabaseEntry {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
 }
-
-
