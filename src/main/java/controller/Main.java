@@ -3,53 +3,40 @@ package controller;
 import datastorage.ConnectionBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
 public class Main extends Application {
-
-    private Stage primaryStage;
-
-    @Override
-    public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        mainWindow();
+    public static void main(String[] args) {
+        launch(args);
     }
 
-    public void mainWindow() {
+    @Override
+    public void start(Stage primaryStage) throws InterruptedException {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/MainWindowView.fxml"));
-            TabPane pane = loader.load();
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));
+            AnchorPane root = (AnchorPane) loader.load();
 
-            Scene scene = new Scene(pane);
-            this.primaryStage.setTitle("NHPlus");
-            this.primaryStage.setScene(scene);
-            this.primaryStage.setResizable(false);
-            this.primaryStage.show();
+            Scene scene = new Scene(root);
+            primaryStage.setTitle("NHPlus");
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
+            primaryStage.show();
 
-            this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent e) {
-                    if(ConnectionBuilder.hasConnection()){
-                        ConnectionBuilder.closeConnection();
-                    }
-                    Platform.exit();
-                    System.exit(0);
+            primaryStage.setOnCloseRequest(event -> {
+                if(ConnectionBuilder.hasConnection()){
+                    ConnectionBuilder.closeConnection();
                 }
+                Platform.exit();
+                System.exit(0);
             });
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

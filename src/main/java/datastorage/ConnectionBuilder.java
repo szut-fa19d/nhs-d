@@ -4,40 +4,46 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Initializes and holds the Database connection statically (singleton)
+ */
 public class ConnectionBuilder {
     private static Connection conn;
 
-    private ConnectionBuilder() {
-        try {
-            Class.forName("org.hsqldb.jdbc.JDBCDriver");
-            System.out.println("Working Directory = " + System.getProperty("user.dir"));
+    private ConnectionBuilder() {}
 
-            conn = DriverManager.getConnection("jdbc:hsqldb:db/nursingHomeDB;user=SA;password=SA");
-        } catch (ClassNotFoundException cnfException) {
-            cnfException.printStackTrace();
-            System.out.println("Treiberklasse konnte nicht gefunden werden!");
+    /**
+     * Create the connection and set it statically
+     */
+    private static void setConnection() {
+        try {
+            System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            ConnectionBuilder.conn = DriverManager.getConnection("jdbc:hsqldb:db/nursingHomeDB;user=SA;password=SA");
         } catch (SQLException sqlException) {
             System.out.println("Verbindung zur Datenbank konnte nicht aufgebaut werden!");
             sqlException.printStackTrace();
         }
     }
 
+    /**
+     * Get the database connection. Will create and set it if it doesn't exist yet.
+     */
     public static Connection getConnection() {
-        if (conn == null) {
-            new ConnectionBuilder();
+        if (ConnectionBuilder.conn == null) {
+            ConnectionBuilder.setConnection();
         }
-        return conn;
+        return ConnectionBuilder.conn;
     }
 
     public static void closeConnection() {
         try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ConnectionBuilder.conn.close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
     public static boolean hasConnection() {
-        return conn != null;
+        return ConnectionBuilder.conn != null;
     }
 }

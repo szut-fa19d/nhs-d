@@ -3,25 +3,39 @@ package datastorage;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DAOimp<T> implements DAO<T>{
+import model.DatabaseEntry;
+
+public abstract class DAOimp<T extends DatabaseEntry> implements DAO<T>{
     protected Connection conn;
 
-    public DAOimp(Connection conn) {
+    protected DAOimp(Connection conn) {
         this.conn = conn;
     }
 
     @Override
     public void create(T t) throws SQLException {
-        conn.createStatement().executeUpdate(getCreateStatement(t));
+        try (Statement statement = conn.createStatement()) {
+            statement.executeUpdate(getCreateStatement(t));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error executing sql:\n", e);
+        }
     }
 
     @Override
     public T read(int id) throws SQLException {
         T object = null;
-        ResultSet result = conn.createStatement().executeQuery(getReadByIDStatement(id));
+
+        ResultSet result;
+
+        try (Statement statement = conn.createStatement()) {
+            result = statement.executeQuery(getReadByIDStatement(id));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error executing sql:\n", e);
+        }
 
         if (result.next()) {
             object = getInstanceFromResultSet(result);
@@ -32,31 +46,47 @@ public abstract class DAOimp<T> implements DAO<T>{
 
     @Override
     public List<T> readAll() throws SQLException {
-        ResultSet result = conn.createStatement().executeQuery(getReadAllStatement());
-        return getListFromResultSet(result);
+        ResultSet result = null;
+
+        try (Statement statement = this.conn.createStatement()) {
+            result = statement.executeQuery(getReadAllStatement());
+        }
+
+        return this.getListFromResultSet(result);
     }
 
     @Override
     public void update(T t) throws SQLException {
-        conn.createStatement().executeUpdate(getUpdateStatement(t));
+        try (Statement statement = this.conn.createStatement()) {
+            statement.executeUpdate(this.getUpdateStatement(t));
+        }
     }
 
     @Override
     public void deleteById(int id) throws SQLException {
-        conn.createStatement().executeUpdate(getDeleteStatement(id));
+        try (Statement statement = this.conn.createStatement()) {
+            statement.executeUpdate(getDeleteStatement(id));
+        }
     }
 
+    /** Generate SQL code as string to create item of type {@link T} */
     protected abstract String getCreateStatement(T t);
 
+    /** Generate SQL code as string to read item of type {@link T} */
     protected abstract String getReadByIDStatement(int id);
 
+    /** Create and return single instance from a resultset */
     protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
 
+    /** Generate SQL code as string to read all items of type {@link T} */
     protected abstract String getReadAllStatement();
 
+    /** Create and return instances from a resultset */
     protected abstract ArrayList<T> getListFromResultSet(ResultSet set) throws SQLException;
 
+    /** Generate SQL code as string to update item of type {@link T} */
     protected abstract String getUpdateStatement(T t);
 
+    /** Generate SQL code as string to delete item of type {@link T} */
     protected abstract String getDeleteStatement(int key);
 }

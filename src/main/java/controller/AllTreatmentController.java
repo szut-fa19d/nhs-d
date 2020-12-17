@@ -20,11 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllTreatmentController {
-    @FXML
-    private TableView<Treatment> tableView;
-    @FXML
-    private TableColumn<Treatment, Integer> colID;
+public class AllTreatmentController extends CommonListController<Treatment, TreatmentDAO> {
     @FXML
     private TableColumn<Treatment, String> colPatientName;
     @FXML
@@ -42,21 +38,16 @@ public class AllTreatmentController {
     @FXML
     private Button btnDelete;
 
-    private ObservableList<Treatment> tableviewContent =
-            FXCollections.observableArrayList();
-    private TreatmentDAO dao;
-    private ObservableList<String> myComboBoxData =
-            FXCollections.observableArrayList();
+    private ObservableList<String> myComboBoxData = FXCollections.observableArrayList();
     private ArrayList<Patient> patientList;
 
+    @Override
     public void initialize() {
         readAllAndShowInTableView();
         comboBox.setItems(myComboBoxData);
         comboBox.getSelectionModel().select(0);
 
-        this.colID.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("id"));
-        // this.colPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("patientName"));
-        // this.colPid.setCellValueFactory(new PropertyValueFactory<>(property);
+        this.colID.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         this.colPatientName.setCellValueFactory(cellData -> {
             Patient patient = cellData.getValue().getPatient();
@@ -64,10 +55,10 @@ public class AllTreatmentController {
             return new SimpleStringProperty(name);
         });
 
-        this.colDate.setCellValueFactory(new PropertyValueFactory<Treatment, String>("date"));
-        this.colBegin.setCellValueFactory(new PropertyValueFactory<Treatment, String>("begin"));
-        this.colEnd.setCellValueFactory(new PropertyValueFactory<Treatment, String>("end"));
-        this.colDescription.setCellValueFactory(new PropertyValueFactory<Treatment, String>("description"));
+        this.colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        this.colBegin.setCellValueFactory(new PropertyValueFactory<>("begin"));
+        this.colEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+        this.colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         this.tableView.setRowFactory( tv -> {
             TableRow<Treatment> row = new TableRow<>();
@@ -85,24 +76,10 @@ public class AllTreatmentController {
         createComboBoxData();
     }
 
-    public void readAllAndShowInTableView() {
-        this.tableviewContent.clear();
-        this.dao = DAOFactory.getInstance().createTreatmentDAO();
-        List<Treatment> allTreatments;
-        try {
-            allTreatments = dao.readAll();
-            for (Treatment treatment : allTreatments) {
-                this.tableviewContent.add(treatment);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void createComboBoxData(){
-        PatientDAO dao = DAOFactory.getInstance().createPatientDAO();
+        PatientDAO patientDAO = DAOFactory.getInstance().createPatientDAO();
         try {
-            patientList = (ArrayList<Patient>) dao.readAll();
+            patientList = (ArrayList<Patient>) patientDAO.readAll();
             this.myComboBoxData.add("alle");
             for (Patient patient: patientList) {
                 this.myComboBoxData.add(patient.getLastName());
@@ -112,6 +89,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Handles the dropdown select menu to filter by a patient
+     */
     @FXML
     public void handleComboBox(){
         String p = this.comboBox.getSelectionModel().getSelectedItem();
@@ -151,18 +131,6 @@ public class AllTreatmentController {
     }
 
     @FXML
-    public void handleDelete(){
-        int index = this.tableView.getSelectionModel().getSelectedIndex();
-        Treatment t = this.tableviewContent.remove(index);
-        TreatmentDAO dao = DAOFactory.getInstance().createTreatmentDAO();
-        try {
-            dao.deleteById((int) t.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
     public void handleNewTreatment() {
         try{
             String p = this.comboBox.getSelectionModel().getSelectedItem();
@@ -178,7 +146,7 @@ public class AllTreatmentController {
         }
     }
 
-    public void newTreatmentWindow(Patient patient){
+    private void newTreatmentWindow(Patient patient){
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/NewTreatmentView.fxml"));
             AnchorPane pane = loader.load();
@@ -187,7 +155,7 @@ public class AllTreatmentController {
             Stage stage = new Stage();
 
             NewTreatmentController controller = loader.getController();
-            controller.initialize(this, stage, patient);
+            controller.initializeController(this, stage, patient);
 
             stage.setScene(scene);
             stage.setResizable(false);
@@ -216,5 +184,9 @@ public class AllTreatmentController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    protected void refreshDAO() {
+        this.dao = DAOFactory.getInstance().createTreatmentDAO();
     }
 }

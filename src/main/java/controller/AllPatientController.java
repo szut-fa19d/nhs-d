@@ -1,9 +1,6 @@
 package controller;
 
 import datastorage.PatientDAO;
-import datastorage.TreatmentDAO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -12,17 +9,11 @@ import model.Patient;
 import datastorage.DAOFactory;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
-
 
 /**
  * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
  */
-public class AllPatientController {
-    @FXML
-    private TableView<Patient> tableView;
-    @FXML
-    private TableColumn<Patient, Integer> colID;
+public class AllPatientController extends CommonListController<Patient, PatientDAO> {
     @FXML
     private TableColumn<Patient, String> colFirstName;
     @FXML
@@ -53,12 +44,11 @@ public class AllPatientController {
     @FXML
     private TextField txtAssets;
 
-    private ObservableList<Patient> tableviewContent = FXCollections.observableArrayList();
-    private PatientDAO dao;
+    protected void refreshDAO() {
+        this.dao = DAOFactory.getInstance().createPatientDAO();
+    }
 
-    /**
-     * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
-     */
+    @Override
     public void initialize() {
         readAllAndShowInTableView();
 
@@ -150,47 +140,30 @@ public class AllPatientController {
 
     /**
      * updates a patient by calling the update-Method in the {@link PatientDAO}
-     * @param t row to be updated by the user (includes the patient)
+     * @param event row to be updated by the user (includes the patient)
      */
-    private void doUpdate(TableColumn.CellEditEvent<Patient, String> t) {
+    private void doUpdate(TableColumn.CellEditEvent<Patient, String> event) {
         try {
-            dao.update(t.getRowValue());
+            this.dao.update(event.getRowValue());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * calls readAll in {@link PatientDAO} and shows patients in the table
+     * Deletes the selected patient and all related treatments
      */
-    private void readAllAndShowInTableView() {
-        this.tableviewContent.clear();
-        this.dao = DAOFactory.getInstance().createPatientDAO();
-        List<Patient> allPatients;
-        try {
-            allPatients = dao.readAll();
-            for (Patient p : allPatients) {
-                this.tableviewContent.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    @Override
+    public Patient handleDelete() {
+        Patient deletedPatient = super.handleDelete();
 
-    /**
-     * handles a delete-click-event. Calls the delete methods in the {@link PatientDAO} and {@link TreatmentDAO}
-     */
-    @FXML
-    public void handleDeleteRow() {
-        TreatmentDAO tDao = DAOFactory.getInstance().createTreatmentDAO();
-        Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
-        this.tableView.getItems().remove(selectedItem);
         try {
-            dao.deleteById((int) selectedItem.getId());
-            tDao.deleteByPatientId((int) selectedItem.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+            DAOFactory.getInstance().createTreatmentDAO().deleteByPatientId((int) deletedPatient.getId());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
+
+        return deletedPatient; // Only required for the override, no actuall purpose
     }
 
     /**

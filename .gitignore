@@ -1,34 +1,24 @@
-# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
-# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
-
 # File-based project format
 *.iws
 
+# Eclipse
+/.settings/
+
+# VS Code
+/.vscode/
+
 # IntelliJ
 out/
+/.idea/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
-# Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
-
-# Editor-based Rest Client
-.idea/httpRequests
-
-# Android studio 3.1+ serialized cache file
-.idea/caches/build_file_checksums.ser
-
 # Maven
 log/
-target/
 
-/.settings/
-/.vscode/
-/.idea/
+# Build Artefakte ignorieren
+/target/
 
 # Ignoriere DB-Krams, den wir nicht versionieren brauchen (alles außer der .script)
 /db/*.tmp
@@ -40,3 +30,6 @@ target/
 /.project
 /.classpath
 /bin/
+
+# SonarLint / Sonar Scanner
+/.scannerwork/
