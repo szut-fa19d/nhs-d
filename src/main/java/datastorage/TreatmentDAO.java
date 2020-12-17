@@ -25,7 +25,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     @Override
     protected String getCreateStatement(Treatment treatment) {
         return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks)" +
-            "VALUES (" + treatment.getId() + ", '" +
+            "VALUES (" + treatment.getPatient().getId() + ", '" +
             String.join(
                 "', '",
                 treatment.getDate(),
