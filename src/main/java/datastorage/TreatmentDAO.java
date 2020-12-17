@@ -32,9 +32,10 @@ public class TreatmentDAO extends DAOimp<Treatment> {
                 treatment.getBegin(),
                 treatment.getEnd(),
                 treatment.getDescription(),
-                treatment.getRemarks(),
-                    treatment.getLocked()
+                treatment.getRemarks()
             ) +
+        treatment.getLocked()
+                +
             "')"; // TODO Das geht safe schöner
     }
 

@@ -17,9 +17,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Pflegeheim" />
+        <module name="nursing-home" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="nursing-home" target="9" />
       <module name="Pflegeheim" target="9" />
     </bytecodeTargetLevel>
   </component>

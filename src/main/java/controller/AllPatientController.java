@@ -1,6 +1,7 @@
 package controller;
 
 import datastorage.PatientDAO;
+import datastorage.TreatmentDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +28,8 @@ public class AllPatientController extends CommonListController<Patient, PatientD
     private TableColumn<Patient, String> colRoom;
     @FXML
     private TableColumn<Patient, String> colAssets;
+    @FXML
+    private TableColumn<Patient, Boolean> colLocked;
 
     @FXML
     Button btnDelete;
@@ -181,7 +184,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         String room = this.txtRoom.getText();
         String assets = this.txtAssets.getText();
         try {
-            Patient p = new Patient(firstname, surname, birthdayValue, carelevel, room, assets);
+            Patient p = new Patient(firstname, surname, birthdayValue, carelevel, room, assets,false);
             dao.create(p);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -190,6 +193,57 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         clearTextfields();
     }
 
+    @FXML
+    public void handleLockFocusedPatient() {
+        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+        selectedPatient.setLocked(true);
+        try {
+            dao.update(selectedPatient);
+            //ChangeLockForAllTreatmentsfor(selectedPatient,true);
+            this.tableView.refresh();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * handels the unlocking of the current focused user and his treatments.
+     */
+    @FXML
+    public void handleUnLockFocusedPatient() {
+        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+        selectedPatient.setLocked(false);
+        try {
+            dao.update(selectedPatient);
+            //ChangeLockForAllTreatmentsfor(selectedPatient, false);
+            this.tableView.refresh();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return;
+    }
+/*
+    private void ChangeLockForAllTreatmentsfor(Patient patient,Boolean lockValue)
+    {
+        this.TreatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
+
+        try {
+            List<Treatment> allTreatments = TreatmentDAO.readTreatmentsByPatientId(patient.getId());
+            for(Treatment t : allTreatments)
+            {
+                t.setLocked(lockValue);
+                try{
+                    TreatmentDAO.update(t);
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }*/
     /**
      * removes content from all textfields
      */
