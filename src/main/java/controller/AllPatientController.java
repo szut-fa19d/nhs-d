@@ -13,7 +13,7 @@ import java.time.LocalDate;
 /**
  * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
  */
-public class AllPatientController extends CommmonListController<Patient, PatientDAO> {
+public class AllPatientController extends CommonListController<Patient, PatientDAO> {
     @FXML
     private TableColumn<Patient, String> colFirstName;
     @FXML
@@ -156,7 +156,7 @@ public class AllPatientController extends CommmonListController<Patient, Patient
     @Override
     public Patient handleDelete() {
         Patient deletedPatient = super.handleDelete();
-        
+
         try {
             DAOFactory.getInstance().createTreatmentDAO().deleteByPatientId((int) deletedPatient.getId());
         } catch (SQLException exception) {

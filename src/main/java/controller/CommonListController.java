@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.DatabaseEntry;
 
-public abstract class CommmonListController<T extends DatabaseEntry, DAOType extends DAO<T>> {
+public abstract class CommonListController<T extends DatabaseEntry, DAOType extends DAO<T>> {
   @FXML
   protected TableView<T> tableView;
 
@@ -32,7 +32,7 @@ public abstract class CommmonListController<T extends DatabaseEntry, DAOType ext
     this.tableviewContent.clear();
 
     this.refreshDAO(); // TODO brauchen wir das?
-    
+
     List<T> allItems;
     try {
       allItems = dao.readAll();
