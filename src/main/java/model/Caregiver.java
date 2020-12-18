@@ -1,7 +1,6 @@
 package model;
 
-public class Caregiver extends Person{
-  private long id;
+public class Caregiver extends Person {
   private String phoneNumber;
 
   public Caregiver(String firstName, String lastName, String phoneNumber) {
@@ -10,13 +9,8 @@ public class Caregiver extends Person{
   }
 
   public Caregiver(long id, String firstName, String lastName, String phoneNumber) {
-    super(firstName, lastName);
-    this.id = id;
+    super(id, firstName, lastName);
     this.phoneNumber = phoneNumber;
-  }
-
-  public long getId() {
-    return id; // TODO haben bisher alle Klassen, die von Person extenden, auch. Wie können wir hier DRY befriedigen?
   }
 
   public String getPhoneNumber() {
@@ -25,5 +19,10 @@ public class Caregiver extends Person{
 
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
+  }
+
+  @Override
+  public String toString() {
+    return this.getFirstName() + " " + this.getLastName();
   }
 }

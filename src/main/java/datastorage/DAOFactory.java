@@ -53,4 +53,8 @@ public class DAOFactory {
   public CaregiverDAO createCaregiverDAO() {
       return new CaregiverDAO(ConnectionBuilder.getConnection());
   }
+
+  public TreatmentCaregiverDAO createTreatmentCaregiverDAO() {
+      return new TreatmentCaregiverDAO(ConnectionBuilder.getConnection());
+  }
 }

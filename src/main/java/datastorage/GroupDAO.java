@@ -1,14 +1,11 @@
 package datastorage;
 
 import model.Group;
-import model.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class GroupDAO extends DAOimp<Group>{
 
@@ -59,17 +56,19 @@ public class GroupDAO extends DAOimp<Group>{
     }
 
     public Group getInstanceById(long id) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM group WHERE gid = ?");
+        try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM group WHERE gid = ?")) {
             ps.setLong(1, id);
             ResultSet result = ps.executeQuery();
+            
             if (result.next()) {
                 return getInstanceFromResultSet(result);
             }
+
             return null;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

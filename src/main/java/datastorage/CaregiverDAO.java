@@ -2,7 +2,10 @@ package datastorage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+
 import model.Caregiver;
 import java.sql.Connection;
 
@@ -39,6 +42,22 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
   @Override
   protected String getReadAllStatement() {
     return "SELECT * FROM caregiver";
+  }
+
+  public List<Caregiver> readByIds(List<Integer> caregiverIds) throws SQLException {
+    ResultSet result;
+
+    // "[1, 4, 7]", so it includes the required angled brackets!
+    String idSet = caregiverIds.toString().replace("[", "(").replace("]", ")");
+
+    try (Statement statement = this.conn.createStatement()) {
+      result = statement.executeQuery(
+        "SELECT * FROM caregiver WHERE cid in " + idSet
+        // SELECT * FROM caregiver WHERE cid in [1, 2, 4]
+      );
+    }
+
+    return this.getListFromResultSet(result);
   }
 
   @Override

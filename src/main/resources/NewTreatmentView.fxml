@@ -46,6 +46,13 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
+            <Label text="Pflegekraft:" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <ComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="caregiverCombo">
+            </ComboBox>
             <Label text="Datum:" GridPane.rowIndex="3">
                <font>
                   <Font name="System Bold" size="13.0" />

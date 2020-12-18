@@ -49,7 +49,8 @@ public abstract class DAOimp<T extends DatabaseEntry> implements DAO<T>{
         ResultSet result = null;
 
         try (Statement statement = this.conn.createStatement()) {
-            result = statement.executeQuery(getReadAllStatement());
+            String sqlCode = this.getReadAllStatement();
+            result = statement.executeQuery(sqlCode);
         }
 
         return this.getListFromResultSet(result);

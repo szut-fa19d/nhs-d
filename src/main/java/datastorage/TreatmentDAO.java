@@ -39,7 +39,9 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getReadByIDStatement(int id) {
-        return "SELECT * FROM treatment WHERE tid = " + id;
+        return "SELECT t.*, tc.cid FROM treatment t" +
+            " JOIN treatment_caregiver tc ON tc.tid = treatment.tid" +
+            " WHERE t.tid = " + id;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         Optional<Patient> optionalPatient = this.patientsMemo.get().stream()
             .filter(patient -> {
                 try {
-                    return patient.getId() == result.getLong(2);
+                    return patient.getId() == (int) result.getLong(2);
                 } catch (SQLException sqlException) {
                     return false;
                 }
@@ -61,23 +63,79 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
 
-        return new Treatment(result.getLong(1), optionalPatient.get(), date, begin, end, result.getString(6), result.getString(7));
+        Treatment treatment = new Treatment(result.getLong(1), optionalPatient.get(), date, begin, end, result.getString(6), result.getString(7));
+        this.hydrate(treatment, result);
+
+        return treatment;
+    }
+    
+    /**
+     * Read and add caregivers to treatment
+     */
+    private void hydrate(Treatment treatment, ResultSet result) throws SQLException {
+        CaregiverDAO caregiverDAO = DAOFactory.getInstance().createCaregiverDAO();
+    
+        List<Integer> caregiverIds = new ArrayList<>();
+    
+        do {
+            caregiverIds.add((int) result.getLong(8));
+        } while (result.next());
+    
+        for (Caregiver caregiver: caregiverDAO.readByIds(caregiverIds)) {
+            treatment.addCaregiver(caregiver);
+        }
     }
 
     @Override
     protected String getReadAllStatement() {
-        return "SELECT * FROM treatment";
+        return "SELECT t.*, tc.cid FROM treatment t" +
+            " JOIN treatment_caregiver tc on tc.tid = t.tid";
     }
 
     @Override
     protected ArrayList<Treatment> getListFromResultSet(ResultSet result) throws SQLException {
-        ArrayList<Treatment> list = new ArrayList<>();
+        ArrayList<Treatment> treatments = new ArrayList<>();
+        
+        List<Caregiver> caregivers = DAOFactory.getInstance().createCaregiverDAO().readAll();
+
+        int lastTreatmentId;
+
+        boolean breakOuter = false;
 
         while (result.next()) {
-            list.add(getInstanceFromResultSet(result));
+            lastTreatmentId = (int) result.getLong(1);
+            int currentTreatmentId = lastTreatmentId;
+
+            Treatment treatment = this.getInstanceFromResultSet(result);
+
+            while (lastTreatmentId == currentTreatmentId) {
+                // add caregiver
+
+                int caregiverId = (int) result.getLong(8);
+
+                treatment.addCaregiver(
+                    caregivers.stream()
+                        .filter(c -> c.getId() == caregiverId)
+                        .findAny()
+                        .orElse(null)
+                );
+
+                if (!result.next()) {
+                    breakOuter = true;
+                    break;
+                }
+
+                currentTreatmentId = (int) result.getLong(1);
+            }
+
+            treatments.add(treatment);
+            
+            if (breakOuter) {
+                break;
+            }
         }
 
-        return list;
+        return treatments;
     }
 
     @Override
