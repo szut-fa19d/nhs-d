@@ -14,12 +14,29 @@ public class Treatment extends DatabaseEntry {
     private Boolean locked;
 
     /** @see DatabaseEntry#DatabaseEntry() */
-    public Treatment(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks,Boolean locked) {
+    public Treatment(
+        Patient patient,
+        LocalDate date,
+        LocalTime begin,
+        LocalTime end,
+        String description,
+        String remarks,
+        Boolean locked
+    ) {
         this.init(patient, date, begin, end, description, remarks, locked);
     }
 
     /** @see DatabaseEntry#DatabaseEntry(long) */
-    public Treatment(long id, Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks,Boolean locked) {
+    public Treatment( // NOSONAR
+        long id,
+        Patient patient,
+        LocalDate date,
+        LocalTime begin,
+        LocalTime end,
+        String description,
+        String remarks,
+        Boolean locked
+    ) {
         super(id);
         this.init(patient, date, begin, end, description, remarks, locked);
     }
@@ -81,9 +98,13 @@ public class Treatment extends DatabaseEntry {
         this.remarks = remarks;
     }
 
-    public void setLocked(Boolean locked) { this.locked = locked; }
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 
-    public Boolean getLocked() { return locked; }
+    public boolean getLocked() {
+        return locked;
+    }
 
     /**
      * @deprecated Habe noch keine Stelle gefunden, wo diese Klasse stringified wird

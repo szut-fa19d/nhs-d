@@ -17,13 +17,30 @@ public class Patient extends Person {
     private List<Treatment> allTreatments = new ArrayList<>();
 
     /** @see Person#Person(String, String) */
-    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets, Boolean locked) {
+    public Patient(
+        String firstName,
+        String surname,
+        LocalDate dateOfBirth,
+        String careLevel,
+        String roomnumber,
+        String assets,
+        Boolean locked
+    ) {
         super(firstName, surname);
         this.init(dateOfBirth, careLevel, roomnumber, assets, locked);
     }
 
     /** @see Person#Person(long, String, String) */
-    public Patient(long id, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets, Boolean locked) {
+    public Patient( // NOSONAR
+        long id,
+        String firstName,
+        String surname,
+        LocalDate dateOfBirth,
+        String careLevel,
+        String roomnumber,
+        String assets,
+        Boolean locked
+    ) {
         super(id, firstName, surname);
         this.init(dateOfBirth, careLevel, roomnumber, assets, locked);
     }
@@ -78,9 +95,14 @@ public class Patient extends Person {
         this.assets = assets;
     }
 
-    public void setLocked(Boolean locked) { this.locked = locked; }
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 
-    public Boolean getLocked() { return locked; }
+    public boolean getLocked() {
+        return locked;
+    }
+    
     /**
      * adds a treatment to the treatment-list, if it does not already contain it.
      * @return true if the treatment was not already part of the list. otherwise false

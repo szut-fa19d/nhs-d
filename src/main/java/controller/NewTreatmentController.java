@@ -40,8 +40,7 @@ public class NewTreatmentController extends TreatmentControllerCommon {
         LocalTime end = DateConverter.convertStringToLocalTime(txtEnd.getText());
         String description = txtDescription.getText();
         String remarks = taRemarks.getText();
-        Boolean templocked = false;
-        Treatment treatment = new Treatment(patient, date, begin, end, description, remarks, templocked);
+        Treatment treatment = new Treatment(patient, date, begin, end, description, remarks, false);
         createTreatment(treatment);
         controller.readAllAndShowInTableView();
         stage.close();
