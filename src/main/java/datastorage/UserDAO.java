@@ -1,16 +1,12 @@
 package datastorage;
 
 import model.Group;
-import model.Patient;
 import model.User;
 import utils.DatabaseUtils;
-import utils.DateConverter;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class UserDAO extends DAOimp<User> {
@@ -64,8 +60,7 @@ public class UserDAO extends DAOimp<User> {
     }
 
     public User getUserByUsername(String username) {
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM user WHERE username = ?");
+        try (PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM user WHERE username = ?")) {
             ps.setString(1, username);
             ResultSet result = ps.executeQuery();
             if (result.next()) {

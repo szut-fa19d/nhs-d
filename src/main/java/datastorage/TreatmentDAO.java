@@ -47,7 +47,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getReadByIDStatement(int id) {
-        return "SELECT t.*, tc.cid FROM treatment t" +
+        return "SELECT t.*, tc.cid FROM treatment t" + // NOSONAR
             " LEFT JOIN treatment_caregiver tc ON tc.tid = treatment.tid" +
             " WHERE t.tid = " + id;
     }

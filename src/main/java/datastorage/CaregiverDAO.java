@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Caregiver;
+import utils.DatabaseUtils;
+
 import java.sql.Connection;
 
 public class CaregiverDAO extends DAOimp<Caregiver> {
@@ -89,5 +91,24 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
   @Override
   protected String getDeleteStatement(int id) {
     return "DELETE FROM caregiver WHERE cid = " + id;
+  }
+
+  @Override
+  protected void updateInstanceByResultSet(Caregiver treatment, ResultSet set) throws SQLException {
+      if (DatabaseUtils.hasColumn(set, "tid")) {
+          treatment.setId(set.getLong("tid"));
+      }
+
+      if (DatabaseUtils.hasColumn(set, "firstname")) {
+          treatment.setFirstName(set.getString("firstname"));
+      }
+
+      if (DatabaseUtils.hasColumn(set, "lastname")) {
+          treatment.setLastName(set.getString("lastname"));
+      }
+
+      if (DatabaseUtils.hasColumn(set, "phonenumber")) {
+          treatment.setPhoneNumber(set.getString("phonenumber"));
+      }
   }
 }

@@ -76,8 +76,8 @@ public class PatientDAO extends DAOimp<Patient> {
             p.setFirstName(set.getString("firstname"));
         }
 
-        if (DatabaseUtils.hasColumn(set, "surname")) {
-            p.setSurname(set.getString("surname"));
+        if (DatabaseUtils.hasColumn(set, "lastname")) {
+            p.setLastName(set.getString("lastname"));
         }
 
         if (DatabaseUtils.hasColumn(set, "dateOfBirth")) {
