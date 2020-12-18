@@ -1,6 +1,7 @@
 package datastorage;
 
 import model.Patient;
+import utils.DatabaseUtils;
 import utils.DateConverter;
 
 import java.sql.Connection;
@@ -63,5 +64,36 @@ public class PatientDAO extends DAOimp<Patient> {
     @Override
     protected String getDeleteStatement(int id) {
         return "DELETE FROM patient WHERE pid = " + id;
+    }
+
+    @Override
+    protected void updateInstanceByResultSet(Patient p, ResultSet set) throws SQLException {
+        if (DatabaseUtils.hasColumn(set, "pid")) {
+            p.setId(set.getLong("pid"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "firstname")) {
+            p.setFirstName(set.getString("firstname"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "surname")) {
+            p.setSurname(set.getString("surname"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "dateOfBirth")) {
+            p.setDateOfBirth(set.getString("dateOfBirth"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "carelevel")) {
+            p.setCareLevel(set.getString("carelevel"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "roomnumber")) {
+            p.setRoomnumber(set.getString("roomnumber"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "assets")) {
+            p.setAssets(set.getString("assets"));
+        }
     }
 }

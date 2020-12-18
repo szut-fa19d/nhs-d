@@ -4,57 +4,51 @@ import model.*;
 
 public class DAOFactory {
 
-  private static DAOFactory instance;
+    private static DAOFactory instance;
 
-  private DAOFactory() {}
+    private DAOFactory() {}
 
-  /**
-   * Get the singleton instance
-   */
-  public static DAOFactory getInstance() {
-      if (instance == null) {
-          instance = new DAOFactory();
-      }
-      return instance;
-  }
+    /**
+     * Get the singleton instance
+     */
+    public static DAOFactory getInstance() {
+        if (instance == null) {
+            instance = new DAOFactory();
+        }
+        return instance;
+    }
 
-//   public T createDAO(Class class) {
-//     return new class(ConnectionBuilder.getConnection());
-//   }
+    /**
+     * Create and return a database access object for {@link Treatment}
+     */
+    public TreatmentDAO createTreatmentDAO() {
+        return new TreatmentDAO(ConnectionBuilder.getConnection());
+    }
 
-  /**
-   * Create and return a database access object for {@link Treatment}
-   */
-  public TreatmentDAO createTreatmentDAO() {
-      return new TreatmentDAO(ConnectionBuilder.getConnection());
-  }
+    /**
+     * Create and return a database access object for {@link Patient}
+     */
+    public PatientDAO createPatientDAO() {
+        return new PatientDAO(ConnectionBuilder.getConnection());
+    }
 
-  /**
-   * Create and return a database access object for {@link Patient}
-   */
-  public PatientDAO createPatientDAO() {
-      return new PatientDAO(ConnectionBuilder.getConnection());
-  }
+    public LogEntryDAO createLogEntryDAO() {
+        return new LogEntryDAO(ConnectionBuilder.getConnection());
+    }
 
-  /**
-   * Create and return a database access object for {@link Patient}
-   */
-  public UserDAO createUserDAO() {
-      return new UserDAO(ConnectionBuilder.getConnection());
-  }
+    public UserDAO createUserDAO() {
+        return new UserDAO(ConnectionBuilder.getConnection());
+    }
 
-  /**
-   * Create and return a database access object for {@link Patient}
-   */
-  public GroupDAO createGroupDAO() {
-      return new GroupDAO(ConnectionBuilder.getConnection());
-  }
+    public GroupDAO createGroupDAO() {
+        return new GroupDAO(ConnectionBuilder.getConnection());
+    }
 
-  public CaregiverDAO createCaregiverDAO() {
-      return new CaregiverDAO(ConnectionBuilder.getConnection());
-  }
-
-  public TreatmentCaregiverDAO createTreatmentCaregiverDAO() {
-      return new TreatmentCaregiverDAO(ConnectionBuilder.getConnection());
-  }
+    public CaregiverDAO createCaregiverDAO() {
+        return new CaregiverDAO(ConnectionBuilder.getConnection());
+    }
+  
+    public TreatmentCaregiverDAO createTreatmentCaregiverDAO() {
+        return new TreatmentCaregiverDAO(ConnectionBuilder.getConnection());
+    }
 }

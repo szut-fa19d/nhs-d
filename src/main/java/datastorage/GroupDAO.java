@@ -1,6 +1,7 @@
 package datastorage;
 
 import model.Group;
+import utils.DatabaseUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,5 +71,16 @@ public class GroupDAO extends DAOimp<Group>{
         }
 
         return null;
+    }
+
+    @Override
+    protected void updateInstanceByResultSet(Group g, ResultSet set) throws SQLException {
+        if (DatabaseUtils.hasColumn(set, "gid")) {
+            g.setId(set.getLong("gid"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "groupName")) {
+            g.setGroupName(set.getString("groupName"));
+        }
     }
 }

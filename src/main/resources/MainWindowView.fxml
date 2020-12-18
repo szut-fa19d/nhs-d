@@ -19,6 +19,9 @@
             <Tab closable="false" text="Pflegekräfte" fx:id="caregiverView" disable="true" style="visibility: hidden;">
                 <fx:include fx:id="allCaregiverView" source="AllCaregiverView.fxml" />
             </Tab>
+            <Tab closable="false" text="Log">
+                <fx:include fx:id="allLogView" source="AllLogView.fxml" />
+            </Tab>
         </tabs>
     </TabPane>
    <Text fx:id="currentLogin" fill="#6b6b6b" strokeType="OUTSIDE" strokeWidth="0.0" translateX="-80.0" translateY="8.0" StackPane.alignment="TOP_RIGHT" />

@@ -12,6 +12,9 @@ import model.Caregiver;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
+import utils.LogType;
+import utils.Logger;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -79,6 +82,8 @@ public class NewTreatmentController extends TreatmentControllerCommon {
             for (Caregiver caregiver: treatment.getCaregivers()) {
                 caretreatDAO.link(treatment, caregiver);
             }
+
+            Logger.getInstance().log(LogType.TREATMENT, treatment.getId(), String.format("Treatment %s erstellt", treatment.getId()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
