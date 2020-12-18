@@ -3,7 +3,6 @@ package datastorage;
 import model.*;
 import utils.DateConverter;
 import utils.Memoize;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -11,36 +10,40 @@ import java.util.*;
 
 public class TreatmentDAO extends DAOimp<Treatment> {
     private Memoize<Patient> patientsMemo;
+    private Memoize<Caregiver> caregiverMemo;
 
     /**
-     * Store the connection and setup the memoization for thee patients
+     * Store the connection and setup the memoization for the patients
      */
     public TreatmentDAO(Connection conn) {
         super(conn);
         this.patientsMemo = new Memoize<>(
             () -> DAOFactory.getInstance().createPatientDAO().readAll()
         );
+        this.caregiverMemo = new Memoize<>(
+            () -> DAOFactory.getInstance().createCaregiverDAO().readAll()
+        );
     }
 
     @Override
     protected String getCreateStatement(Treatment treatment) {
+        String stringValues = String.join(
+            "', '",
+            treatment.getDate(),
+            treatment.getBegin(),
+            treatment.getEnd(),
+            treatment.getDescription(),
+            treatment.getRemarks()
+        );
+
         return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks)" +
-            "VALUES (" + treatment.getPatient().getId() + ", '" +
-            String.join(
-                "', '",
-                treatment.getDate(),
-                treatment.getBegin(),
-                treatment.getEnd(),
-                treatment.getDescription(),
-                treatment.getRemarks()
-            ) +
-            "')"; // TODO Das geht safe schöner
+            "VALUES (" + treatment.getPatient().getId() + ", '" + stringValues + "')";
     }
 
     @Override
     protected String getReadByIDStatement(int id) {
         return "SELECT t.*, tc.cid FROM treatment t" +
-            " JOIN treatment_caregiver tc ON tc.tid = treatment.tid" +
+            " LEFT JOIN treatment_caregiver tc ON tc.tid = treatment.tid" +
             " WHERE t.tid = " + id;
     }
 
@@ -73,15 +76,22 @@ public class TreatmentDAO extends DAOimp<Treatment> {
      * Read and add caregivers to treatment
      */
     private void hydrate(Treatment treatment, ResultSet result) throws SQLException {
-        CaregiverDAO caregiverDAO = DAOFactory.getInstance().createCaregiverDAO();
-    
-        List<Integer> caregiverIds = new ArrayList<>();
+        List<Long> caregiverIds = new ArrayList<>();
     
         do {
-            caregiverIds.add((int) result.getLong(8));
-        } while (result.next());
-    
-        for (Caregiver caregiver: caregiverDAO.readByIds(caregiverIds)) {
+            long caregiverIdField = result.getLong(8);
+
+            if (caregiverIdField != 0) {
+                caregiverIds.add(caregiverIdField);
+            }
+        } while (result.next() && treatment.getId() == result.getLong(1));
+        // as long as the row is still for the same treatment
+
+        for (long caregiverId: caregiverIds) {
+            Caregiver caregiver = this.caregiverMemo.get().stream()
+                .filter(c -> c.getId() == caregiverId)
+                .findAny().orElse(null);
+
             treatment.addCaregiver(caregiver);
         }
     }
@@ -89,48 +99,26 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     @Override
     protected String getReadAllStatement() {
         return "SELECT t.*, tc.cid FROM treatment t" +
-            " JOIN treatment_caregiver tc on tc.tid = t.tid";
+            " LEFT JOIN treatment_caregiver tc on tc.tid = t.tid";
     }
 
     @Override
     protected ArrayList<Treatment> getListFromResultSet(ResultSet result) throws SQLException {
         ArrayList<Treatment> treatments = new ArrayList<>();
+
+        boolean noResults = !result.next();
+
+        if (noResults) {
+            return treatments;
+        }
         
-        List<Caregiver> caregivers = DAOFactory.getInstance().createCaregiverDAO().readAll();
-
-        int lastTreatmentId;
-
-        boolean breakOuter = false;
-
-        while (result.next()) {
-            lastTreatmentId = (int) result.getLong(1);
-            int currentTreatmentId = lastTreatmentId;
-
+        while (true) {
             Treatment treatment = this.getInstanceFromResultSet(result);
-
-            while (lastTreatmentId == currentTreatmentId) {
-                // add caregiver
-
-                int caregiverId = (int) result.getLong(8);
-
-                treatment.addCaregiver(
-                    caregivers.stream()
-                        .filter(c -> c.getId() == caregiverId)
-                        .findAny()
-                        .orElse(null)
-                );
-
-                if (!result.next()) {
-                    breakOuter = true;
-                    break;
-                }
-
-                currentTreatmentId = (int) result.getLong(1);
-            }
-
             treatments.add(treatment);
-            
-            if (breakOuter) {
+
+            boolean currentRowIsValid = result.getRow() != 0;
+
+            if (!currentRowIsValid) {
                 break;
             }
         }
@@ -140,8 +128,22 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getUpdateStatement(Treatment treatment) {
-        return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s',description = '%s', remarks = '%s' WHERE tid = %d",
-            treatment.getPatient().getId(), treatment.getDate(), treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(), treatment.getId());
+        return String.format(
+            "UPDATE treatment SET pid = %d,"
+         + "   treatment_date ='%s',"
+         + "   begin = '%s',"
+         + "   end = '%s',"
+         + "   description = '%s',"
+         + "   remarks = '%s'"
+         + " WHERE tid = %d",
+            treatment.getPatient().getId(),
+            treatment.getDate(),
+            treatment.getBegin(),
+            treatment.getEnd(),
+            treatment.getDescription(),
+            treatment.getRemarks(),
+            treatment.getId()
+        );
     }
 
     @Override
@@ -156,10 +158,26 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         ResultSet result;
 
         try (Statement statement = this.conn.createStatement()) {
-            result = statement.executeQuery("SELECT * FROM treatment WHERE pid = " + patientId);
+            result = statement.executeQuery(
+                "SELECT t.*, tc.cid FROM treatment t"
+             + " JOIN treatment_caregiver tc on tc.tid = t.tid"
+             + " WHERE t.pid = " + patientId
+            );
         }
 
         return getListFromResultSet(result);
+    }
+
+    @Override
+    public void deleteById(int id) throws SQLException {
+        try (Statement statement = this.conn.createStatement()) {
+            statement.executeUpdate(
+                "DELETE FROM treatment_caregiver tc"
+             + " WHERE tc.tid = " + id
+            );
+
+            statement.executeUpdate(getDeleteStatement(id));
+        }
     }
 
     /**
@@ -167,7 +185,15 @@ public class TreatmentDAO extends DAOimp<Treatment> {
      */
     public void deleteByPatientId(int patientId) throws SQLException {
         try (Statement statement = this.conn.createStatement()) {
-            statement.executeQuery("DELETE FROM treatment WHERE pid = " + patientId);
+            // Delete treatment-caregiver links
+            statement.executeUpdate(
+                "DELETE FROM treatment_caregiver tc"
+             + " JOIN treatment t ON t.id = tc.tid"
+             + " WHERE t.pid = " + patientId
+            );
+
+            // Delete actual treatments
+            statement.executeUpdate("DELETE FROM treatment WHERE pid = " + patientId);
         }
     }
 }

@@ -4,8 +4,8 @@ import datastorage.CaregiverDAO;
 import datastorage.TreatmentCaregiverDAO;
 import datastorage.DAOFactory;
 import datastorage.TreatmentDAO;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import model.Caregiver;
@@ -15,6 +15,7 @@ import utils.DateConverter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import org.controlsfx.control.CheckComboBox;
 
 public class NewTreatmentController extends TreatmentControllerCommon {
     @FXML
@@ -22,7 +23,7 @@ public class NewTreatmentController extends TreatmentControllerCommon {
     @FXML
     private Label lblFirstName;
     @FXML
-    private ComboBox<Caregiver> caregiverCombo;
+    private CheckComboBox<Caregiver> caregiverCombo;
 
     /**
      * @see TreatmentControllerCommon#initialize
@@ -47,16 +48,21 @@ public class NewTreatmentController extends TreatmentControllerCommon {
      * Handles the Create button to create a new treatment
      */
     @FXML
-    public void handleAdd(){
+    public void handleAdd() throws SQLException {
         LocalDate date = this.datepicker.getValue();
         LocalTime begin = DateConverter.convertStringToLocalTime(txtBegin.getText());
         LocalTime end = DateConverter.convertStringToLocalTime(txtEnd.getText());
         String description = txtDescription.getText();
         String remarks = taRemarks.getText();
-        Caregiver caregiver = this.caregiverCombo.getSelectionModel().getSelectedItem();
+        ObservableList<Caregiver> caregivers = this.caregiverCombo.getCheckModel().getCheckedItems();
 
         Treatment treatment = new Treatment(patient, date, begin, end, description, remarks);
-        treatment.addCaregiver(caregiver);
+        TreatmentCaregiverDAO tcDao = DAOFactory.getInstance().createTreatmentCaregiverDAO();
+
+        for (Caregiver caregiver: caregivers) {
+            treatment.addCaregiver(caregiver);
+            tcDao.link(treatment, caregiver);
+        }
 
         this.createTreatment(treatment);
         this.controller.readAllAndShowInTableView();
