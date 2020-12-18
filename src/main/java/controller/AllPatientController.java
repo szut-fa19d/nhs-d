@@ -1,12 +1,15 @@
 package controller;
 
 import datastorage.PatientDAO;
+import datastorage.TreatmentDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Patient;
 import datastorage.DAOFactory;
+import model.Treatment;
+import model.User;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -26,6 +29,8 @@ public class AllPatientController extends CommonListController<Patient, PatientD
     private TableColumn<Patient, String> colRoom;
     @FXML
     private TableColumn<Patient, String> colAssets;
+    @FXML
+    private TableColumn<Patient, Boolean> colLocked;
 
     @FXML
     Button btnDelete;
@@ -61,6 +66,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
 
         this.colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         this.colLastName.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.colLocked.setCellValueFactory(new PropertyValueFactory<>("locked"));
 
         this.colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
         this.colDateOfBirth.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -83,9 +89,11 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditFirstName(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setFirstName(event.getNewValue());
-        doUpdate(event);
+    public void handleOnEditFirstName(TableColumn.CellEditEvent<Patient, String> event) {
+        if (!event.getRowValue().getLocked()) {
+            event.getRowValue().setFirstName(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -93,9 +101,11 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditLastName(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setLastName(event.getNewValue());
-        doUpdate(event);
+    public void handleOnEditLastName(TableColumn.CellEditEvent<Patient, String> event) {
+        if (!event.getRowValue().getLocked()) {
+            event.getRowValue().setLastName(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -104,8 +114,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setDateOfBirth(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setDateOfBirth(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -114,8 +126,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditCareLevel(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setCareLevel(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setCareLevel(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -124,8 +138,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditRoomnumber(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setRoomnumber(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setRoomnumber(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -179,13 +195,61 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         String assets = this.txtAssets.getText();
 
         try {
-            Patient p = new Patient(firstName, lastName, patientBirthday, carelevel, room, assets);
+            Patient p = new Patient(firstName, lastName, patientBirthday, carelevel, room, assets, false);
             dao.create(p);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         readAllAndShowInTableView();
         clearTextfields();
+    }
+
+    @FXML
+    public void handleLockFocusedPatient() {
+        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+        selectedPatient.setLocked(true);
+        try {
+            dao.update(selectedPatient);
+            changeLockForAllTreatmentsfor(selectedPatient,true);
+            this.tableView.refresh();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * handels the unlocking of the current focused user and his treatments.
+     */
+    @FXML
+    public void handleUnLockFocusedPatient() {
+        User user = UserController.getInstance().getUser();
+
+        if (user.getGroup() != 1) {
+            return;
+        }
+        
+        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+        selectedPatient.setLocked(false);
+        try {
+            dao.update(selectedPatient);
+            this.changeLockForAllTreatmentsfor(selectedPatient, false);
+            this.tableView.refresh();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void changeLockForAllTreatmentsfor(Patient patient, Boolean lockValue) {
+        TreatmentDAO treatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
+        try {
+            for (Treatment t: treatmentDAO.readTreatmentsByPatientId(patient.getId())) {
+                t.setLocked(lockValue);
+                treatmentDAO.update(t);
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     /**

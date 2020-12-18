@@ -14,22 +14,40 @@ public class Treatment extends DatabaseEntry {
     private LocalTime end;
     private String description;
     private String remarks;
+    private Boolean locked;
 
     /** @see DatabaseEntry#DatabaseEntry() */
-    public Treatment(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
-        this.init(patient, date, begin, end, description, remarks);
+    public Treatment(
+        Patient patient,
+        LocalDate date,
+        LocalTime begin,
+        LocalTime end,
+        String description,
+        String remarks,
+        Boolean locked
+    ) {
+        this.init(patient, date, begin, end, description, remarks, locked);
     }
-    
+
     /** @see DatabaseEntry#DatabaseEntry(long) */
-    public Treatment(long id, Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+    public Treatment( // NOSONAR
+        long id,
+        Patient patient,
+        LocalDate date,
+        LocalTime begin,
+        LocalTime end,
+        String description,
+        String remarks,
+        Boolean locked
+    ) {
         super(id);
-        this.init(patient, date, begin, end, description, remarks);
+        this.init(patient, date, begin, end, description, remarks, locked);
     }
 
     /**
      * Assignements that the constructors have in common
      */
-    private void init(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks) {
+    private void init(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks, Boolean locked) {
         this.patient = patient;
         this.caregivers = new ArrayList<>();
         this.date = date;
@@ -37,6 +55,7 @@ public class Treatment extends DatabaseEntry {
         this.end = end;
         this.description = description;
         this.remarks = remarks;
+        this.locked = locked;
     }
 
     public Patient getPatient() {
@@ -95,6 +114,14 @@ public class Treatment extends DatabaseEntry {
         this.remarks = remarks;
     }
 
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public boolean getLocked() {
+        return locked;
+    }
+
     /**
      * @deprecated Habe noch keine Stelle gefunden, wo diese Klasse stringified wird
      */
@@ -106,6 +133,8 @@ public class Treatment extends DatabaseEntry {
                 "\nBegin: " + begin +
                 "\nEnd: " + end +
                 "\nDescription: " + description +
-                "\nRemarks: " + remarks + "\n";
+                "\nRemarks: " + remarks +
+                "\nLocked: " + locked +
+                "\n";
     }
 }

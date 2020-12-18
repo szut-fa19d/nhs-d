@@ -56,7 +56,7 @@ public class NewTreatmentController extends TreatmentControllerCommon {
         String remarks = taRemarks.getText();
         ObservableList<Caregiver> caregivers = this.caregiverCombo.getCheckModel().getCheckedItems();
 
-        Treatment treatment = new Treatment(patient, date, begin, end, description, remarks);
+        Treatment treatment = new Treatment(patient, date, begin, end, description, remarks, false);
         TreatmentCaregiverDAO tcDao = DAOFactory.getInstance().createTreatmentCaregiverDAO();
 
         for (Caregiver caregiver: caregivers) {

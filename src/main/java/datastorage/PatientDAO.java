@@ -20,8 +20,8 @@ public class PatientDAO extends DAOimp<Patient> {
 
     @Override
     protected String getCreateStatement(Patient patient) {
-        return String.format("INSERT INTO patient (firstname, lastname, dateOfBirth, carelevel, roomnumber, assets) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
-                patient.getFirstName(), patient.getLastName(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber(), patient.getAssets());
+        return String.format("INSERT INTO patient (firstname, lastname, dateOfBirth, carelevel, roomnumber, assets) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%b')",
+                patient.getFirstName(), patient.getLastName(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber(), patient.getAssets(), patient.getLocked());
     }
 
     @Override
@@ -34,7 +34,7 @@ public class PatientDAO extends DAOimp<Patient> {
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
         return new Patient(result.getInt(1), result.getString(2),
                 result.getString(3), date, result.getString(5),
-                result.getString(6), result.getString(7));
+                result.getString(6), result.getString(7), result.getBoolean(8));
     }
 
     @Override
@@ -56,8 +56,8 @@ public class PatientDAO extends DAOimp<Patient> {
     @Override
     protected String getUpdateStatement(Patient p) {
         return String.format("UPDATE patient SET firstname = '%s', lastname = '%s', dateOfBirth = '%s', carelevel = '%s', " +
-                "roomnumber = '%s', assets = '%s' WHERE pid = %d", p.getFirstName(), p.getLastName(), p.getDateOfBirth(),
-                p.getCareLevel(), p.getRoomnumber(), p.getAssets(), p.getId());
+                "roomnumber = '%s', assets = '%s', locked = '%b' WHERE pid = %d", p.getFirstName(), p.getLastName(), p.getDateOfBirth(),
+                p.getCareLevel(), p.getRoomnumber(), p.getAssets(), p.getLocked(), p.getId());
     }
 
     @Override

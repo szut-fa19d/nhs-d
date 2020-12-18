@@ -37,7 +37,11 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         );
 
         return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks)" +
-            "VALUES (" + treatment.getPatient().getId() + ", '" + stringValues + "')";
+            "VALUES ("
+           + treatment.getPatient().getId()
+           + ", '" + stringValues + "', "
+           + treatment.getLocked()
+          + ")";
     }
 
     @Override
@@ -66,7 +70,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
 
-        Treatment treatment = new Treatment(result.getLong(1), optionalPatient.get(), date, begin, end, result.getString(6), result.getString(7));
+        Treatment treatment = new Treatment(result.getLong(1), optionalPatient.get(), date, begin, end, result.getString(6), result.getString(7), result.getBoolean(8));
         this.hydrate(treatment, result);
 
         return treatment;
@@ -79,7 +83,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         List<Long> caregiverIds = new ArrayList<>();
     
         do {
-            long caregiverIdField = result.getLong(8);
+            long caregiverIdField = result.getLong(9);
 
             if (caregiverIdField != 0) {
                 caregiverIds.add(caregiverIdField);
@@ -135,6 +139,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
          + "   end = '%s',"
          + "   description = '%s',"
          + "   remarks = '%s'"
+         + "   locked = '%b'"
          + " WHERE tid = %d",
             treatment.getPatient().getId(),
             treatment.getDate(),
@@ -142,6 +147,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
             treatment.getEnd(),
             treatment.getDescription(),
             treatment.getRemarks(),
+            treatment.getLocked(),
             treatment.getId()
         );
     }
