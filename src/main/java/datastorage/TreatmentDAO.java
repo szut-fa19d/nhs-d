@@ -25,7 +25,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getCreateStatement(Treatment treatment) {
-        return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks)" +
+        return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks, locked)" +
             "VALUES (" + treatment.getPatient().getId() + ", '" +
             String.join(
                 "', '",
@@ -35,6 +35,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
                 treatment.getDescription(),
                 treatment.getRemarks()
             ) +
+        treatment.getLocked()
+                +
             "')"; // TODO Das geht safe schöner
     }
 
@@ -62,7 +64,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
 
-        return new Treatment(result.getLong(1), optionalPatient.get(), date, begin, end, result.getString(6), result.getString(7));
+        return new Treatment(result.getLong(1), optionalPatient.get(), date, begin, end, result.getString(6), result.getString(7), result.getBoolean(8));
     }
 
     @Override
@@ -83,8 +85,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getUpdateStatement(Treatment treatment) {
-        return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s',description = '%s', remarks = '%s' WHERE tid = %d",
-            treatment.getPatient().getId(), treatment.getDate(), treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(), treatment.getId());
+        return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s',description = '%s', remarks = '%s', locked = '%b' WHERE tid = %d",
+            treatment.getPatient().getId(), treatment.getDate(), treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(),treatment.getLocked(), treatment.getId());
     }
 
     @Override
