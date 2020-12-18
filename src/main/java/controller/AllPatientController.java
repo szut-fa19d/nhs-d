@@ -1,12 +1,18 @@
 package controller;
 
 import datastorage.PatientDAO;
+import datastorage.TreatmentDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import model.DatabaseEntry;
 import model.Patient;
 import datastorage.DAOFactory;
+import model.Treatment;
+import model.User;
+import utils.Memoize;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -26,6 +32,8 @@ public class AllPatientController extends CommonListController<Patient, PatientD
     private TableColumn<Patient, String> colRoom;
     @FXML
     private TableColumn<Patient, String> colAssets;
+    @FXML
+    private TableColumn<Patient, Boolean> colLocked;
 
     @FXML
     Button btnDelete;
@@ -59,6 +67,8 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         //CellFactory zum Schreiben innerhalb der Tabelle
         this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
 
+        this.colLocked.setCellValueFactory(new PropertyValueFactory<>("locked"));
+
         this.colSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
         this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -84,8 +94,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditFirstname(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setFirstName(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setFirstName(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -94,8 +106,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditSurname(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setSurname(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setSurname(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -104,8 +118,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setDateOfBirth(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setDateOfBirth(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -114,8 +130,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditCareLevel(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setCareLevel(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setCareLevel(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -124,8 +142,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditRoomnumber(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setRoomnumber(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setRoomnumber(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -178,7 +198,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         String room = this.txtRoom.getText();
         String assets = this.txtAssets.getText();
         try {
-            Patient p = new Patient(firstname, surname, birthdayValue, carelevel, room, assets);
+            Patient p = new Patient(firstname, surname, birthdayValue, carelevel, room, assets,false);
             dao.create(p);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -187,6 +207,58 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         clearTextfields();
     }
 
+    @FXML
+    public void handleLockFocusedPatient() {
+        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+        selectedPatient.setLocked(true);
+        try {
+            dao.update(selectedPatient);
+            ChangeLockForAllTreatmentsfor(selectedPatient,true);
+            this.tableView.refresh();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * handels the unlocking of the current focused user and his treatments.
+     */
+    @FXML
+    public void handleUnLockFocusedPatient() {
+         User user = UserController.getInstance().getUser();
+         if(1 == user.getGroup()){
+            Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+            selectedPatient.setLocked(false);
+            try {
+                dao.update(selectedPatient);
+                ChangeLockForAllTreatmentsfor(selectedPatient, false);
+                this.tableView.refresh();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return;
+    }
+
+    private void ChangeLockForAllTreatmentsfor(Patient patient,Boolean lockValue)
+    {
+        TreatmentDAO TreatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
+        try {
+            for(Treatment t : TreatmentDAO.readTreatmentsByPatientId(patient.getId()))
+            {
+                t.setLocked(lockValue);
+                try{
+                    TreatmentDAO.update(t);
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
     /**
      * removes content from all textfields
      */

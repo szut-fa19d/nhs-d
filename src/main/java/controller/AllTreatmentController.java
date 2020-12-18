@@ -32,6 +32,8 @@ public class AllTreatmentController extends CommonListController<Treatment, Trea
     @FXML
     private TableColumn<Treatment, String> colDescription;
     @FXML
+    private TableColumn<Treatment, Boolean> colLocked;
+    @FXML
     private ComboBox<String> comboBox;
     @FXML
     private Button btnNewTreatment;
@@ -59,6 +61,7 @@ public class AllTreatmentController extends CommonListController<Treatment, Trea
         this.colBegin.setCellValueFactory(new PropertyValueFactory<>("begin"));
         this.colEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
         this.colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        this.colLocked.setCellValueFactory(new PropertyValueFactory<>("locked"));
 
         this.tableView.setRowFactory( tv -> {
             TableRow<Treatment> row = new TableRow<>();
@@ -167,6 +170,10 @@ public class AllTreatmentController extends CommonListController<Treatment, Trea
     }
 
     public void treatmentWindow(Treatment treatment){
+        if (treatment.getLocked()) {
+            return;
+        }
+
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));
             AnchorPane pane = loader.load();

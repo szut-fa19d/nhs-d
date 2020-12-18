@@ -13,28 +13,47 @@ public class Patient extends Person {
     private String careLevel;
     private String roomnumber;
     private String assets;
+    private Boolean locked;
     private List<Treatment> allTreatments = new ArrayList<>();
 
     /** @see Person#Person(String, String) */
-    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
+    public Patient(
+        String firstName,
+        String surname,
+        LocalDate dateOfBirth,
+        String careLevel,
+        String roomnumber,
+        String assets,
+        Boolean locked
+    ) {
         super(firstName, surname);
-        this.init(dateOfBirth, careLevel, roomnumber, assets);
+        this.init(dateOfBirth, careLevel, roomnumber, assets, locked);
     }
 
     /** @see Person#Person(long, String, String) */
-    public Patient(long id, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
+    public Patient( // NOSONAR
+        long id,
+        String firstName,
+        String surname,
+        LocalDate dateOfBirth,
+        String careLevel,
+        String roomnumber,
+        String assets,
+        Boolean locked
+    ) {
         super(id, firstName, surname);
-        this.init(dateOfBirth, careLevel, roomnumber, assets);
+        this.init(dateOfBirth, careLevel, roomnumber, assets, locked);
     }
 
     /**
      * This method holds the assignments that both constructors have in common
      */
-    private void init(LocalDate dateOfBirth, String careLevel, String roomnumber, String assets) {
+    private void init(LocalDate dateOfBirth, String careLevel, String roomnumber, String assets, boolean locked) {
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
         this.assets = assets;
+        this.locked = locked;
     }
 
     /**
@@ -76,6 +95,14 @@ public class Patient extends Person {
         this.assets = assets;
     }
 
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public boolean getLocked() {
+        return locked;
+    }
+    
     /**
      * adds a treatment to the treatment-list, if it does not already contain it.
      * @return true if the treatment was not already part of the list. otherwise false
@@ -84,7 +111,7 @@ public class Patient extends Person {
         if (this.allTreatments.contains(treatment)) {
             return false;
         }
-        
+
         this.allTreatments.add(treatment);
         return true;
     }
@@ -97,6 +124,7 @@ public class Patient extends Person {
                 "\nCarelevel: " + this.careLevel +
                 "\nRoomnumber: " + this.roomnumber +
                 "\nAssets: " + this.assets +
+                "\nLocked: " + this.locked +
                 "\n";
     }
 }
