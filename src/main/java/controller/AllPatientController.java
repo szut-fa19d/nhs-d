@@ -213,15 +213,19 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleUnLockFocusedPatient() {
-        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
-        selectedPatient.setLocked(false);
-        try {
-            dao.update(selectedPatient);
-            ChangeLockForAllTreatmentsfor(selectedPatient, false);
-            this.tableView.refresh();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
+        model.User user = UserController.getInstance().getUser();
+
+        if(1 == user.getGroup()){
+            Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+            selectedPatient.setLocked(false);
+            try {
+                dao.update(selectedPatient);
+                ChangeLockForAllTreatmentsfor(selectedPatient, false);
+                this.tableView.refresh();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return;
     }
@@ -235,7 +239,6 @@ public class AllPatientController extends CommonListController<Patient, PatientD
                 t.setLocked(lockValue);
                 try{
                     TreatmentDAO.update(t);
-
                 }
                 catch (SQLException e){
                     e.printStackTrace();
