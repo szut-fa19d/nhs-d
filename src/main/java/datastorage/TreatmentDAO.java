@@ -37,7 +37,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
             treatment.getRemarks()
         );
 
-        return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks)" +
+        return "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks, locked)" +
             "VALUES ("
            + treatment.getPatient().getId()
            + ", '" + stringValues + "', "
@@ -76,13 +76,13 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
         return treatment;
     }
-    
+
     /**
      * Read and add caregivers to treatment
      */
     private void hydrate(Treatment treatment, ResultSet result) throws SQLException {
         List<Long> caregiverIds = new ArrayList<>();
-    
+
         do {
             long caregiverIdField = result.getLong(9);
 
@@ -116,7 +116,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         if (noResults) {
             return treatments;
         }
-        
+
         while (true) {
             Treatment treatment = this.getInstanceFromResultSet(result);
             treatments.add(treatment);
