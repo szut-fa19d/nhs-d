@@ -1,6 +1,5 @@
 package utils;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -14,7 +13,7 @@ public class Memoize<T> {
     this.storage = new ArrayList<>();
   }
 
-  public List<T> get() throws SQLException {
+  public List<T> get() {
     if (this.storage.isEmpty()) {
       try {
         this.storage = this.loader.call();
