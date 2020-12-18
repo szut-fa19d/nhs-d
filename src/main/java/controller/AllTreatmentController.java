@@ -170,22 +170,24 @@ public class AllTreatmentController extends CommonListController<Treatment, Trea
     }
 
     public void treatmentWindow(Treatment treatment){
-        try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));
-            AnchorPane pane = loader.load();
-            Scene scene = new Scene(pane);
-            //da die primaryStage noch im Hintergrund bleiben soll
-            Stage stage = new Stage();
-            TreatmentController controller = loader.getController();
+        if(!treatment.getLocked()) {
+            try {
+                FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));
+                AnchorPane pane = loader.load();
+                Scene scene = new Scene(pane);
+                //da die primaryStage noch im Hintergrund bleiben soll
+                Stage stage = new Stage();
+                TreatmentController controller = loader.getController();
 
-            controller.initializeController(this, stage, treatment);
+                controller.initializeController(this, stage, treatment);
 
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.showAndWait();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.showAndWait();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 

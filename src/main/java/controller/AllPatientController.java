@@ -10,6 +10,7 @@ import model.DatabaseEntry;
 import model.Patient;
 import datastorage.DAOFactory;
 import model.Treatment;
+import model.User;
 import utils.Memoize;
 
 import java.sql.SQLException;
@@ -93,8 +94,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditFirstname(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setFirstName(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setFirstName(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -103,8 +106,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditSurname(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setSurname(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setSurname(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -113,8 +118,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setDateOfBirth(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setDateOfBirth(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -123,8 +130,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditCareLevel(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setCareLevel(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setCareLevel(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -133,8 +142,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleOnEditRoomnumber(TableColumn.CellEditEvent<Patient, String> event){
-        event.getRowValue().setRoomnumber(event.getNewValue());
-        doUpdate(event);
+        if(!event.getRowValue().getLocked()) {
+            event.getRowValue().setRoomnumber(event.getNewValue());
+            doUpdate(event);
+        }
     }
 
     /**
@@ -213,9 +224,8 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleUnLockFocusedPatient() {
-        model.User user = UserController.getInstance().getUser();
-
-        if(1 == user.getGroup()){
+         User user = UserController.getInstance().getUser();
+         if(1 == user.getGroup()){
             Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
             selectedPatient.setLocked(false);
             try {
