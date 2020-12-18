@@ -1,3 +1,5 @@
+# Javadoc: https://szut-fa19d.github.io/nhs-d/
+
 # NHPlus
 
 ## Informationen zur Lernsituation
