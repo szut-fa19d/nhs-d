@@ -3,6 +3,7 @@ package datastorage;
 import model.Group;
 import model.Patient;
 import model.User;
+import utils.DatabaseUtils;
 import utils.DateConverter;
 
 import java.sql.Connection;
@@ -75,5 +76,26 @@ public class UserDAO extends DAOimp<User> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void updateInstanceByResultSet(User u, ResultSet set) throws SQLException {
+        if (DatabaseUtils.hasColumn(set, "uid")) {
+            u.setId(set.getLong("uid"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "username")) {
+            u.setUsername(set.getString("username"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "password")) {
+            u.setPassword(set.getString("password"));
+        }
+
+        if (DatabaseUtils.hasColumn(set, "gid")) {
+            GroupDAO groupDAO = new GroupDAO(conn);
+            Group group = groupDAO.getInstanceById(set.getInt("gid"));
+            u.setGroup(group);
+        }
     }
 }

@@ -16,7 +16,7 @@ public class LogEntryDAO extends DAOimp<LogEntry> {
 
     @Override
     protected String getCreateStatement(LogEntry log) {
-        return String.format("INSERT INTO log (type, obj_id, user_id, desc) VALUES ('%s', '%s', '%s', '%s')",
+        return String.format("INSERT INTO log (type, objid, userid, desc) VALUES ('%s', '%s', '%s', '%s')",
             log.getType(), log.getObjId(), log.getUserId(), log.getDesc());
     }
 
@@ -29,10 +29,10 @@ public class LogEntryDAO extends DAOimp<LogEntry> {
     protected LogEntry getInstanceFromResultSet(ResultSet result) throws SQLException {
         return new LogEntry(
             result.getInt("id"),
-            result.getLong("timestamp"),
+            result.getString("timestamp"),
             result.getString("type"),
-            result.getInt("obj_id"),
-            result.getInt("user_id"),
+            result.getInt("objid"),
+            result.getInt("userid"),
             result.getString("desc")
         );
     }
@@ -55,7 +55,7 @@ public class LogEntryDAO extends DAOimp<LogEntry> {
 
     @Override
     protected String getUpdateStatement(LogEntry log) {
-        return String.format("UPDATE log SET timestamp = '%s', type = '%s', obj_id = '%s', user_id = '%s', desc = '%s' WHERE id = %d",
+        return String.format("UPDATE log SET timestamp = '%s', type = '%s', objid = '%s', userid = '%s', desc = '%s' WHERE id = %d",
             log.getTimestamp(), log.getType(), log.getObjId(), log.getUserId(), log.getDesc(), log.getId());
     }
 
@@ -71,19 +71,19 @@ public class LogEntryDAO extends DAOimp<LogEntry> {
         }
 
         if(DatabaseUtils.hasColumn(set, "timestamp")) {
-            log.setTimestamp(set.getInt("timestamp"));
+            log.setTimestamp(set.getString("timestamp"));
         }
 
         if (DatabaseUtils.hasColumn(set, "type")) {
             log.setType(set.getString("type"));
         }
 
-        if (DatabaseUtils.hasColumn(set, "obj_id")) {
-            log.setObjId(set.getInt("obj_id"));
+        if (DatabaseUtils.hasColumn(set, "objid")) {
+            log.setObjId(set.getInt("objid"));
         }
 
-        if (DatabaseUtils.hasColumn(set, "user_id")) {
-            log.setUserId(set.getInt("user_id"));
+        if (DatabaseUtils.hasColumn(set, "userid")) {
+            log.setUserId(set.getInt("userid"));
         }
 
         if (DatabaseUtils.hasColumn(set, "desc")) {

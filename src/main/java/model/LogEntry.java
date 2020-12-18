@@ -1,20 +1,20 @@
 package model;
 
 public class LogEntry extends DatabaseEntry {
-    private long timestamp;
+    private String timestamp;
     private String type;
     private long objId;
     private long userId;
     private String desc;
 
-    public LogEntry(String type, long objId, int userId, String desc) {
+    public LogEntry(String type, long objId, long userId, String desc) {
         this.type = type;
         this.objId = objId;
         this.userId = userId;
         this.desc = desc;
     }
 
-    public LogEntry(long id, long timestamp, String type, long objId, int userId, String desc) {
+    public LogEntry(long id, String timestamp, String type, long objId, long userId, String desc) {
         super(id);
         this.timestamp = timestamp;
         this.type = type;
@@ -23,11 +23,11 @@ public class LogEntry extends DatabaseEntry {
         this.desc = desc;
     }
 
-    public long getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 

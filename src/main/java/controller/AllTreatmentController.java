@@ -14,6 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
+import utils.LogType;
+import utils.Logger;
 import datastorage.DAOFactory;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -188,5 +190,10 @@ public class AllTreatmentController extends CommonListController<Treatment, Trea
 
     protected void refreshDAO() {
         this.dao = DAOFactory.getInstance().createTreatmentDAO();
+    }
+
+    @Override
+    protected void logDelete(Treatment item) {
+        Logger.getInstance().log(LogType.TREATMENT, item.getId(), String.format("Treatment %s entfernt", item.getId()));
     }
 }
