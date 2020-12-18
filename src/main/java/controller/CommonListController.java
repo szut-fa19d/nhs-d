@@ -9,10 +9,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.DatabaseEntry;
-import utils.LogType;
-import utils.Logger;
 
-public abstract class CommonListController<T extends DatabaseEntry, DAOType extends DAO<T>> {
+public abstract class CommonListController<T extends DatabaseEntry, DAOType extends DAO<T>> { // NOSONAR
   @FXML
   protected TableView<T> tableView;
 
