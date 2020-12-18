@@ -6,9 +6,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import model.DatabaseEntry;
 import model.Patient;
 import datastorage.DAOFactory;
 import model.Treatment;
+import utils.Memoize;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -199,7 +202,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         selectedPatient.setLocked(true);
         try {
             dao.update(selectedPatient);
-            //ChangeLockForAllTreatmentsfor(selectedPatient,true);
+            ChangeLockForAllTreatmentsfor(selectedPatient,true);
             this.tableView.refresh();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -214,7 +217,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         selectedPatient.setLocked(false);
         try {
             dao.update(selectedPatient);
-            //ChangeLockForAllTreatmentsfor(selectedPatient, false);
+            ChangeLockForAllTreatmentsfor(selectedPatient, false);
             this.tableView.refresh();
         }
         catch (SQLException e) {
@@ -222,18 +225,17 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         }
         return;
     }
-/*
+
     private void ChangeLockForAllTreatmentsfor(Patient patient,Boolean lockValue)
     {
-        this.TreatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
-
+        TreatmentDAO TreatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
         try {
-            List<Treatment> allTreatments = TreatmentDAO.readTreatmentsByPatientId(patient.getId());
-            for(Treatment t : allTreatments)
+            for(Treatment t : TreatmentDAO.readTreatmentsByPatientId(patient.getId()))
             {
                 t.setLocked(lockValue);
                 try{
                     TreatmentDAO.update(t);
+
                 }
                 catch (SQLException e){
                     e.printStackTrace();
@@ -243,7 +245,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         catch (SQLException e){
             e.printStackTrace();
         }
-    }*/
+    }
     /**
      * removes content from all textfields
      */
