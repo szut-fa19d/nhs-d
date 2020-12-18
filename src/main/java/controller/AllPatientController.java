@@ -1,20 +1,23 @@
 package controller;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
+
+import datastorage.DAOFactory;
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import model.DatabaseEntry;
 import model.Patient;
-import datastorage.DAOFactory;
 import model.Treatment;
 import model.User;
-import utils.Memoize;
-
-import java.sql.SQLException;
-import java.time.LocalDate;
+import utils.LogType;
+import utils.Logger;
 
 /**
  * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
@@ -164,7 +167,9 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     private void doUpdate(TableColumn.CellEditEvent<Patient, String> event) {
         try {
-            this.dao.update(event.getRowValue());
+            Patient patient = event.getRowValue();
+            this.dao.update(patient);
+            Logger.getInstance().log(LogType.PATIENT, patient.getId(), String.format("Patient %s %s bearbeitet", patient.getFirstName(), patient.getSurname()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -179,6 +184,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
 
         try {
             DAOFactory.getInstance().createTreatmentDAO().deleteByPatientId((int) deletedPatient.getId());
+            Logger.getInstance().log(LogType.PATIENT, deletedPatient.getId(), String.format("Treatments von Patient %s %s entfernt", deletedPatient.getFirstName(), deletedPatient.getSurname()));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -200,6 +206,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         try {
             Patient p = new Patient(firstname, surname, birthdayValue, carelevel, room, assets,false);
             dao.create(p);
+            Logger.getInstance().log(LogType.PATIENT, p.getId(), String.format("Patient %s %s erstellt", p.getFirstName(), p.getSurname()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -269,5 +276,10 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         this.txtCarelevel.clear();
         this.txtRoom.clear();
         this.txtAssets.clear();
+    }
+
+    @Override
+    protected void logDelete(Patient item) {
+        Logger.getInstance().log(LogType.PATIENT, item.getId(), String.format("Patient %s %s entfernt", item.getFirstName(), item.getSurname()));
     }
 }

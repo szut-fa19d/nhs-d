@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
+import utils.LogType;
+import utils.Logger;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -69,6 +71,7 @@ public class TreatmentController extends TreatmentControllerCommon {
         TreatmentDAO dao = DAOFactory.getInstance().createTreatmentDAO();
         try {
             dao.update(treatment);
+            Logger.getInstance().log(LogType.TREATMENT, treatment.getId(), String.format("Treatment %s bearbeitet", treatment.getId()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

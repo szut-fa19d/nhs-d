@@ -114,4 +114,10 @@ public class AllUserController extends CommonListController<User, UserDAO>{
         return user;
     }
 
+    @Override
+    protected void logDelete(User item) {
+        // TODO Auto-generated method stub
+
+    }
+
 }

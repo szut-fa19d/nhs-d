@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.DatabaseEntry;
 
-public abstract class CommonListController<T extends DatabaseEntry, DAOType extends DAO<T>> {
+public abstract class CommonListController<T extends DatabaseEntry, DAOType extends DAO<T>> { // NOSONAR
   @FXML
   protected TableView<T> tableView;
 
@@ -24,6 +24,8 @@ public abstract class CommonListController<T extends DatabaseEntry, DAOType exte
    * Initializes the corresponding fields. Is called as soon as the corresponding FXML file is to be displayed.
    */
   public abstract void initialize();
+
+  protected abstract void logDelete(T item);
 
   /**
    * calls readAll in {@link DAOType} and shows items in the table
@@ -58,6 +60,7 @@ public abstract class CommonListController<T extends DatabaseEntry, DAOType exte
 
     try {
       this.dao.deleteById((int) item.getId());
+      this.logDelete(item);
     } catch (SQLException exception) {
       exception.printStackTrace();
     }
