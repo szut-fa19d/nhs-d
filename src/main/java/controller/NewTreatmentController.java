@@ -62,12 +62,13 @@ public class NewTreatmentController extends TreatmentControllerCommon {
         Treatment treatment = new Treatment(patient, date, begin, end, description, remarks, false);
         TreatmentCaregiverDAO tcDao = DAOFactory.getInstance().createTreatmentCaregiverDAO();
 
+        this.createTreatment(treatment);
+        
         for (Caregiver caregiver: caregivers) {
             treatment.addCaregiver(caregiver);
             tcDao.link(treatment, caregiver);
         }
 
-        this.createTreatment(treatment);
         this.controller.readAllAndShowInTableView();
         this.stage.close();
     }

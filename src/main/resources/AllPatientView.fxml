@@ -28,9 +28,9 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <HBox layoutX="623.0" layoutY="419.3999938964844" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+      <HBox layoutX="623.0" layoutY="419.3999938964844" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" prefWidth="825.0">
          <children>
-            <GridPane hgap="10.0" vgap="10.0">
+            <GridPane hgap="10.0" vgap="10.0" prefWidth="600.0">
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" prefWidth="200.0" />
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
@@ -43,7 +43,7 @@
                <children>
                   <TextField fx:id="txtFirstName" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Vorname" />
                   <TextField fx:id="txtLastName" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Nachname" GridPane.columnIndex="1" />
-                  <DatePicker fx:id="birthday" minWidth="160.0" prefWidth="160.0" promptText="Geburtstag" GridPane.columnIndex="2"/>
+                  <DatePicker fx:id="birthday" minWidth="160.0" prefWidth="160.0" promptText="Geburtstag" GridPane.columnIndex="2" />
                   <TextField fx:id="txtCarelevel" prefHeight="26.0" prefWidth="200.0" promptText="Pflegegrad" GridPane.rowIndex="1" />
                   <TextField fx:id="txtRoom" prefHeight="26.0" prefWidth="200.0" promptText="Raum" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="txtAssets" minWidth="160.0" prefWidth="160.0" promptText="Vermögensstand" GridPane.columnIndex="2" GridPane.rowIndex="1" />
@@ -55,7 +55,7 @@
                   <Insets />
                </HBox.margin>
             </GridPane>
-            <GridPane>
+            <GridPane prefHeight="70.0" prefWidth="225.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -66,9 +66,9 @@
               </rowConstraints>
                <children>
                   <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="90.0" text="Hinzufügen" />
-                   <Button fx:id="btnSperren" mnemonicParsing="false" onAction="#handleLockFocusedPatient" prefWidth="90.0" text="Sperren" GridPane.rowIndex="1" />
-                   <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDelete" prefWidth="90.0" text="Löschen" />
-                   <Button fx:id="btnEntsperren" layoutX="10.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleUnLockFocusedPatient" prefWidth="90.0" text="Entsperren" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                   <Button fx:id="btnSperren" mnemonicParsing="false" onAction="#handleLockFocusedPatient" prefWidth="90.0" text="Sperren" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                   <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDelete" prefWidth="90.0" text="Löschen" GridPane.rowIndex="1" />
+                   <Button fx:id="btnEntsperren" layoutX="10.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleUnLockFocusedPatient" prefWidth="90.0" text="Entsperren" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>
