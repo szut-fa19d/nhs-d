@@ -16,8 +16,8 @@
       <TableView fx:id="tableView" editable="true" layoutX="31.0" layoutY="120.0" prefHeight="287.0" prefWidth="825.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="80.0">
         <columns>
             <TableColumn fx:id="colID" maxWidth="1200.0" minWidth="5.0" prefWidth="5.0" text="ID" />
-          <TableColumn fx:id="colSurname" maxWidth="7500.0" minWidth="20.0" onEditCommit="#handleOnEditSurname" prefWidth="100.0" text="Nachname" />
-          <TableColumn fx:id="colFirstName" maxWidth="7500.0" onEditCommit="#handleOnEditFirstname" prefWidth="75.0" text="Vorname" />
+          <TableColumn fx:id="colLastName" maxWidth="7500.0" minWidth="20.0" onEditCommit="#handleOnEditLastName" prefWidth="100.0" text="Nachname" />
+          <TableColumn fx:id="colFirstName" maxWidth="7500.0" onEditCommit="#handleOnEditFirstName" prefWidth="75.0" text="Vorname" />
             <TableColumn fx:id="colDateOfBirth" maxWidth="7500.0" onEditCommit="#handleOnEditDateOfBirth" prefWidth="75.0" text="Geburtstag" />
             <TableColumn fx:id="colCareLevel" onEditCommit="#handleOnEditCareLevel" prefWidth="75.0" text="Pflegegrad" />
             <TableColumn fx:id="colRoom" onEditCommit="#handleOnEditRoomnumber" prefWidth="75.0" text="Raum" />
@@ -41,8 +41,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="txtFirstname" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Vorname" />
-                  <TextField fx:id="txtSurname" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Nachname" GridPane.columnIndex="1" />
+                  <TextField fx:id="txtFirstName" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Vorname" />
+                  <TextField fx:id="txtLastName" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Nachname" GridPane.columnIndex="1" />
                   <DatePicker fx:id="birthday" minWidth="160.0" prefWidth="160.0" promptText="Geburtstag" GridPane.columnIndex="2"/>
                   <TextField fx:id="txtCarelevel" prefHeight="26.0" prefWidth="200.0" promptText="Pflegegrad" GridPane.rowIndex="1" />
                   <TextField fx:id="txtRoom" prefHeight="26.0" prefWidth="200.0" promptText="Raum" GridPane.columnIndex="1" GridPane.rowIndex="1" />

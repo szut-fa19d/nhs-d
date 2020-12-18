@@ -43,4 +43,12 @@ public class DAOFactory {
     public GroupDAO createGroupDAO() {
         return new GroupDAO(ConnectionBuilder.getConnection());
     }
+
+    public CaregiverDAO createCaregiverDAO() {
+        return new CaregiverDAO(ConnectionBuilder.getConnection());
+    }
+  
+    public TreatmentCaregiverDAO createTreatmentCaregiverDAO() {
+        return new TreatmentCaregiverDAO(ConnectionBuilder.getConnection());
+    }
 }

@@ -3,9 +3,12 @@ package model;
 import utils.DateConverter;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Treatment extends DatabaseEntry {
     private Patient patient;
+    private List<Caregiver> caregivers;
     private LocalDate date;
     private LocalTime begin;
     private LocalTime end;
@@ -46,6 +49,7 @@ public class Treatment extends DatabaseEntry {
      */
     private void init(Patient patient, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks, Boolean locked) {
         this.patient = patient;
+        this.caregivers = new ArrayList<>();
         this.date = date;
         this.begin = begin;
         this.end = end;
@@ -56,6 +60,18 @@ public class Treatment extends DatabaseEntry {
 
     public Patient getPatient() {
         return patient;
+    }
+
+    public List<Caregiver> getCaregivers() {
+        return this.caregivers;
+    }
+
+    public void addCaregiver(Caregiver caregiver) {
+        this.caregivers.add(caregiver);
+    }
+
+    public void removeCaregiver(Caregiver caregiver) {
+        this.caregivers.remove(caregiver);
     }
 
     public String getDate() {

@@ -4,6 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import org.controlsfx.control.CheckComboBox?>
 
 <AnchorPane prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewTreatmentController">
    <children>
@@ -46,6 +47,13 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
+            <Label text="Pflegekraft:" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <CheckComboBox GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="caregiverCombo">
+            </CheckComboBox>
             <Label text="Datum:" GridPane.rowIndex="3">
                <font>
                   <Font name="System Bold" size="13.0" />
@@ -70,8 +78,8 @@
             <TextField fx:id="txtBegin" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <TextField fx:id="txtEnd" maxWidth="192.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="txtDescription" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <Label fx:id="lblFirstname" text="Vorname" GridPane.columnIndex="1" />
-            <Label fx:id="lblSurname" text="Nachname" GridPane.columnIndex="3" />
+            <Label fx:id="lblFirstName" text="Vorname" GridPane.columnIndex="1" />
+            <Label fx:id="lblLastName" text="Nachname" GridPane.columnIndex="3" />
          </children>
       </GridPane>
       <HBox layoutX="298.0" layoutY="237.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="50.0">

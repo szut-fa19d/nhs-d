@@ -42,7 +42,7 @@ public class TreatmentController extends TreatmentControllerCommon {
 
     @Override
     protected void showData(){
-        this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
+        this.lblPatientName.setText(patient.getLastName()+", "+patient.getFirstName());
         this.lblCarelevel.setText(patient.getCareLevel());
         LocalDate date = DateConverter.convertStringToLocalDate(treatment.getDate());
         this.datepicker.setValue(date);

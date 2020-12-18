@@ -2,19 +2,19 @@ package model;
 
 public abstract class Person extends DatabaseEntry {
     private String firstName;
-    private String surname;
+    private String lastName;
 
     /** @see DatabaseEntry#DatabaseEntry() */
-    protected Person(String firstName, String surname) {
+    protected Person(String firstName, String lastName) {
         this.firstName = firstName;
-        this.surname = surname;
+        this.lastName = lastName;
     }
     
     /** @see DatabaseEntry#DatabaseEntry(long) */
-    protected Person(long id, String firstName, String surname) {
+    protected Person(long id, String firstName, String lastName) {
         super(id);
         this.firstName = firstName;
-        this.surname = surname;
+        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -25,11 +25,11 @@ public abstract class Person extends DatabaseEntry {
         this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

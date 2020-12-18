@@ -26,7 +26,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
     @FXML
     private TableColumn<Patient, String> colFirstName;
     @FXML
-    private TableColumn<Patient, String> colSurname;
+    private TableColumn<Patient, String> colLastName;
     @FXML
     private TableColumn<Patient, String> colDateOfBirth;
     @FXML
@@ -43,9 +43,9 @@ public class AllPatientController extends CommonListController<Patient, PatientD
     @FXML
     Button btnAdd;
     @FXML
-    TextField txtSurname;
+    TextField txtFirstName;
     @FXML
-    TextField txtFirstname;
+    TextField txtLastName;
     @FXML
     DatePicker birthday;
     @FXML
@@ -70,10 +70,9 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         //CellFactory zum Schreiben innerhalb der Tabelle
         this.colFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
 
+        this.colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        this.colLastName.setCellFactory(TextFieldTableCell.forTableColumn());
         this.colLocked.setCellValueFactory(new PropertyValueFactory<>("locked"));
-
-        this.colSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
-        this.colSurname.setCellFactory(TextFieldTableCell.forTableColumn());
 
         this.colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
         this.colDateOfBirth.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -96,21 +95,21 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditFirstname(TableColumn.CellEditEvent<Patient, String> event){
-        if(!event.getRowValue().getLocked()) {
+    public void handleOnEditFirstName(TableColumn.CellEditEvent<Patient, String> event) {
+        if (!event.getRowValue().getLocked()) {
             event.getRowValue().setFirstName(event.getNewValue());
             doUpdate(event);
         }
     }
 
     /**
-     * handles new surname value
+     * handles new lastName value
      * @param event event including the value that a user entered into the cell
      */
     @FXML
-    public void handleOnEditSurname(TableColumn.CellEditEvent<Patient, String> event){
-        if(!event.getRowValue().getLocked()) {
-            event.getRowValue().setSurname(event.getNewValue());
+    public void handleOnEditLastName(TableColumn.CellEditEvent<Patient, String> event) {
+        if (!event.getRowValue().getLocked()) {
+            event.getRowValue().setLastName(event.getNewValue());
             doUpdate(event);
         }
     }
@@ -169,7 +168,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         try {
             Patient patient = event.getRowValue();
             this.dao.update(patient);
-            Logger.getInstance().log(LogType.PATIENT, patient.getId(), String.format("Patient %s %s bearbeitet", patient.getFirstName(), patient.getSurname()));
+            Logger.getInstance().log(LogType.PATIENT, patient.getId(), String.format("Patient %s %s bearbeitet", patient.getFirstName(), patient.getLastName()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -184,7 +183,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
 
         try {
             DAOFactory.getInstance().createTreatmentDAO().deleteByPatientId((int) deletedPatient.getId());
-            Logger.getInstance().log(LogType.PATIENT, deletedPatient.getId(), String.format("Treatments von Patient %s %s entfernt", deletedPatient.getFirstName(), deletedPatient.getSurname()));
+            Logger.getInstance().log(LogType.PATIENT, deletedPatient.getId(), String.format("Treatments von Patient %s %s entfernt", deletedPatient.getFirstName(), deletedPatient.getLastName()));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -197,16 +196,17 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleAdd() {
-        String surname = this.txtSurname.getText();
-        String firstname = this.txtFirstname.getText();
-        LocalDate birthdayValue = this.birthday.getValue();
+        String lastName = this.txtLastName.getText();
+        String firstName = this.txtFirstName.getText();
+        LocalDate patientBirthday = this.birthday.getValue();
         String carelevel = this.txtCarelevel.getText();
         String room = this.txtRoom.getText();
         String assets = this.txtAssets.getText();
+
         try {
-            Patient p = new Patient(firstname, surname, birthdayValue, carelevel, room, assets,false);
+            Patient p = new Patient(firstName, lastName, patientBirthday, carelevel, room, assets, false);
             dao.create(p);
-            Logger.getInstance().log(LogType.PATIENT, p.getId(), String.format("Patient %s %s erstellt", p.getFirstName(), p.getSurname()));
+            Logger.getInstance().log(LogType.PATIENT, p.getId(), String.format("Patient %s %s erstellt", p.getFirstName(), p.getLastName()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -220,7 +220,7 @@ public class AllPatientController extends CommonListController<Patient, PatientD
         selectedPatient.setLocked(true);
         try {
             dao.update(selectedPatient);
-            ChangeLockForAllTreatmentsfor(selectedPatient,true);
+            changeLockForAllTreatmentsfor(selectedPatient,true);
             this.tableView.refresh();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -231,47 +231,43 @@ public class AllPatientController extends CommonListController<Patient, PatientD
      */
     @FXML
     public void handleUnLockFocusedPatient() {
-         User user = UserController.getInstance().getUser();
-         if(1 == user.getGroup()){
-            Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
-            selectedPatient.setLocked(false);
-            try {
-                dao.update(selectedPatient);
-                ChangeLockForAllTreatmentsfor(selectedPatient, false);
-                this.tableView.refresh();
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
+        User user = UserController.getInstance().getUser();
+
+        if (user.getGroup() != 1) {
+            return;
         }
-        return;
+        
+        Patient selectedPatient = this.tableView.getSelectionModel().getSelectedItem();
+        selectedPatient.setLocked(false);
+        try {
+            dao.update(selectedPatient);
+            this.changeLockForAllTreatmentsfor(selectedPatient, false);
+            this.tableView.refresh();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void ChangeLockForAllTreatmentsfor(Patient patient,Boolean lockValue)
-    {
-        TreatmentDAO TreatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
+    private void changeLockForAllTreatmentsfor(Patient patient, Boolean lockValue) {
+        TreatmentDAO treatmentDAO = DAOFactory.getInstance().createTreatmentDAO();
         try {
-            for(Treatment t : TreatmentDAO.readTreatmentsByPatientId(patient.getId()))
-            {
+            for (Treatment t: treatmentDAO.readTreatmentsByPatientId(patient.getId())) {
                 t.setLocked(lockValue);
-                try{
-                    TreatmentDAO.update(t);
-                }
-                catch (SQLException e){
-                    e.printStackTrace();
-                }
+                treatmentDAO.update(t);
             }
         }
         catch (SQLException e){
             e.printStackTrace();
         }
     }
+
     /**
      * removes content from all textfields
      */
     private void clearTextfields() {
-        this.txtFirstname.clear();
-        this.txtSurname.clear();
+        this.txtFirstName.clear();
+        this.txtLastName.clear();
         this.birthday.setValue(null);
         this.txtCarelevel.clear();
         this.txtRoom.clear();
@@ -280,6 +276,6 @@ public class AllPatientController extends CommonListController<Patient, PatientD
 
     @Override
     protected void logDelete(Patient item) {
-        Logger.getInstance().log(LogType.PATIENT, item.getId(), String.format("Patient %s %s entfernt", item.getFirstName(), item.getSurname()));
+        Logger.getInstance().log(LogType.PATIENT, item.getId(), String.format("Patient %s %s entfernt", item.getFirstName(), item.getLastName()));
     }
 }

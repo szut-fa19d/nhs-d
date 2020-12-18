@@ -119,7 +119,7 @@ public class Patient extends Person {
     public String toString() {
         return "Patient" + "\nMNID: " + this.id +
                 "\nFirstname: " + this.getFirstName() +
-                "\nSurname: " + this.getSurname() +
+                "\nLastname: " + this.getLastName() +
                 "\nBirthday: " + this.dateOfBirth +
                 "\nCarelevel: " + this.careLevel +
                 "\nRoomnumber: " + this.roomnumber +

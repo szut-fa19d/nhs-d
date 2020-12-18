@@ -55,7 +55,7 @@ public class AllTreatmentController extends CommonListController<Treatment, Trea
 
         this.colPatientName.setCellValueFactory(cellData -> {
             Patient patient = cellData.getValue().getPatient();
-            String name = patient.getFirstName() + " " + patient.getSurname();
+            String name = patient.getFirstName() + " " + patient.getLastName();
             return new SimpleStringProperty(name);
         });
 
@@ -87,7 +87,7 @@ public class AllTreatmentController extends CommonListController<Treatment, Trea
             patientList = (ArrayList<Patient>) patientDAO.readAll();
             this.myComboBoxData.add("alle");
             for (Patient patient: patientList) {
-                this.myComboBoxData.add(patient.getSurname());
+                this.myComboBoxData.add(patient.getLastName());
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -126,9 +126,9 @@ public class AllTreatmentController extends CommonListController<Treatment, Trea
         }
     }
 
-    private Patient searchInList(String surname){
+    private Patient searchInList(String lastName){
         for (int i =0; i<this.patientList.size();i++){
-            if(this.patientList.get(i).getSurname().equals(surname)){
+            if(this.patientList.get(i).getLastName().equals(lastName)){
                 return this.patientList.get(i);
             }
         }

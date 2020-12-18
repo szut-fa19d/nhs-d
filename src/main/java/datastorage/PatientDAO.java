@@ -21,8 +21,8 @@ public class PatientDAO extends DAOimp<Patient> {
 
     @Override
     protected String getCreateStatement(Patient patient) {
-        return String.format("INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber, assets, locked) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%b')",
-                patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber(), patient.getAssets(), patient.getLocked());
+        return String.format("INSERT INTO patient (firstname, lastname, dateOfBirth, carelevel, roomnumber, assets) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%b')",
+                patient.getFirstName(), patient.getLastName(), patient.getDateOfBirth(), patient.getCareLevel(), patient.getRoomnumber(), patient.getAssets(), patient.getLocked());
     }
 
     @Override
@@ -56,9 +56,9 @@ public class PatientDAO extends DAOimp<Patient> {
 
     @Override
     protected String getUpdateStatement(Patient p) {
-        return String.format("UPDATE patient SET firstname = '%s', surname = '%s', dateOfBirth = '%s', carelevel = '%s', " +
-                "roomnumber = '%s', assets = '%s', locked = '%b' WHERE pid = %d", p.getFirstName(), p.getSurname(), p.getDateOfBirth(),
-                p.getCareLevel(), p.getRoomnumber(), p.getAssets(),p.getLocked(), p.getId());
+        return String.format("UPDATE patient SET firstname = '%s', lastname = '%s', dateOfBirth = '%s', carelevel = '%s', " +
+                "roomnumber = '%s', assets = '%s', locked = '%b' WHERE pid = %d", p.getFirstName(), p.getLastName(), p.getDateOfBirth(),
+                p.getCareLevel(), p.getRoomnumber(), p.getAssets(), p.getLocked(), p.getId());
     }
 
     @Override
@@ -76,8 +76,8 @@ public class PatientDAO extends DAOimp<Patient> {
             p.setFirstName(set.getString("firstname"));
         }
 
-        if (DatabaseUtils.hasColumn(set, "surname")) {
-            p.setSurname(set.getString("surname"));
+        if (DatabaseUtils.hasColumn(set, "lastname")) {
+            p.setLastName(set.getString("lastname"));
         }
 
         if (DatabaseUtils.hasColumn(set, "dateOfBirth")) {
